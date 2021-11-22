@@ -1,4 +1,5 @@
-package api;
+import api.GeoLocation;
+import api.NodeData;
 
 /**
  * this class represents node (vertex) in a (directional) weighted graph

@@ -1,4 +1,4 @@
-package api;
+import api.GeoLocation;
 
 /**This class represents a geo location <x,y,z>, (aka Point3D data).
  *in our assigmant we will only use it for 2D graphs.
@@ -14,6 +14,12 @@ public class GeoLocation_ implements api.GeoLocation{
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public GeoLocation_(double x, double y) {
+        this.x = x;
+        this.y = y;
+        this.z = 0; //work around
     }
 
     @Override

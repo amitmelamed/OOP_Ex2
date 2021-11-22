@@ -1,4 +1,4 @@
-package api;
+import api.EdgeData;
 
 /**
  * this class will represent an edge in a (directional or not) weighted graph.
