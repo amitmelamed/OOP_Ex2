@@ -1,5 +1,7 @@
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import api.EdgeData_amit;
+import api.GeoLocation_amit;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -39,5 +41,10 @@ public class Ex2 {
         // ****** Add your code here ******
         //
         // ********************************
+    }
+
+    public static void main(String[] args) {
+
+
     }
 }
