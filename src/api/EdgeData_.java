@@ -4,13 +4,16 @@ package api;
  * this class will represent an edge in a (directional or not) weighted graph.
  * each edge will have source,destination,weight, info and tag(for implement algorithms use
  */
-public class EdgeData_amit implements EdgeData {
+public class EdgeData_ implements EdgeData {
     private int source;
     private int destination;
     private double weight;
     private String info;
     private int tag;
 
+    public EdgeData_(int source, int destination, double weight) {
+
+    }
     public int getSource() {
         return source;
     }

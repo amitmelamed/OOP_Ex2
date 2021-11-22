@@ -4,18 +4,18 @@ package api;
  * this class represents node (vertex) in a (directional) weighted graph
  * each vertex have key(ID), location,weight,info and tag for implements algorithms
  */
-public class NodeData_amit implements NodeData {
+public class NodeData_ implements NodeData {
     private int key;
     private GeoLocation location;
     private double weight;
     private String Info;
     private int tag;
 
-    public NodeData_amit(int key, GeoLocation location, double weight, String info, int tag) {
+    public NodeData_(int key, GeoLocation location, double weight) {
         this.key = key;
         this.location = location;
         this.weight = weight;
-        Info = info;
+        Info = "key: "+key;
         this.tag = tag;
     }
 

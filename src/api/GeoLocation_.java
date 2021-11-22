@@ -5,12 +5,12 @@ package api;
  * distance funtion will get another Location and calculate their distance.
  */
 
-public class GeoLocation_amit implements api.GeoLocation{
+public class GeoLocation_ implements api.GeoLocation{
     private double x;
     private double y;
     private double z;
 
-    public GeoLocation_amit(double x, double y, double z) {
+    public GeoLocation_(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
