@@ -12,7 +12,9 @@ public class EdgeData_ implements EdgeData {
     private int tag;
 
     public EdgeData_(int source, int destination, double weight) {
-
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
     }
     public int getSource() {
         return source;
