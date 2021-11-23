@@ -12,31 +12,63 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     private Iterator<NodeData_> nodes = new HashMap<Integer, NodeData_>();
      */
     private Map<Integer, NodeData> nodes;
-    private Map<Integer, EdgeData> edges;
+    private static int sizeOfE;
+    private ArrayList<EdgeData> test = new ArrayList(); // WE NEED TO HOLD THE EDGES
+                                                        // IN A HASHMAP AND REMOVE
+                                                        // THE HASHMAPS FROM THE NODES
+                                                        // BECAUSE ITS STUPID.
 
-    public DirectedWeightedGraph_() {
+
+
+    public DirectedWeightedGraph_(String jsonFileName) throws IOException, JSONException {
         nodes = new HashMap();
-        edges = new HashMap();
+        JSONObject jsonObject = Ex2.parseJSONFile(jsonFileName);
+        JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
+        for(int i=0;i<jsonNodes.length();i++){
+            int key=jsonNodes.getJSONObject(i).getInt("id");
+            String pos=jsonNodes.getJSONObject(i).getString("pos");
+            NodeData_ v = new NodeData_(key, pos);
+            nodes.put(v.getKey(), v);
+        }
 
-        /*
-        read from json file into nodes and edges
-        #######Nodes:########
+        JSONArray jsonEdges = jsonObject.getJSONArray("Edges");
+        for (int i = 0; i < jsonEdges.length(); i++) {
+            int src = jsonEdges.getJSONObject(i).getInt("src");
+            int dest = jsonEdges.getJSONObject(i).getInt("dest");
+            double w = jsonEdges.getJSONObject(i).getDouble("w");
 
-        NodeData_ f = new NodeData_();
-        nodes.put(f.getKey(), f);
+            EdgeData_ e = new EdgeData_(src, dest, w);
+           // System.out.println(e.toString());
 
-        #######Edges:########
-        I don't know
+            nodes.get(e.getSrc()).getOutEdges().put(e.getDest(), e);
+            nodes.get(e.getDest()).getInEdges().put(e.getSrc(), e);
+            test.add(e);
+            sizeOfE++;
+        }
+        /**
+       #######Edges:########
+                for each Edge:
+                    EdgeData_ e = new EdgeData(src, dest, weight);
+                    nodes.get(e.src).outEdges.put(e.dest, e);
+                    nodes.get(e.dest).inEdges.put(e.src, e);
+                    sizeOfE++;
+
+
+        Now we have all the nodes ready to receive the edges into their hashmaps.
+        For each Edge we have src and dst,
+        the edge goes into two nodes.
+        The src node put the edge into its outEdges (something like outEdges.put(e.getDest(), e);)
+        The dst node put the edge into its inEdges                 (inEdges.put(e.getSource, e);)
+
+        For each edge we do sizeOfE++;
+
          */
 
 
-            NodeData_ f = new NodeData_();
-
-            nodes.put(f.getKey(), f); //THIS WAY WE PUT IN THE HASHMAP'S INTEGER THE ACTUAL VALUE OF f.key
-
-
-
     }
+
+
+
     @Override
     public NodeData getNode(int key) {
         return null;
@@ -45,6 +77,9 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public EdgeData getEdge(int src, int dest) {
         return null;
+    }
+    public EdgeData getEdge2(int src, int dest) {
+        return nodes.get(src).getOutEdges().get(dest);
     }
 
     @Override
@@ -81,7 +116,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
-        return null;
+        //size of e minus minus;
+        return nodes.get(src).getOutEdges().remove(dest);
     }
 
     @Override
