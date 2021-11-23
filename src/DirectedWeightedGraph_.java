@@ -10,17 +10,29 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     private hashmap nodes
     private hashmap edges
     private Iterator<NodeData_> nodes = new HashMap<Integer, NodeData_>();
-
      */
-    public Map<Integer, NodeData> foodTable;
+    private Map<Integer, NodeData> nodes;
+    private Map<Integer, EdgeData> edges;
 
     public DirectedWeightedGraph_() {
-        foodTable = new HashMap();
-        for (int i = 0; i < 4; i++) {
+        nodes = new HashMap();
+        edges = new HashMap();
+
+        /*
+        read from json file into nodes and edges
+        #######Nodes:########
+
+        NodeData_ f = new NodeData_();
+        nodes.put(f.getKey(), f);
+
+        #######Edges:########
+        I don't know
+         */
+
+
             NodeData_ f = new NodeData_();
 
-            foodTable.put(f.getKey(), f); //THIS WAY WE PUT IN THE HASHMAP'S INTEGER THE ACTUAL VALUE OF f.key
-        }
+            nodes.put(f.getKey(), f); //THIS WAY WE PUT IN THE HASHMAP'S INTEGER THE ACTUAL VALUE OF f.key
 
 
 
@@ -47,11 +59,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        Iterator<NodeData> g = foodTable.values().iterator();
-        while(g.hasNext()) {
-            System.out.println(g.next());
-
-        }
+        Iterator<NodeData> g = nodes.values().iterator();
 
         return g;
     }
