@@ -42,8 +42,7 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-        DirectedWeightedGraph_ t = new DirectedWeightedGraph_();
-        System.out.println(t.nodeIter());
+
 
     }
 }

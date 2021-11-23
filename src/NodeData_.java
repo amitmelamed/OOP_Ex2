@@ -12,25 +12,12 @@ public class NodeData_ implements NodeData {
     private String Info;
     private int tag;
 
-    static int id = 0;
-    static int x = 0;
-
     public NodeData_(int key, GeoLocation location, double weight) {
         this.key = key;
         this.location = location;
         this.weight = weight;
         Info = "key: "+key;
         this.tag = tag;
-
-
-    }
-
-    public NodeData_() {
-        this.key = id++;
-        this.location = new GeoLocation_(x++,2,3);
-        this.weight = 3;
-        Info = "key: "+key;
-        this.tag = 0;
     }
 
     public void setKey(int key) {
