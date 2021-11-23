@@ -1,30 +1,21 @@
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
-import org.w3c.dom.Node;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     /*
     private hashmap nodes
     private hashmap edges
-    private Iterator<NodeData_> nodes = new HashMap<Integer, NodeData_>();
 
      */
-    public Map<Integer, NodeData> foodTable;
-
-    public DirectedWeightedGraph_() {
-        foodTable = new HashMap();
-        for (int i = 0; i < 4; i++) {
-            NodeData_ f = new NodeData_();
-
-            foodTable.put(f.getKey(), f); //THIS WAY WE PUT IN THE HASHMAP'S INTEGER THE ACTUAL VALUE OF f.key
-        }
+    private Iterator<NodeData_> nodes = new HashMap<0, NodeData_>();
+    private Iterator<Integer, NodeData_> foodTable = new HashMap<Integer, NodeData_>();
 
 
-
-    }
     @Override
     public NodeData getNode(int key) {
         return null;
@@ -47,13 +38,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        Iterator<NodeData> g = foodTable.values().iterator();
-            while(g.hasNext()) {
-                System.out.println(g.next());
-
-            }
-
-        return g;
+        return null;
     }
 
     @Override
