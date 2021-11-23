@@ -117,7 +117,7 @@ public class NodeData_ implements NodeData {
 
     @Override
     public String toString() {
-        return "NodeData_amit{" +
+        return "NodeData_{" +
                 "key=" + key +
                 ", location=" + location +
                 ", weight=" + weight +

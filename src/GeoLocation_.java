@@ -61,7 +61,7 @@ public class GeoLocation_ implements api.GeoLocation{
 
     @Override
     public String toString() {
-        return "GeoLocation_amit{" +
+        return "GeoLocation_{" +
                 "x=" + x +
                 ", y=" + y +
                 ", z=" + z +

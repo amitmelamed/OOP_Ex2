@@ -73,7 +73,7 @@ public class EdgeData_ implements EdgeData {
 
     @Override
     public String toString() {
-        return "EdgeData_amit{" +
+        return "EdgeData_{" +
                 "source=" + source +
                 ", destination=" + destination +
                 ", weight=" + weight +
