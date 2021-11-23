@@ -1,12 +1,22 @@
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
-import org.w3c.dom.Node;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
 
 import java.util.*;
 
 public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
-    /*
+    /**
     private hashmap nodes
     private hashmap edges
     private Iterator<NodeData_> nodes = new HashMap<Integer, NodeData_>();
@@ -76,7 +86,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-        return null;
+        return nodes.get(dest).getInEdges().get(src);
     }
     public EdgeData getEdge2(int src, int dest) {
         return nodes.get(src).getOutEdges().get(dest);
