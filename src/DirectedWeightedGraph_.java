@@ -51,27 +51,37 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     }
 
     @Override
-    public NodeData getNode(int key) {
+    public NodeData getNode(int key)
+    {
         return nodes.get(key);
     }
 
     @Override
-    public EdgeData getEdge(int src, int dest) {
+    public EdgeData getEdge(int src, int dest)
+    {
         return nodes.get(dest).getInEdges().get(src);
     }
 
-    public EdgeData getEdge(int id) {
+    public EdgeData getEdge(int id)
+    {
         return edges.get(id);
     }
 
     @Override
     public void addNode(NodeData n) {
-
+        nodes.put(n.getKey(),n);
+        //and thats it?
     }
 
     @Override
     public void connect(int src, int dest, double w) {
-
+        if(nodes.containsKey(src)&&nodes.containsKey(dest)){
+            EdgeData_ edgeData=new EdgeData_(src,dest,w);
+            nodes.get(src).getOutEdges().put(dest,edgeData);
+            nodes.get(dest).getInEdges().put(src,edgeData);
+            edges.put(edgeData.getId(),edgeData);
+        } //MAYBE ADD SOMETHING THAT CHECKS IF THE EDGE ALREADY EXISTS WITH THE SAME WEIGHT
+          //OR MAYBE ITS OKAY TO HAVE DUPLICATES AND WE NEED TO ADD THE EDGE ANYWAY
     }
 
     @Override
@@ -98,7 +108,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         int[] inIds = new int[inedges.length];
         int[] outIds = new int[outedges.length];
 
-        /**(SIZE OF) inIds+outIds = v.degree**/
+        /**SIZE OF inIds+outIds is equal to v.degree**/
         for (int i = 0; i < inIds.length; i++) {
             inIds[i] = getEdge((int)inedges[i], key).getId();
         }
@@ -113,8 +123,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             removeEdge(outIds[i]);
         }
         /** O(2*v.degree)=O(v.degree)**/
-        nodes.get(key).getOutEdges().clear();
-        nodes.get(key).getInEdges().clear();
+        nodes.get(key).getOutEdges().clear();       //Clear is O(n) where n is the number of out edges
+        nodes.get(key).getInEdges().clear();        //Clear is O(n) where n is the number of in edges
 
         return nodes.remove(key);
     }
@@ -122,6 +132,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public EdgeData removeEdge(int src, int dest) {
         int id = nodes.get(dest).getInEdges().get(src).getId();
+        // could also be nodes.get(src).getOutEdges().get(dest).getId();
         edges.remove(id);
         nodes.get(dest).getInEdges().remove(src);
         return nodes.get(src).getOutEdges().remove(dest);

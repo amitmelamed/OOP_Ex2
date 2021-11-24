@@ -5,8 +5,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 
-public class libs extends JPanel {
+public class GUIgraph extends JPanel {
 
+    public GUIgraph() {
+        
+    }
     @Override
     public void paint(Graphics g) {
         super.paint(g);
