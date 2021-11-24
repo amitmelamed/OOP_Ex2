@@ -79,14 +79,22 @@ public class Ex2 {
         while(g.hasNext()){
             System.out.println(g.next());
         }
-
+        System.out.println();
         t.removeNode(16);
         Iterator<EdgeData> s = t.edgeIter();
         while(s.hasNext()){
             System.out.println(s.next());
         }
 
-        runGUI("data/G1.json");
+
+        t.removeNode(15);
+        s = t.edgeIter();
+        while(s.hasNext()){
+            System.out.println(s.next());
+        }
+
+
+        //runGUI("data/G1.json");
 
 
     }

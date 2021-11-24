@@ -107,15 +107,14 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         }
 
         for (int i = 0; i < inIds.length; i++) {
-            edges.remove(inIds[i]);
+            removeEdge(inIds[i]);
         }
         for (int i = 0; i < outIds.length; i++) {
-            edges.remove(outIds[i]);
+            removeEdge(outIds[i]);
         }
         /** O(2*v.degree)=O(v.degree)**/
         nodes.get(key).getOutEdges().clear();
         nodes.get(key).getInEdges().clear();
-
 
         return nodes.remove(key);
     }
