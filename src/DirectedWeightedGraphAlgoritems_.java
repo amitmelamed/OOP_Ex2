@@ -2,19 +2,24 @@ import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms {
     private DirectedWeightedGraph graph;
-    @Override
-    public void init(DirectedWeightedGraph g) {
-        this.graph=g;
+
+    public DirectedWeightedGraphAlgoritems_() {
 
     }
 
     @Override
+    public void init(DirectedWeightedGraph g) {
+        this.graph=g;
+    }
+
+    @Override
     public DirectedWeightedGraph getGraph() {
-        return null;
+        return this.graph;
     }
 
     @Override
@@ -54,6 +59,10 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
 
     @Override
     public boolean load(String file) {
-        return false;
+
+        this.graph=new DirectedWeightedGraph_(file);
+        return true;
+
     }
+
 }
