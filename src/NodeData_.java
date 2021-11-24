@@ -2,6 +2,7 @@ import api.EdgeData;
 import api.GeoLocation;
 import api.NodeData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ public class NodeData_ implements NodeData {
 
     private Map<Integer, EdgeData> outEdges;
     private Map<Integer, EdgeData> inEdges;
-
 
     @Override
     public Map<Integer, EdgeData> getOutEdges() {

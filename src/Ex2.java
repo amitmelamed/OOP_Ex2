@@ -1,11 +1,13 @@
-import api.DirectedWeightedGraph;
+import  api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import api.EdgeData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -49,22 +51,20 @@ public class Ex2 {
         // ********************************
     }
 
-    public static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
-        String content = new String(Files.readAllBytes(Paths.get(filename)));
-        return new JSONObject(content);
-    }
-
     public static void main(String[] args) throws IOException, JSONException {
         DirectedWeightedGraph_ t = new DirectedWeightedGraph_("data/G1.json");
-        System.out.println(t.getEdge(16, 15));
         t.getEdge(16, 15).setInfo("BLA BLA");
-        System.out.println(t.getEdge(16, 15));
-        System.out.println(t.getEdge2(16, 15));
 
+        Iterator<EdgeData> g = t.edgeIter();
+        while(g.hasNext()){
+            System.out.println(g.next());
+        }
 
-        System.out.println(t.removeEdge(16,15));
-        System.out.println(t.removeEdge(16,15));
-
+        t.removeNode(16);
+        Iterator<EdgeData> s = t.edgeIter();
+        while(s.hasNext()){
+            System.out.println(s.next());
+        }
 
 
 

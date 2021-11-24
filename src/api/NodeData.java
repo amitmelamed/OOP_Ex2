@@ -9,9 +9,11 @@ import java.util.Map;
  */
 public interface NodeData {
 
-	public Map<Integer, EdgeData> getOutEdges();
+	public Map<Integer, EdgeData> getOutEdges(); //Integer is the destination of each edge in the map
 
-	public Map<Integer, EdgeData> getInEdges();
+	public Map<Integer, EdgeData> getInEdges(); // Integer is the source of each edge in the map
+
+
 
 	/**
 	 * Returns the key (id) associated with this node.
