@@ -14,6 +14,7 @@ public class EdgeData_ implements EdgeData {
     private static int ID = 0;
     private int id;
 
+
     public EdgeData_(int source, int destination, double weight) {
         this.source = source;
         this.destination = destination;

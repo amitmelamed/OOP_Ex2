@@ -10,6 +10,7 @@ public class GeoLocation_ implements api.GeoLocation{
     private double y;
     private double z;
 
+
     public GeoLocation_(double x, double y, double z) {
         this.x = x;
         this.y = y;

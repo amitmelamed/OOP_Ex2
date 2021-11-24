@@ -4,6 +4,8 @@ import api.EdgeData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -44,9 +46,27 @@ public class Ex2 {
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      *
      */
-    public static void runGUI(String json_file) {
-        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
-        // ****** Add your code here ******
+    public static void runGUI(String json_file) throws IOException, JSONException {              //delete the throw
+        //DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);                           //this is the correct line
+       // DirectedWeightedGraph_ GUIgraph = new DirectedWeightedGraph_("data/G1.json");   //this line is not correct
+
+        /***     JFrame frame = new JFrame("Points");
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         frame.add(points);
+         frame.setSize(250, 200);
+         frame.setLocationRelativeTo(null);
+         frame.setVisible(true); ***/
+
+        libs l = new libs();
+        JFrame f = new JFrame("ze waze");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.add(l);
+        f.setSize(300,250);
+
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+
+            // ****** Add your code here ******
         //
         // ********************************
     }
@@ -66,7 +86,9 @@ public class Ex2 {
             System.out.println(s.next());
         }
 
+        runGUI("data/G1.json");
 
 
     }
 }
+

@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class NodeData_ implements NodeData {
 
+
     private int key;
     private GeoLocation location;
     private double weight;
