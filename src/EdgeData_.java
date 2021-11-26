@@ -11,16 +11,14 @@ public class EdgeData_ implements EdgeData {
     private String info;
     private int tag;
 
-    private static int ID = 0;
     private int id;
 
 
-    public EdgeData_(int source, int destination, double weight) {
+    public EdgeData_(int source, int destination, double weight, int ID) {
         this.source = source;
         this.destination = destination;
         this.weight = weight;
         this.id = ID;
-        ID++;
     }
     public int getSource() {
         return source;

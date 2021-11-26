@@ -19,13 +19,18 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     private Map<Integer, NodeData> nodes; //Integer is key
     private Map<Integer, EdgeData> edges; //Integer is ID
+    private int edgeID = 0;
 
-
-    public DirectedWeightedGraph_(String jsonFileName) throws IOException, JSONException {
+    public DirectedWeightedGraph_(String jsonFileName) {
         nodes = new HashMap();
         edges = new HashMap<>();
 
-        JSONObject jsonObject = parseJSONFile(jsonFileName);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = parseJSONFile(jsonFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
         for(int i=0;i<jsonNodes.length();i++){
             int key=jsonNodes.getJSONObject(i).getInt("id");
@@ -40,8 +45,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             int dest = jsonEdges.getJSONObject(i).getInt("dest");
             double w = jsonEdges.getJSONObject(i).getDouble("w");
 
-            EdgeData_ e = new EdgeData_(src, dest, w);
-
+            EdgeData_ e = new EdgeData_(src, dest, w, edgeID);
+            edgeID++;
 
             /**Three hashmaps that hold edges**/
             nodes.get(e.getSrc()).getOutEdges().put(e.getDest(), e);
@@ -76,7 +81,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public void connect(int src, int dest, double w) {
         if(nodes.containsKey(src)&&nodes.containsKey(dest)){
-            EdgeData_ edgeData=new EdgeData_(src,dest,w);
+            EdgeData_ edgeData=new EdgeData_(src,dest,w, edgeID);
+            edgeID++;
             nodes.get(src).getOutEdges().put(dest,edgeData);
             nodes.get(dest).getInEdges().put(src,edgeData);
             edges.put(edgeData.getId(),edgeData);
@@ -140,6 +146,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     }
 
     public void removeEdge(int id) {
+        System.out.println(edges.get(id).getSrc());
         int src = edges.get(id).getSrc();
         int dest = edges.get(id).getDest();
         removeEdge(src, dest);
