@@ -5,7 +5,7 @@ import api.NodeData;
 import java.io.IOException;
 import java.util.List;
 
-public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms {
+public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
     private DirectedWeightedGraph graph;
 
     public DirectedWeightedGraphAlgoritems_() {

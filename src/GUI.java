@@ -1,15 +1,16 @@
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
-import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 public class GUI extends JPanel {
+
     private DirectedWeightedGraph GUIgraph;
     private int minXid, maxXid, minYid, maxYid;
     private double maxX = Integer.MIN_VALUE;
@@ -18,11 +19,31 @@ public class GUI extends JPanel {
     private double minY = Integer.MAX_VALUE;
     private double absX = 0;
     private double absY = 0;
+    private int resize = 30;
+    private boolean flag = true;
+
+    private JButton removeButton = new JButton();
+    private JButton showEdgesButton = new JButton();
+    private ArrayList<String> nodes = new ArrayList<>();;
+    private SpinnerListModel nodesModel;
+    private JSpinner removeSpinner;
 
     public GUI(DirectedWeightedGraph graph) {
         this.GUIgraph = graph;
         arrfloose();
+        nodesListModel();
     }
+
+    /** FOLLOWING METHODS ARE CALLED FROM THE CONSTRUCTOR**/
+    private void nodesListModel() {
+        Iterator<NodeData> NodeI = GUIgraph.nodeIter();
+        while(NodeI.hasNext()) {
+            NodeData currNode = NodeI.next();
+            nodes.add(Integer.toString(currNode.getKey()));
+        }
+        nodesModel = new SpinnerListModel(nodes);
+        removeSpinner = new JSpinner(nodesModel);
+    } //Called from the constructor
 
     public void arrfloose() {
         int ans=0;
@@ -50,23 +71,46 @@ public class GUI extends JPanel {
         absX = Math.abs(maxX-minX);
         absY = Math.abs(maxY-minY);
 
-    }
+    } //Called from the constructor
 
-    @Override
-    public void paintComponent (Graphics g)
-    {
-        super.paintComponent(g);
+
+
+    /** FOLLOWING METHODS ARE CALLED FROM PAINTCOMPONENT**/
+    private void createButtons() {
+        removeButton.setLocation(0,0);
+        removeButton.setSize(90,30);
+        removeButton.setText("Remove");
+        this.add(removeButton);
+        removeSpinner.setLocation(90,5);
+        this.add(removeSpinner);
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int target = Integer.parseInt(removeSpinner.getValue().toString());
+                GUIgraph.removeNode(target);
+            }
+        });
+
+        showEdgesButton.setLocation(0,30);
+        showEdgesButton.setSize(119,30);
+        showEdgesButton.setText("Edge Toggle");
+
+        this.add(showEdgesButton);
+        showEdgesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (flag) flag = false;
+                else flag = true;
+            }
+        });
+
+    } //Called from paintComponent
+
+    private void paintNodes(Graphics g) {
         double tX = getWidth()/absX*0.8;
         double tY = getHeight()/absY*0.8;
-        Toolkit t=Toolkit.getDefaultToolkit();
-        Image map=t.getImage("data/map.png");
-        Image node=t.getImage("data/node-js.png");
-        //g.drawImage(map,10,10,getWidth(), getHeight(), null); //loads ariel's map to the background, and sticks it to the size of the screen
         Iterator<NodeData> NodeI = GUIgraph.nodeIter();
         g.setColor(Color.red);
-
-
-        int resize = 50;
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
             double Geox = currNode.getLocation().x();
@@ -74,10 +118,14 @@ public class GUI extends JPanel {
 
             double x = (Geox-minX)*tX+resize;
             double y = (Geoy-minY)*tY+resize;
-            //g.drawImage(node, (int)x-5, (int)y-5,10,10, null);
             g.fillOval((int)x-5, (int)y-5, 10, 10);
+            g.drawString(currNode.getKey()+"", (int)x-5, (int)y-5);
         }
+    } //Called from paintComponent
 
+    private void paintEdges(Graphics g) {
+        double tX = getWidth()/absX*0.8;
+        double tY = getHeight()/absY*0.8;
         Iterator<EdgeData> EdgeI = GUIgraph.edgeIter();
         g.setColor(Color.black);
         while(EdgeI.hasNext()) {
@@ -96,7 +144,28 @@ public class GUI extends JPanel {
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
         }
 
+    } //Called from paintComponent
 
+    private void paintBackground(Graphics g) {
+        Toolkit t=Toolkit.getDefaultToolkit();
+        Image map=t.getImage("data/map.png");
+        g.drawImage(map,10,10,getWidth(), getHeight(), null); //loads ariel's map to the background, and sticks it to the size of the screen
+    } //Called from paintComponent
+
+
+    @Override
+    public void paintComponent (Graphics g) {
+        super.paintComponent(g);
+
+        this.setVisible(false);
+
+        //paintBackground(g);
+
+        createButtons();
+        paintNodes(g);
+        if (flag) paintEdges(g);
+
+        this.setVisible(true);
     }
 }
 

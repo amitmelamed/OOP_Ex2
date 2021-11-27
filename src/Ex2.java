@@ -9,7 +9,6 @@ import java.util.Iterator;
  */
 public class Ex2 {
 
-
     /**
      * This static function will be used to test your implementation
      *
@@ -17,11 +16,8 @@ public class Ex2 {
      * @return
      */
     public static DirectedWeightedGraph getGrapg(String json_file) {
-        DirectedWeightedGraph ans = null;
-        // ****** Add your code here ******
-        //
-        // ********************************
-        return ans;
+        DirectedWeightedGraph graph = new DirectedWeightedGraph_(json_file);
+        return graph;
     }
 
     /**
@@ -31,12 +27,15 @@ public class Ex2 {
      * @return
      */
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
-        DirectedWeightedGraphAlgorithms ans = null;
+        DirectedWeightedGraph_ g=new DirectedWeightedGraph_(json_file);
+        DirectedWeightedGraphAlgorithms algo = new DirectedWeightedGraphAlgoritems_();
+        algo.init(g);
         // ****** Add your code here ******
         //
         // ********************************
-        return ans;
+        return algo;
     }
+
 
     /**
      * This static function will run your GUI using the json fime.
@@ -44,36 +43,27 @@ public class Ex2 {
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      */
     public static void runGUI(String json_file) {
-        //DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);                           //this is the correct line
-        DirectedWeightedGraph_ GUIgraph = new DirectedWeightedGraph_(json_file);   //this line is not correct
-
+        //DirectedWeightedGraph_ alg = new DirectedWeightedGraph_(json_file);
+        //DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
+        DirectedWeightedGraph alg = getGrapg(json_file);
 
         JFrame screen = new JFrame("ze waze");
         screen.setSize(600,500);
-        Iterator I = GUIgraph.edgeIter();
-        I.forEachRemaining(System.out::println);
 
-        I = GUIgraph.edgeIter();
-        I.forEachRemaining(System.out::println);
-
-        GUI graph = new GUI(GUIgraph);
+        GUI graph = new GUI(alg);
         screen.add(graph);
-
-
 
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         screen.setLocationRelativeTo(null);
         screen.setVisible(true);
 
-        // ****** Add your code here ******
-        //
-        // ********************************
     }
 
     public static void main(String[] args) {
-        DirectedWeightedGraph_ t = new DirectedWeightedGraph_("data/G1.json");
+        //DirectedWeightedGraph_ t = new DirectedWeightedGraph_("data/G2.json");
 
-        runGUI("data/G4ARIEL.json");
+
+        runGUI("data/G3.json");
 
 
     }

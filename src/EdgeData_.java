@@ -13,27 +13,11 @@ public class EdgeData_ implements EdgeData {
 
     private int id;
 
-
     public EdgeData_(int source, int destination, double weight, int ID) {
         this.source = source;
         this.destination = destination;
         this.weight = weight;
         this.id = ID;
-    }
-    public int getSource() {
-        return source;
-    }
-
-    public void setSource(int source) {
-        this.source = source;
-    }
-
-    public int getDestination() {
-        return destination;
-    }
-
-    public void setDestination(int destination) {
-        this.destination = destination;
     }
 
     public void setWeight(double weight) {

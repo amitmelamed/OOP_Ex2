@@ -16,5 +16,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="google-maps-services-1.0.1-javadoc" level="project" />
   </component>
 </module>
