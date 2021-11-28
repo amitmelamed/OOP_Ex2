@@ -27,9 +27,9 @@ public class Ex2 {
      * @return
      */
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
-        DirectedWeightedGraph_ g=new DirectedWeightedGraph_(json_file);
-        DirectedWeightedGraphAlgorithms algo = new DirectedWeightedGraphAlgoritems_();
-        algo.init(g);
+        //DirectedWeightedGraph_ g = new DirectedWeightedGraph_(json_file);
+        DirectedWeightedGraphAlgorithms algo = null;
+        //algo.init(g);
         // ****** Add your code here ******
         //
         // ********************************
@@ -44,8 +44,9 @@ public class Ex2 {
      */
     public static void runGUI(String json_file) {
         //DirectedWeightedGraph_ alg = new DirectedWeightedGraph_(json_file);
-        //DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
         DirectedWeightedGraph alg = getGrapg(json_file);
+        //DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file); //if we use the extends way it will work. (this is boaz's line)
+
 
         JFrame screen = new JFrame("ze waze");
         screen.setSize(600,500);
@@ -63,7 +64,7 @@ public class Ex2 {
         //DirectedWeightedGraph_ t = new DirectedWeightedGraph_("data/G2.json");
 
 
-        runGUI("data/G3.json");
+        runGUI("data/G4ARIEL.json");
 
 
     }

@@ -30,7 +30,7 @@ public class GUI extends JPanel {
 
     public GUI(DirectedWeightedGraph graph) {
         this.GUIgraph = graph;
-        arrfloose();
+        updateMinMax();
         nodesListModel();
     }
 
@@ -45,8 +45,7 @@ public class GUI extends JPanel {
         removeSpinner = new JSpinner(nodesModel);
     } //Called from the constructor
 
-    public void arrfloose() {
-        int ans=0;
+    public void updateMinMax() {
 
         Iterator<NodeData> NodeI = GUIgraph.nodeIter();
 

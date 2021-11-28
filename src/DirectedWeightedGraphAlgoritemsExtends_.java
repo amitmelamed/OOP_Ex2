@@ -2,24 +2,29 @@ import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
 
-import java.io.IOException;
 import java.util.List;
 
-public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
-    private DirectedWeightedGraph optimizedGraph;
+public class DirectedWeightedGraphAlgoritemsExtends_ extends DirectedWeightedGraph_ implements DirectedWeightedGraphAlgorithms  {
+    private DirectedWeightedGraph copiedGraph;
 
+    public DirectedWeightedGraphAlgoritemsExtends_(String jsonFileName) {
+        super(jsonFileName);
+        init(null); //the null is because of the extends. its weird.
+        //deep copy the graph into copiedGraph
+        //than work on copiedGraph to change there the node's tag (white\gray\black),
+        //while BFSing.
 
-    //If we go with the not extended algorithm,
-    // than we need to find solution in Ex2.java or GUI
+    }
+
 
     @Override
     public void init(DirectedWeightedGraph g) {
-        optimizedGraph = g; //maybe deep copy
+        //build the optimized graph
     }
 
     @Override
     public DirectedWeightedGraph getGraph() {
-        return optimizedGraph;
+        return copiedGraph;
     }
 
     @Override
@@ -61,7 +66,7 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     @Override
     public boolean load(String file) {
 
-        this.optimizedGraph = new DirectedWeightedGraph_(file);
+        this.copiedGraph = new DirectedWeightedGraph_(file);
         return true;
 
     }
