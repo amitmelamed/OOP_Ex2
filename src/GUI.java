@@ -1,4 +1,5 @@
 import api.DirectedWeightedGraph;
+import api.DirectedWeightedGraphAlgorithms;
 import api.EdgeData;
 import api.NodeData;
 
@@ -20,7 +21,8 @@ public class GUI extends JPanel {
     private double absX = 0;
     private double absY = 0;
     private int resize = 30;
-    private boolean flag = true;
+    private boolean edgeToggle = true;
+    private boolean algoFlag;
 
     private JButton removeButton = new JButton();
     private JButton showEdgesButton = new JButton();
@@ -32,6 +34,14 @@ public class GUI extends JPanel {
         this.GUIgraph = graph;
         updateMinMax();
         nodesListModel();
+        algoFlag = false;
+    }
+
+    public GUI(DirectedWeightedGraphAlgorithms graph) {
+        this.GUIgraph = graph.getGraph();
+        updateMinMax();
+        nodesListModel();
+        algoFlag = true;
     }
 
     /** FOLLOWING METHODS ARE CALLED FROM THE CONSTRUCTOR**/
@@ -98,10 +108,14 @@ public class GUI extends JPanel {
         showEdgesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (flag) flag = false;
-                else flag = true;
+                if (edgeToggle) edgeToggle = false;
+                else edgeToggle = true;
             }
         });
+
+        if (algoFlag) {
+            //HERE WILL HAVE BUTTONS FOR THE ALGORITHMS
+        }
 
     } //Called from paintComponent
 
@@ -157,12 +171,12 @@ public class GUI extends JPanel {
         super.paintComponent(g);
 
         this.setVisible(false);
-
+        g.drawString(GUIgraph+" | ", 200, 10);
         //paintBackground(g);
 
         createButtons();
         paintNodes(g);
-        if (flag) paintEdges(g);
+        if (edgeToggle) paintEdges(g);
 
         this.setVisible(true);
     }

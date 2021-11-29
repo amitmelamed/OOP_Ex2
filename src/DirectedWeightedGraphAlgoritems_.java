@@ -6,25 +6,32 @@ import java.io.IOException;
 import java.util.List;
 
 public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
-    private DirectedWeightedGraph optimizedGraph;
+    private DirectedWeightedGraph copiedGraph;
+    private DirectedWeightedGraph originalGraph;
 
 
-    //If we go with the not extended algorithm,
-    // than we need to find solution in Ex2.java or GUI
-
+    public DirectedWeightedGraphAlgoritems_(String jsonFileName) {
+        DirectedWeightedGraph g = new DirectedWeightedGraph_(jsonFileName);
+        init(g);
+    }
     @Override
     public void init(DirectedWeightedGraph g) {
-        optimizedGraph = g; //maybe deep copy
+        originalGraph = g; //not deep copy
+        copiedGraph = new DirectedWeightedGraph_(g); //deep copy
+
+
     }
 
     @Override
     public DirectedWeightedGraph getGraph() {
-        return optimizedGraph;
+        return originalGraph;
     }
 
     @Override
     public DirectedWeightedGraph copy() {
-        return null;
+        DirectedWeightedGraph copiedGraph = new DirectedWeightedGraph_(originalGraph);
+
+        return copiedGraph;
     }
 
     @Override
@@ -61,7 +68,7 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     @Override
     public boolean load(String file) {
 
-        this.optimizedGraph = new DirectedWeightedGraph_(file);
+        this.originalGraph = new DirectedWeightedGraph_(file);
         return true;
 
     }

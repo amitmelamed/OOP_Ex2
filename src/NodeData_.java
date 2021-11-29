@@ -2,7 +2,6 @@ import api.EdgeData;
 import api.GeoLocation;
 import api.NodeData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class NodeData_ implements NodeData {
     private int key;
     private GeoLocation location;
     private double weight;
-    private String Info;
+    private String info;
     private int tag;
 
     private Map<Integer, EdgeData> outEdges; // Integer is the edge's destination
@@ -31,6 +30,17 @@ public class NodeData_ implements NodeData {
         return inEdges;
     }
 
+    public NodeData_(NodeData N) {
+        this.key = N.getKey();
+        this.location = new GeoLocation_(N.getLocation().x(), N.getLocation().y(), N.getLocation().z());
+        weight = N.getWeight();
+        info = N.getInfo();
+        tag = 0;
+
+        outEdges = new HashMap<>();
+        inEdges = new HashMap<>();
+    }
+
     public NodeData_(int key, String pos) {
         this.key = key;
         String xyz[] = pos.split(",");
@@ -40,7 +50,7 @@ public class NodeData_ implements NodeData {
 
         location = new GeoLocation_(x, y, z);
         weight = 0;
-        Info = "";
+        info = "";
         tag = 0;
 
         outEdges = new HashMap<>();
@@ -76,12 +86,12 @@ public class NodeData_ implements NodeData {
 
     @Override
     public String getInfo() {
-        return this.Info;
+        return this.info;
     }
 
     @Override
     public void setInfo(String info) {
-        this.Info=info;
+        this.info =info;
     }
 
     @Override
@@ -101,7 +111,7 @@ public class NodeData_ implements NodeData {
                 "key=" + key +
                 ", location=" + location +
                 ", weight=" + weight +
-                ", Info='" + Info + '\'' +
+                ", Info='" + info + '\'' +
                 ", tag=" + tag +
                 '}';
     }

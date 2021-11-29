@@ -22,6 +22,28 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     private int edgeID = 0;
     private int MC = 0;
 
+    public DirectedWeightedGraph_(DirectedWeightedGraph g) {
+        nodes = new HashMap<>();
+        edges = new HashMap<>();
+
+        Iterator<NodeData> NodeI = g.nodeIter();
+        while(NodeI.hasNext()) {
+            NodeData currNode = NodeI.next();
+            nodes.put(currNode.getKey(), new NodeData_(currNode));
+        }
+
+        Iterator<EdgeData> EdgeI = g.edgeIter();
+        while(EdgeI.hasNext()) {
+            EdgeData currEdge = EdgeI.next();
+            EdgeData_ newEdge = new EdgeData_(currEdge);
+
+            /**Three hashmaps that hold edges**/
+            nodes.get(newEdge.getSrc()).getOutEdges().put(newEdge.getDest(), newEdge);
+            nodes.get(newEdge.getDest()).getInEdges().put(newEdge.getSrc(), newEdge);
+            edges.put(newEdge.getId(), newEdge);
+
+        }
+    }
     public DirectedWeightedGraph_(String jsonFileName) {
         nodes = new HashMap<>();
         edges = new HashMap<>();
