@@ -41,6 +41,7 @@ public class NodeData_ implements NodeData {
         inEdges = new HashMap<>();
     }
 
+
     public NodeData_(int key, String pos) {
         this.key = key;
         String xyz[] = pos.split(",");

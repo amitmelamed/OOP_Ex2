@@ -3,10 +3,15 @@ import api.DirectedWeightedGraphAlgorithms;
 import api.EdgeData;
 import api.NodeData;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -155,9 +160,78 @@ public class GUI extends JPanel {
             double desty = (destGeoy-minY)*tY+resize;
 
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
+
+            double arrowX=(destx-srcx)*0.8+srcx;
+            double arrowY=(desty-srcy)*0.8+srcy;
+
+            Image icon = null;
+            try {
+                icon = ImageIO.read(new File("data/arrow_icon.jpg"));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Line2D lineA=new Line2D.Double(srcx,srcy,destx,desty);
+            Line2D lineB=new Line2D.Double(destx,srcy,destx,srcy);
+
+
+            double tanAngle=angleBetween2Lines(lineA,lineB);
+            BufferedImage bufferedIcon=toBufferedImage(icon);
+            bufferedIcon=rotate(bufferedIcon, Math.toDegrees(tanAngle));
+            g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,25,25,null);
+
+
+
+
+
         }
 
+
     } //Called from paintComponent
+
+    public static double angleBetween2Lines(Line2D line1, Line2D line2)
+    {
+        double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
+                line1.getX1() - line1.getX2());
+        double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
+                line2.getX1() - line2.getX2());
+        return angle1-angle2;
+    }
+    public static BufferedImage toBufferedImage(Image img)
+    {
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
+    }
+    public static BufferedImage rotate(BufferedImage bimg, Double angle) {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle))),
+                cos = Math.abs(Math.cos(Math.toRadians(angle)));
+        int w = bimg.getWidth();
+        int h = bimg.getHeight();
+        int neww = (int) Math.floor(w*cos + h*sin),
+                newh = (int) Math.floor(h*cos + w*sin);
+        BufferedImage rotated = new BufferedImage(neww, newh, bimg.getType());
+        Graphics2D graphic = rotated.createGraphics();
+        graphic.translate((neww-w)/2, (newh-h)/2);
+        graphic.rotate(Math.toRadians(angle), w/2, h/2);
+        graphic.drawRenderedImage(bimg, null);
+        graphic.dispose();
+        return rotated;
+    }
 
     private void paintBackground(Graphics g) {
         Toolkit t=Toolkit.getDefaultToolkit();

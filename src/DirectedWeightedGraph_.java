@@ -29,6 +29,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         Iterator<NodeData> NodeI = g.nodeIter();
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
+
+
             nodes.put(currNode.getKey(), new NodeData_(currNode));
         }
 
