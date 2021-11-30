@@ -10,7 +10,7 @@ import java.util.List;
 public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
     private DirectedWeightedGraph copiedGraph;
     private DirectedWeightedGraph originalGraph;
-    private int[][][] pathData;
+    private double[][][] pathData;
 
     public DirectedWeightedGraphAlgoritems_(String jsonFileName) {
         DirectedWeightedGraph g = new DirectedWeightedGraph_(jsonFileName);
@@ -20,7 +20,12 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     public void init(DirectedWeightedGraph g) {
         originalGraph = g;                           //not deep copy
         copiedGraph = new DirectedWeightedGraph_(g); //deep copy
-        pathData = new int[g.nodeSize()][g.nodeSize()][2];
+        pathData = new double[g.nodeSize()][g.nodeSize()][2];
+        for (int i = 0; i < g.nodeSize(); i++) {
+            for (int j = 0; j <g.nodeSize(); j++) {
+                pathData[i][j][0] = Integer.MAX_VALUE;
+            }
+        }
     }
 
     @Override
@@ -34,25 +39,44 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         return copiedGraph;
     }
 
+    public void printPathData(int key) {
+        for (int i = 0; i < pathData[key].length; i++) {
+            for (int j = 0; j < pathData[key][i].length; j++) {
+                System.out.print(pathData[key][i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+
     public void calculatePathData(int key) {
 
         pathData[key][key][0] = 0;
         pathData[key][key][1] = key;
 
-        Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(key);
-        while (outEdgesI.hasNext()) {
-            EdgeData_ currEdge = (EdgeData_) outEdgesI.next();
-            double currWeight = currEdge.getWeight();
-            int currDest = currEdge.getDest();
-            if (currWeight<pathData[key][currDest][0]) {
-                //update pathData[key][currDest][0] with new minimal weight
-                //also update the "prev node" in pathData[key][currDest][1];
-            }
-            //pathData[key][currDest][0]
-
+        double minWeight = 0;
+        int minID = 0;
+        Iterator<NodeData> NodesI = copiedGraph.nodeIter();
+        NodeData currNode = copiedGraph.getNode(key);
+        int i = 0;
+        while (i<5) {
+            minWeight = Integer.MAX_VALUE;
+            Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(currNode.getKey());
+                while (outEdgesI.hasNext()) {
+                    EdgeData currEdge = outEdgesI.next();
+                    double currWeight = currEdge.getWeight();
+                    int currDest = currEdge.getDest();
+                    if (currWeight<pathData[key][currDest][0]) {
+                        pathData[key][currDest][0] = currWeight;
+                        pathData[key][currDest][1] = key;
+                    }
+                    if (currWeight<minWeight&&copiedGraph.getNode(currEdge.getDest()).getTag()!=2) {
+                        minWeight = currWeight;
+                        minID = currEdge.getDest();
+                    } else return;
+                }
+                currNode = copiedGraph.getNode(minID);
+                i++;
         }
-
-
     }
 
     @Override

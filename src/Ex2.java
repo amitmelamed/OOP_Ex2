@@ -59,10 +59,13 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-        //DirectedWeightedGraph_ t = new DirectedWeightedGraph_("data/G2.json");
+        DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_("data/G5.json");
+        t.calculatePathData(0);
+        t.printPathData(0);
+
+        //runGUI("data/G4ARIEL.json");
 
 
-        runGUI("data/G4ARIEL.json");
 
 
     }

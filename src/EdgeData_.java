@@ -22,6 +22,7 @@ public class EdgeData_ implements EdgeData {
         this.id = E.getId();
     }
 
+
     public EdgeData_(int source, int destination, double weight, int ID) {
         this.source = source;
         this.destination = destination;

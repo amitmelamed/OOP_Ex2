@@ -21,6 +21,7 @@ public class NodeData_ implements NodeData {
     private Map<Integer, EdgeData> outEdges; // Integer is the edge's destination
     private Map<Integer, EdgeData> inEdges;  // Integer is the edge's source
 
+
     @Override
     public Map<Integer, EdgeData> getOutEdges() {
         return outEdges;
@@ -40,6 +41,7 @@ public class NodeData_ implements NodeData {
         outEdges = new HashMap<>();
         inEdges = new HashMap<>();
     }
+
 
     public NodeData_(int key, String pos) {
         this.key = key;
