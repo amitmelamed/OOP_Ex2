@@ -161,36 +161,36 @@ public class GUI extends JPanel {
             double desty = (destGeoy-minY)*tY+resize;
 
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
-
-            double arrowX=(destx-srcx)*0.8+srcx;
-            double arrowY=(desty-srcy)*0.8+srcy;
-
-            Image icon = null;
-            try {
-                icon = ImageIO.read(new File("data/arrow_icon.jpg"));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            Line2D lineA=new Line2D.Double(srcx,srcy,destx,desty);
-            Line2D lineB=new Line2D.Double(destx,srcy,destx,srcy);
-
-
-            double tanAngle=angleBetween2Lines(lineA,lineB);
-            BufferedImage bufferedIcon=toBufferedImage(icon);
-            bufferedIcon=rotate(bufferedIcon, Math.toDegrees(tanAngle));
-            g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,25,25,null);
-
-
-
-
+            g.drawString(""+currEdge.getWeight(), (int)destx+10,(int)desty+10);
+            paintArrows(destx, srcx, desty, srcy, g);
 
         }
 
 
     } //Called from paintComponent
+
+    public void paintArrows(double destx, double srcx, double desty, double srcy, Graphics g) {
+        double arrowX=(destx-srcx)*0.8+srcx;
+        double arrowY=(desty-srcy)*0.8+srcy;
+
+        Image icon = null;
+        try {
+            icon = ImageIO.read(new File("data/arrow-left-icon-17.jpg"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Line2D lineA=new Line2D.Double(srcx,srcy,destx,desty);
+        Line2D lineB=new Line2D.Double(destx,srcy,destx,srcy);
+
+
+        double tanAngle=angleBetween2Lines(lineA,lineB);
+        BufferedImage bufferedIcon=toBufferedImage(icon);
+        bufferedIcon=rotate(bufferedIcon, Math.toDegrees(tanAngle));
+        g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,(int)(0.0159*getWidth()),(int)(0.0159*getHeight()),null);
+    }
 
     public static double angleBetween2Lines(Line2D line1, Line2D line2)
     {
@@ -212,7 +212,7 @@ public class GUI extends JPanel {
 
         // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
+        bGr.drawImage(img, 0, 0, null); // the fuck is this doing
         bGr.dispose();
 
         // Return the buffered image

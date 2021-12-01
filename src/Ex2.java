@@ -1,5 +1,7 @@
 import  api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import api.EdgeData;
+import api.NodeData;
 
 import javax.swing.*;
 import java.util.Iterator;
@@ -47,7 +49,7 @@ public class Ex2 {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file); //if we use the extends way it will work. (this is boaz's line)
 
         JFrame screen = new JFrame("ze waze");
-        screen.setSize(400,275);
+        screen.setSize(600,505);
 
         GUI graph = new GUI(alg);
         screen.add(graph);
@@ -59,11 +61,13 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-        DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_("data/G5.json");
-        t.calculatePathData(0);
-        t.printPathData(0);
+        String jsonfile = "data/G5.json";
+        DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
+        Iterator<EdgeData> I = t.getGraph().edgeIter();
+        I.forEachRemaining(System.out::println);
+        t.printPathData();
 
-        //runGUI("data/G4ARIEL.json");
+        runGUI(jsonfile);
 
 
 

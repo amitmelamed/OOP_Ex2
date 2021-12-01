@@ -26,6 +26,8 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
                 pathData[i][j][0] = Integer.MAX_VALUE;
             }
         }
+        Iterator<NodeData> NodeI = copiedGraph.nodeIter();
+        while (NodeI.hasNext()) calculatePathData(NodeI.next().getKey());
     }
 
     @Override
@@ -42,41 +44,59 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     public void printPathData(int key) {
         for (int i = 0; i < pathData[key].length; i++) {
             for (int j = 0; j < pathData[key][i].length; j++) {
-                System.out.print(pathData[key][i][j]+" ");
+                if (j==0) System.out.print(i+" "+pathData[key][i][j]+" ");
+                else System.out.print((int)pathData[key][i][j]);
             }
+            System.out.println();
+        }
+    }
+    public void printPathData() {
+        Iterator<NodeData> NodeI = copiedGraph.nodeIter();
+        while (NodeI.hasNext()) {
+            int key = NodeI.next().getKey();
+            System.out.println("TABLE FOR NODE "+key);
+            printPathData(key);
             System.out.println();
         }
     }
 
     public void calculatePathData(int key) {
-
         pathData[key][key][0] = 0;
         pathData[key][key][1] = key;
-
+        boolean flag = true;
         double minWeight = 0;
         int minID = 0;
-        Iterator<NodeData> NodesI = copiedGraph.nodeIter();
+
         NodeData currNode = copiedGraph.getNode(key);
-        int i = 0;
-        while (i<5) {
+        while (flag) {
+            //System.out.println(currNode.getKey());
             minWeight = Integer.MAX_VALUE;
             Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(currNode.getKey());
-                while (outEdgesI.hasNext()) {
-                    EdgeData currEdge = outEdgesI.next();
-                    double currWeight = currEdge.getWeight();
-                    int currDest = currEdge.getDest();
-                    if (currWeight<pathData[key][currDest][0]) {
-                        pathData[key][currDest][0] = currWeight;
-                        pathData[key][currDest][1] = key;
-                    }
-                    if (currWeight<minWeight&&copiedGraph.getNode(currEdge.getDest()).getTag()!=2) {
-                        minWeight = currWeight;
-                        minID = currEdge.getDest();
-                    } else return;
+            flag = false;
+            while (outEdgesI.hasNext()) {
+                EdgeData currEdge = outEdgesI.next();
+
+                if (currNode.getKey()==key) {
+                    pathData[key][currEdge.getDest()][0] = currEdge.getWeight();
+                    pathData[key][currEdge.getDest()][1] = key;
+                } else if (pathData[key][currEdge.getDest()][0]>pathData[key][currEdge.getSrc()][0] + currEdge.getWeight()){
+                    pathData[key][currEdge.getDest()][0] = pathData[key][currEdge.getSrc()][0] + currEdge.getWeight();
+                    pathData[key][currEdge.getDest()][1] = currEdge.getSrc();
                 }
+
+
+                if (minWeight>currEdge.getWeight()&&copiedGraph.getNode(currEdge.getDest()).getTag()==0) {
+                    minWeight = currEdge.getWeight();
+                    minID = currEdge.getDest();
+                    flag = true;
+                }
+                currNode.setTag(2);
                 currNode = copiedGraph.getNode(minID);
-                i++;
+
+            }
         }
+        Iterator<NodeData> NodesI = copiedGraph.nodeIter();
+        while (NodesI.hasNext()) NodesI.next().setTag(0);
     }
 
     @Override
