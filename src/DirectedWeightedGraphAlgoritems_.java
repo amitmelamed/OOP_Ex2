@@ -109,7 +109,7 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     @Override
     public double shortestPathDist(int src, int dest) {
         //use pathData after we update it in calculatePathData
-        return 0;
+        return pathData[src][dest][0];
     }
 
 

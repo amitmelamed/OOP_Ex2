@@ -61,11 +61,13 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-        String jsonfile = "data/G5.json";
+        String jsonfile = "data/G4ARIEL.json";
         DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
         Iterator<EdgeData> I = t.getGraph().edgeIter();
         I.forEachRemaining(System.out::println);
         t.printPathData();
+
+        System.out.println(t.shortestPathDist(1, 4));
 
         runGUI(jsonfile);
 
