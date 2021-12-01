@@ -59,18 +59,43 @@ public class Ex2 {
         screen.setVisible(true);
 
     }
+    public static void runGUI(DirectedWeightedGraph alg) {
+
+        JFrame screen = new JFrame("ze waze");
+        screen.setSize(600,505);
+
+        GUI graph = new GUI(alg);
+        screen.add(graph);
+
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        screen.setLocationRelativeTo(null);
+        screen.setVisible(true);
+
+    }
+
+    public static void runGUI(DirectedWeightedGraphAlgorithms alg) {
+
+        JFrame screen = new JFrame("ze waze");
+        screen.setSize(600,505);
+
+        GUI graph = new GUI(alg);
+        screen.add(graph);
+
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        screen.setLocationRelativeTo(null);
+        screen.setVisible(true);
+
+    }
+
+
 
     public static void main(String[] args) {
-        String jsonfile = "data/G4ARIEL.json";
+        String jsonfile = "data/G1.json";
         DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
-        Iterator<EdgeData> I = t.getGraph().edgeIter();
-        I.forEachRemaining(System.out::println);
-        t.printPathData();
 
-        System.out.println(t.shortestPathDist(1, 4));
+        t.printPathData(8);
 
-        runGUI(jsonfile);
-
+        runGUI(t);
 
 
 

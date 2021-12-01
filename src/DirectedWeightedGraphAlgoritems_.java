@@ -10,6 +10,7 @@ import java.util.List;
 public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
     private DirectedWeightedGraph copiedGraph;
     private DirectedWeightedGraph originalGraph;
+    private DirectedWeightedGraph transposeGraph;
     private double[][][] pathData;
 
     public DirectedWeightedGraphAlgoritems_(String jsonFileName) {
@@ -28,6 +29,12 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         }
         Iterator<NodeData> NodeI = copiedGraph.nodeIter();
         while (NodeI.hasNext()) calculatePathData(NodeI.next().getKey());
+
+        //transpose();
+    }
+
+    public DirectedWeightedGraph getTransposeGraph() {
+        return transposeGraph;
     }
 
     @Override
@@ -64,15 +71,15 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         pathData[key][key][0] = 0;
         pathData[key][key][1] = key;
         boolean flag = true;
-        double minWeight = 0;
+        double minWeight;
         int minID = 0;
 
         NodeData currNode = copiedGraph.getNode(key);
         while (flag) {
-            //System.out.println(currNode.getKey());
-            minWeight = Integer.MAX_VALUE;
+            if (key==8) System.out.println(currNode.getKey());
             Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(currNode.getKey());
             flag = false;
+            minWeight = Integer.MAX_VALUE;
             while (outEdgesI.hasNext()) {
                 EdgeData currEdge = outEdgesI.next();
 
@@ -84,19 +91,30 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
                     pathData[key][currEdge.getDest()][1] = currEdge.getSrc();
                 }
 
+                if (copiedGraph.getNode(currEdge.getDest()).getTag()==0) {
+                    if (key==8&&currNode.getKey()==3) System.out.println(flag+" "+minID);
+                    if (minWeight>currEdge.getWeight()) {
 
-                if (minWeight>currEdge.getWeight()&&copiedGraph.getNode(currEdge.getDest()).getTag()==0) {
-                    minWeight = currEdge.getWeight();
-                    minID = currEdge.getDest();
-                    flag = true;
+                        minWeight = currEdge.getWeight();
+                        minID = currEdge.getDest();
+                        flag = true;
+                    }
                 }
+
+
                 currNode.setTag(2);
+                if (key==8) System.out.println(minID);
                 currNode = copiedGraph.getNode(minID);
 
             }
         }
         Iterator<NodeData> NodesI = copiedGraph.nodeIter();
         while (NodesI.hasNext()) NodesI.next().setTag(0);
+    }
+
+
+    public void transpose(){
+        transposeGraph = new DirectedWeightedGraph_(copiedGraph,true);
     }
 
     @Override

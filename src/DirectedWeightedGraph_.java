@@ -47,6 +47,36 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
         }
     }
+
+    public DirectedWeightedGraph_(DirectedWeightedGraph g,boolean True) {
+        nodes = new HashMap<>();
+        edges = new HashMap<>();
+
+
+        Iterator<NodeData> NodeI = g.nodeIter();
+        while(NodeI.hasNext()) {
+            NodeData currNode = NodeI.next();
+
+
+            nodes.put(currNode.getKey(), new NodeData_(currNode));
+        }
+
+        Iterator<EdgeData> EdgeI = g.edgeIter();
+        while(EdgeI.hasNext()) {
+            EdgeData currEdge = EdgeI.next();
+            int src = currEdge.getDest();
+            int dest = currEdge.getSrc();
+            EdgeData_ T = new EdgeData_(src, dest, currEdge.getWeight(), currEdge.getId());
+
+            /**Three hashmaps that hold edges**/
+            nodes.get(T.getSrc()).getOutEdges().put(T.getDest(), T);
+            nodes.get(T.getDest()).getInEdges().put(T.getSrc(), T);
+            edges.put(T.getId(), T);
+
+        }
+    }
+
+
     public DirectedWeightedGraph_(String jsonFileName) {
         nodes = new HashMap<>();
         edges = new HashMap<>();
@@ -93,10 +123,16 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         return nodes.get(dest).getInEdges().get(src);
     }
 
+    public EdgeData getEdgeOut(int src, int dest)
+    {
+        return nodes.get(dest).getOutEdges().get(src);
+    }//??
+
+
     public EdgeData getEdge(int id)
     {
         return edges.get(id);
-    }
+    }//why cant reach?
 
     @Override
     public void addNode(NodeData n) {
@@ -185,6 +221,25 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             return removeEdge(src, dest);
         } else return null;
     }
+
+//    public DirectedWeightedGraph InOutEdgeswap(DirectedWeightedGraph g){
+//        Iterator<NodeData> NodeT = g.nodeIter();
+//        while(NodeT.hasNext()) {
+//            NodeData currNode = NodeT.next();
+//            for (int i = 0; i < g.nodeSize(); i++) {
+//                getNode(i).getInEdges();
+//            }
+//            //the idea is to go all over the Hashmap nodes and for each node go into Hashmap of Inedge and Outedge
+//            //from originalGraph to put all node.Inedge.data into transposeGraph node.Outedge.data
+//            //and from originalGraph to put all node.Outedge.data into transposeGraph node.Inedge.data
+//            //in for on all nodes
+//
+//        }
+//
+//        return g;
+//    } /// probebly not the selotion;
+
+
     @Override
     public int nodeSize() {
         return nodes.size();
