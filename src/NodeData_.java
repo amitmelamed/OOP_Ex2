@@ -9,7 +9,7 @@ import java.util.Map;
  * this class represents node (vertex) in a (directional) weighted graph
  * each vertex have key(ID), location,weight,info and tag for implements algorithms
  */
-public class NodeData_ implements NodeData {
+public class NodeData_ implements NodeData, Comparable {
 
 
     private int key;
@@ -116,5 +116,10 @@ public class NodeData_ implements NodeData {
                 ", Info='" + info + '\'' +
                 ", tag=" + tag +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return key;
     }
 }

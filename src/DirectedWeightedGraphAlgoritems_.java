@@ -4,14 +4,14 @@ import api.EdgeData;
 import api.NodeData;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAlgorithms  {
     private DirectedWeightedGraph copiedGraph;
     private DirectedWeightedGraph originalGraph;
     private DirectedWeightedGraph transposeGraph;
     private double[][][] pathData;
+    private boolean isConnected = true;
 
     public DirectedWeightedGraphAlgoritems_(String jsonFileName) {
         DirectedWeightedGraph g = new DirectedWeightedGraph_(jsonFileName);
@@ -67,51 +67,53 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         }
     }
 
+
     public void calculatePathData(int key) {
         pathData[key][key][0] = 0;
         pathData[key][key][1] = key;
-        boolean flag = true;
-        double minWeight;
-        int minID = 0;
+
+        double minWeight=Integer.MAX_VALUE;
+        double currWeight;
+        int minID=-1;
+        boolean flag=true;
 
         NodeData currNode = copiedGraph.getNode(key);
+        Queue<NodeData> Nodes = new PriorityQueue<>();
         while (flag) {
-            if (key==8) System.out.println(currNode.getKey());
-            Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(currNode.getKey());
+            minWeight=Integer.MAX_VALUE;
+            minID=-1;
             flag = false;
-            minWeight = Integer.MAX_VALUE;
+            Iterator<EdgeData> outEdgesI = copiedGraph.edgeIter(currNode.getKey());
             while (outEdgesI.hasNext()) {
+                if (currNode.getTag()==0) Nodes.add(currNode);
                 EdgeData currEdge = outEdgesI.next();
-
-                if (currNode.getKey()==key) {
-                    pathData[key][currEdge.getDest()][0] = currEdge.getWeight();
-                    pathData[key][currEdge.getDest()][1] = key;
-                } else if (pathData[key][currEdge.getDest()][0]>pathData[key][currEdge.getSrc()][0] + currEdge.getWeight()){
-                    pathData[key][currEdge.getDest()][0] = pathData[key][currEdge.getSrc()][0] + currEdge.getWeight();
-                    pathData[key][currEdge.getDest()][1] = currEdge.getSrc();
+                currWeight = currEdge.getWeight() + pathData[key][currNode.getKey()][0];
+                if (pathData[key][currEdge.getDest()][0] > currWeight) {
+                    pathData[key][currEdge.getDest()][0] = currWeight;
+                    pathData[key][currEdge.getDest()][1] = currNode.getKey();
                 }
-
-                if (copiedGraph.getNode(currEdge.getDest()).getTag()==0) {
-                    if (key==8&&currNode.getKey()==3) System.out.println(flag+" "+minID);
-                    if (minWeight>currEdge.getWeight()) {
-
-                        minWeight = currEdge.getWeight();
-                        minID = currEdge.getDest();
-                        flag = true;
-                    }
+                if (minWeight > currWeight && copiedGraph.getNode(currEdge.getDest()).getTag() == 0) {
+                    minWeight = currWeight;
+                    minID = currEdge.getDest();
+                    flag = true;
                 }
+            }
+            currNode.setTag(2);
+            currNode = copiedGraph.getNode(minID);
 
-
-                currNode.setTag(2);
-                if (key==8) System.out.println(minID);
-                currNode = copiedGraph.getNode(minID);
-
+            if (!flag&&!Nodes.isEmpty()) {
+                currNode = Nodes.remove();
+                flag = true;
             }
         }
         Iterator<NodeData> NodesI = copiedGraph.nodeIter();
-        while (NodesI.hasNext()) NodesI.next().setTag(0);
-    }
+        while (NodesI.hasNext()) {
+            currNode = NodesI.next();
+            currNode.setTag(0);
+            if (pathData[key][currNode.getKey()][0]>=Integer.MAX_VALUE) isConnected = false;
 
+        }
+    }
 
     public void transpose(){
         transposeGraph = new DirectedWeightedGraph_(copiedGraph,true);
@@ -120,8 +122,7 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     @Override
     public boolean isConnected() {
         //create new transposedGraph and every edge change it's dest and src.
-
-        return false;
+        return isConnected;
     }
 
     @Override

@@ -161,7 +161,7 @@ public class GUI extends JPanel {
             double desty = (destGeoy-minY)*tY+resize;
 
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
-            //g.drawString(""+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
+            g.drawString(""+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
             paintArrows(destx, srcx, desty, srcy, g);
 
         }

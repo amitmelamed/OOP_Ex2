@@ -76,7 +76,7 @@ public class Ex2 {
     public static void runGUI(DirectedWeightedGraphAlgorithms alg) {
 
         JFrame screen = new JFrame("ze waze");
-        screen.setSize(600,505);
+        screen.setSize(600,500);
 
         GUI graph = new GUI(alg);
         screen.add(graph);
@@ -90,11 +90,11 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        String jsonfile = "data/G1.json";
+        String jsonfile = "data/G5.json";
         DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
 
-        t.printPathData(8);
-
+        t.printPathData();
+        System.out.println(t.isConnected());
         runGUI(t);
 
 
