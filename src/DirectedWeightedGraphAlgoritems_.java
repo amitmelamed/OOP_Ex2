@@ -78,7 +78,7 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         boolean flag=true;
 
         NodeData currNode = copiedGraph.getNode(key);
-        Queue<NodeData> Nodes = new PriorityQueue<>();
+        Queue<NodeData> Nodes = new ArrayDeque<>();
         while (flag) {
             minWeight=Integer.MAX_VALUE;
             minID=-1;
@@ -128,14 +128,27 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
     @Override
     public double shortestPathDist(int src, int dest) {
         //use pathData after we update it in calculatePathData
-        return pathData[src][dest][0];
+        if (pathData[src][dest][0]>=Integer.MAX_VALUE) return -1;
+        else return pathData[src][dest][0];
     }
 
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
         //use pathData after we update it in calculatePathData
-        return null;
+        if (shortestPathDist(src, dest)==-1) return null;
+        List<NodeData> List= new ArrayList<>();
+        List.add(copiedGraph.getNode(dest));
+        int prev = dest;
+        while (prev!=src) {
+            List.add(copiedGraph.getNode((int)pathData[src][prev][1]));
+            prev=(int)pathData[src][prev][1];
+        }
+        List<NodeData> List2 = new ArrayList<>();
+        for (int i = List.size()-1; i >= 0 ; i--) {
+            List2.add(List.get(i));
+        }
+        return List2;
     }
 
     @Override

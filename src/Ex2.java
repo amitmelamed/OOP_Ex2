@@ -4,7 +4,9 @@ import api.EdgeData;
 import api.NodeData;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -90,12 +92,34 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        String jsonfile = "data/G5.json";
+        String jsonfile = "data/G2.json";
         DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
+        List<NodeData> l = t.shortestPath(0, 3);
+       // t.printPathData(0);
+       // System.out.println(t.shortestPathDist(0,9));
+        System.out.println(l.toString());
+        runGUI(t.getGraph());
 
-        t.printPathData();
-        System.out.println(t.isConnected());
-        runGUI(t);
+
+        /**DONT DELETE THE FOLLOWING CODE THIS IS A REAL GOOD TEST**/
+        int counte = 0;
+        for (int i = 0; i < t.getGraph().nodeSize(); i++) {
+            for (int k = 0; k < t.getGraph().nodeSize(); k++) {
+                l = t.shortestPath(i, k);
+                double sumw = 0;
+                    for (int j = 0; j < l.size()-1; j++) {
+                    //System.out.println(t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()));
+                    sumw += t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()).getWeight();
+                }
+                    if (sumw!=t.shortestPathDist(i,k)) {
+                        System.out.println(i+",  "+k+":");
+                        System.out.println("sumw is "+sumw);
+                        System.out.println("func is "+t.shortestPathDist(i,k));
+                        counte++;
+                    }
+            }
+        }
+        System.err.println(counte+" wrong calculations out of "+t.getGraph().nodeSize()*t.getGraph().nodeSize());
 
 
 
