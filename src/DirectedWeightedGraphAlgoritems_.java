@@ -153,8 +153,22 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
 
     @Override
     public NodeData center() {
-
-        return null;
+        int center=-1;
+        double minHigh=Double.MAX_VALUE;
+        for(int i=0;i<pathData.length;i++){
+            double currentNodeMax=-1;
+            for(int k=0;k<pathData[i].length;k++){
+                if(pathData[i][k][0]>currentNodeMax){
+                    currentNodeMax=pathData[i][k][0];
+                }
+            }
+            if(minHigh>currentNodeMax){
+                minHigh=currentNodeMax;
+                center=i;
+            }
+        }
+        System.out.println(center);
+        return copiedGraph.getNode(center);
     }
 
     @Override
@@ -173,6 +187,12 @@ public class DirectedWeightedGraphAlgoritems_ implements DirectedWeightedGraphAl
         this.originalGraph = new DirectedWeightedGraph_(file);
         return true;
 
+    }
+
+    public static void main(String[] args) {
+        DirectedWeightedGraphAlgoritems_ graphAlgoritems=new DirectedWeightedGraphAlgoritems_("data/G1.json");
+
+        graphAlgoritems.center();
     }
 
 }
