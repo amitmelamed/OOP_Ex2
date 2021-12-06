@@ -34,10 +34,10 @@ public class GUI extends JPanel {
     private JButton removeButton = new JButton();
     private JButton showEdgesButton = new JButton();
     private JButton centerButton = new JButton();
-    private JButton transposeButton = new JButton();
+    private JButton loadButton = new JButton();
     private ArrayList<String> nodes = new ArrayList<>();;
     private SpinnerListModel nodesModel;
-    private JSpinner removeSpinner;
+    private JSpinner idSpinner;
 
 
 //    public GUI(DirectedWeightedGraph graph) {
@@ -57,13 +57,22 @@ public class GUI extends JPanel {
 
     /** FOLLOWING METHODS ARE CALLED FROM THE CONSTRUCTOR**/
     private void nodesListModel() {
-        Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
-        while(NodeI.hasNext()) {
-            NodeData currNode = NodeI.next();
-            nodes.add(Integer.toString(currNode.getKey()));
+        if (GUIgraph.getGraph().nodeSize()>100) {
+            Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
+            while (NodeI.hasNext()) {
+                NodeData currNode = NodeI.next();
+                nodes.add(Integer.toString(currNode.getKey()));
+            }
+            nodesModel = new SpinnerListModel(nodes);
+            idSpinner = new JSpinner(nodesModel);
         }
-        nodesModel = new SpinnerListModel(nodes);
-        removeSpinner = new JSpinner(nodesModel);
+        else {
+            for (int i = 1; i < 101; i++) {
+                nodes.add(Integer.toString(i));
+            }
+            nodesModel = new SpinnerListModel(nodes);
+            idSpinner = new JSpinner(nodesModel);
+        }
     } //Called from the constructor
 
     public void updateMinMax() {
@@ -101,12 +110,12 @@ public class GUI extends JPanel {
         removeButton.setSize(90,30);
         removeButton.setText("Remove");
         this.add(removeButton);
-        removeSpinner.setLocation(90,5);
-        this.add(removeSpinner);
+        idSpinner.setLocation(90,5);
+        this.add(idSpinner);
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int target = Integer.parseInt(removeSpinner.getValue().toString());
+                int target = Integer.parseInt(idSpinner.getValue().toString());
                 GUIgraph.getGraph().removeNode(target);
                 GUIgraph.pathCalculated = false;
             }
@@ -140,16 +149,23 @@ public class GUI extends JPanel {
                 }
             });
 
-            transposeButton.setLocation(119,0);
-            transposeButton.setSize(119,30);
-            transposeButton.setText("Transpose");
-
-            this.add(transposeButton);
-            transposeButton.addActionListener(new ActionListener() {
+            loadButton.setLocation(119,0);
+            loadButton.setSize(90,30);
+            loadButton.setText("Load");
+            this.add(loadButton);
+            loadButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUIgraph.transpose();
-                    transposedGUIgraph = GUIgraph.getTransposeGraph();
+                    int target = Integer.parseInt(idSpinner.getValue().toString());
+                    GUIgraph.load("data/G"+target+".json");
+                    maxX = Integer.MIN_VALUE;
+                    minX = Integer.MAX_VALUE;
+                    maxY = Integer.MIN_VALUE;
+                    minY = Integer.MAX_VALUE;
+                    absX = 0;
+                    absY = 0;
+                    updateMinMax();
+                    //nodesListModel();
 
                 }
             });
@@ -249,7 +265,7 @@ public class GUI extends JPanel {
         Graphics2D bGr = bimage.createGraphics();
         bGr.drawImage(img, 0, 0, null); // the fuck is this doing
         bGr.dispose();
-
+        System.out.println("test");
         // Return the buffered image
         return bimage;
     }

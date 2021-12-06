@@ -94,10 +94,23 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G5.json");
-        t.center();
+        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G7.json");
+        //System.out.println(t.shortestPathDist(0,500));
+        System.out.println(t.center());
         t.load("data/G1.json");
+        System.out.println(t.center());
+        t.load("data/G5.json");
+        System.out.println(t.center());
+        //t.load("data/G1.json");
+        System.out.println(t.center());
+
         runGUI(t);
+        //t.load("data/G11.json");
+        //runGUI(t);
+        //Iterator<NodeData> N = t.getGraph().nodeIter();
+        //N.next();
+        //N.remove();
+
 
         /**DONT DELETE THE FOLLOWING CODE THIS IS A REAL GOOD TEST**/
 //        List<NodeData> l = t.shortestPath(1,2);

@@ -5,9 +5,12 @@ import api.NodeData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
+import static api.lib.parseJSONFile;
 
 public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAlgorithms  {
     private DirectedWeightedGraph originalGraph;
@@ -30,7 +33,8 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         originalGraph = g; //not deep copy - changes in original graph will take place here and in GUI as well
         //copiedGraph = new DirectedWeightedGraph_(g); //deep copy
         pathData = new double[g.nodeSize()][g.nodeSize()][2];
-
+        isConnected = true;
+        pathCalculated = false;
         transpose();
     }
 
@@ -272,11 +276,47 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     }
 
+//    @Override
+//    public boolean load(String file) {
+//        try {
+//            DirectedWeightedGraph_ weightedGraph = new DirectedWeightedGraph_(file);
+//            JSONObject jsonObject = parseJSONFile(file);
+//            JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
+//            for(int i=0;i<jsonNodes.length();i++){
+//                int key=jsonNodes.getJSONObject(i).getInt("id");
+//                String pos=jsonNodes.getJSONObject(i).getString("pos");
+//                NodeData_ v = new NodeData_(key, pos);
+//                weightedGraph.addNode(v);
+//            }
+//
+//            int edgeID=0;
+//            JSONArray jsonEdges = jsonObject.getJSONArray("Edges");
+//            for (int i = 0; i < jsonEdges.length(); i++) {
+//                int src = jsonEdges.getJSONObject(i).getInt("src");
+//                int dest = jsonEdges.getJSONObject(i).getInt("dest");
+//                double w = jsonEdges.getJSONObject(i).getDouble("w");
+//                weightedGraph.connect(src,dest,w);
+//
+//            }
+//
+//
+//        }
+//        catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        return true;
+//
+//
+//    }
     @Override
     public boolean load(String file) {
         originalGraph = new DirectedWeightedGraph_(file);
-        pathCalculated = false;
-
+        init(originalGraph);
         return true;
 
     }
