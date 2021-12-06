@@ -234,7 +234,49 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
-        return null;
+        double countDis=0;
+
+        List<NodeData> tsp=new ArrayList<>();
+        boolean [] visited=new boolean[cities.size()];
+        for(boolean b:visited){
+            b=false;
+        }
+        NodeData current=cities.get(0);
+        visited[0]=true;
+        boolean allVisited=false;
+
+
+        while (!allVisited){
+            int nearestIndex=-1;
+            double nearestDist=Double.MAX_VALUE;
+            for(int i=0;i< visited.length;i++){
+                double currentDistToI=shortestPathDist(current.getKey(),i);
+                if(current.getKey()!=i&& !visited[i] && currentDistToI<nearestDist){
+                    nearestIndex=i;
+                    nearestDist=currentDistToI;
+                }
+            }
+            if(nearestIndex!=-1){
+
+                tsp.add(copy().getNode(nearestIndex));
+                visited[nearestIndex]=true;
+                current=copy().getNode(nearestIndex);
+            }
+
+
+
+            allVisited=true;
+            for(int i=0;i< visited.length;i++){
+                if(visited[i]==false)
+                    allVisited=false;
+            }
+
+        }
+        for(int i=0;i<tsp.size()-1;i++){
+            countDis=countDis+copy().getNode(i).getOutEdges().get(i+1).getWeight();
+        }
+        System.out.println(countDis);
+        return tsp;
     }
 
     @Override
