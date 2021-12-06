@@ -117,7 +117,7 @@ public class GUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int target = Integer.parseInt(idSpinner.getValue().toString());
                 GUIgraph.getGraph().removeNode(target);
-                GUIgraph.pathCalculated = false;
+                GUIgraph.setPathCalculated(false);
             }
         });
 
@@ -265,7 +265,6 @@ public class GUI extends JPanel {
         Graphics2D bGr = bimage.createGraphics();
         bGr.drawImage(img, 0, 0, null); // the fuck is this doing
         bGr.dispose();
-        System.out.println("test");
         // Return the buffered image
         return bimage;
     }

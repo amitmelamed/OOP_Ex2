@@ -17,21 +17,29 @@ import java.util.*;
 
 public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
+    /** This object holds 2 hashmap2, one for holding the nodes and one for edges
+     * edgeID is for listing the amount of edges and mainly for giving a unique
+     * ID for each edge.
+     */
+
     private Map<Integer, NodeData> nodes; //Integer is key
     private Map<Integer, EdgeData> edges; //Integer is ID
     private int edgeID = 0;
     private int MC = 0;
 
+
+    /**
+     * Copy constructor
+     * @param g - the graph to copy
+     */
     public DirectedWeightedGraph_(DirectedWeightedGraph g) {
         nodes = new HashMap<>();
         edges = new HashMap<>();
 
-
+        /** Go through all the nodes in g and create a new node that copies the node in g **/
         Iterator<NodeData> NodeI = g.nodeIter();
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
-
-
             nodes.put(currNode.getKey(), new NodeData_(currNode));
         }
 
@@ -48,6 +56,11 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         }
     }
 
+    /**
+     * transpose constructor, creates a transposed graph for a given graph g
+     * @param g - the graph to transpose
+     * @param True - to command the constructor to transpose
+     */
     public DirectedWeightedGraph_(DirectedWeightedGraph g,boolean True) {
         nodes = new HashMap<>();
         edges = new HashMap<>();
@@ -76,7 +89,10 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         }
     }
 
-
+    /**
+     * for a given jsonfile, create a graph from the information.
+     * @param jsonFileName - the json file to read from
+     */
     public DirectedWeightedGraph_(String jsonFileName) {
         nodes = new HashMap<>();
         edges = new HashMap<>();
@@ -111,12 +127,23 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         }
     }
 
+    /**
+     * For a given key return the Node from the graph
+     * @param key - the node_id
+     * @return NodeData - the asked node
+     */
     @Override
     public NodeData getNode(int key)
     {
         return nodes.get(key);
     }
 
+    /**
+     * For a given source and destination return the asked edge
+     * @param src - the ID of the source node
+     * @param dest - the ID of the destination node
+     * @return EdgeData - the asked edge
+     */
     @Override
     public EdgeData getEdge(int src, int dest)
     {
@@ -131,18 +158,32 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         return nodes.get(dest).getOutEdges().get(src);
     }
 
-
+    /**
+     * For a given key return the Edge from the graph
+     * @param id - the ID of the asked edge
+     * @return EdgeData - the asked edge
+     */
     public EdgeData getEdge(int id)
     {
         return edges.get(id);
     }
 
+    /**
+     * Adds a new node to the graph
+     * @param n NodeData - the new node you want to insert
+     */
     @Override
     public void addNode(NodeData n) {
         nodes.put(n.getKey(),n);
         MC++;
     }
 
+    /**
+     * Connects two given Node with a new edge that you're inserting into the graph with the given weight.
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
     @Override
     public void connect(int src, int dest, double w) {
         if(nodes.containsKey(src)&&nodes.containsKey(dest)){
@@ -156,22 +197,50 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
           //OR MAYBE ITS OKAY TO HAVE DUPLICATES AND WE NEED TO ADD THE EDGE ANYWAY
     }
 
+    /**
+     * Returns the iterator for the node's hashmap.
+     * @return Iterator - the iterator itself.
+     */
     @Override
     public Iterator<NodeData> nodeIter() {
         return nodes.values().iterator(); //probably not the solution but maybe it is
 
     }
 
+    /**
+     * Returns the iterator for the edge's hashmap.
+     * @return Iterator - the iterator itself.
+     */
     @Override
     public Iterator<EdgeData> edgeIter() {
         return edges.values().iterator(); //probably not the solution but maybe it is
     }
 
+    /**
+     * Returns the iterator for the out edge's hashmap,
+     * this hashmap is stored inside the Node's object.
+     * @param node_id - the ID of the node that you want to access it's out edges hashmap.
+     * @return Iterator - the iterator itself.
+     */
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
         return nodes.get(node_id).getOutEdges().values().iterator(); //probably not the solution but maybe it is
     }
 
+    /**
+     * This functions removes a given node from the graph.
+     * It first recognizes the relevant edges it needs to remove.
+     * The first place is remove the edge from the edge's hashmap that is in the graph.
+     * The second the third places are from the out edge's hashmap the is in the source node,
+     * and from the in edge's hashmap that is in the destination node.
+     *
+     * The function runs several loops that running on all the out edges\in edges.
+     * There for the time complexity where v.degree is the amount of in+out edges, is O(v.degree)
+     *
+     * lets us note that .keyset function is O(1)
+     * @param key - The id of the node we want to remove.
+     * @return NodeData - the value of the node we removed. (The node itself) , returns null if no edge was removed.
+     */
     @Override //O(v.degree)
     public NodeData removeNode(int key) {
 
@@ -205,6 +274,12 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         } else return null;
     }
 
+    /**
+     * This functions removes the edge the runs from the given source to a given destination.
+     * @param src - The ID of the source of the edge we want to remove.
+     * @param dest - the ID of the destination of the edge we want to remove.
+     * @return EdgeData - the actual Edge we removed, returns null if no edge was removed.
+     */
     @Override
     public EdgeData removeEdge(int src, int dest) {
         if (nodes.containsKey(src)&&nodes.containsKey(dest)&&nodes.get(src).getOutEdges().containsKey(dest)) {
@@ -218,6 +293,11 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         } else return null;
     }
 
+    /**
+     * Remove the edge by a given ID.
+     * @param id - The ID of the edge we want to remove.
+     * @return EdgeData - the actual Edge we removed, returns null if no edge was removed.
+     */
     public EdgeData removeEdge(int id) {
         if (edges.containsKey(id)) {
             int src = edges.get(id).getSrc();
@@ -226,34 +306,27 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         } else return null;
     }
 
-//    public DirectedWeightedGraph InOutEdgeswap(DirectedWeightedGraph g){
-//        Iterator<NodeData> NodeT = g.nodeIter();
-//        while(NodeT.hasNext()) {
-//            NodeData currNode = NodeT.next();
-//            for (int i = 0; i < g.nodeSize(); i++) {
-//                getNode(i).getInEdges();
-//            }
-//            //the idea is to go all over the Hashmap nodes and for each node go into Hashmap of Inedge and Outedge
-//            //from originalGraph to put all node.Inedge.data into transposeGraph node.Outedge.data
-//            //and from originalGraph to put all node.Outedge.data into transposeGraph node.Inedge.data
-//            //in for on all nodes
-//
-//        }
-//
-//        return g;
-//    } /// probebly not the selotion;
-
-
+    /**
+     *
+     * @returns the amount of nodes in the graph.
+     */
     @Override
     public int nodeSize() {
         return nodes.size();
     }
 
+    /**
+     *
+     * @returns the amount of edges in the graph.
+     */
     @Override
     public int edgeSize() {
         return edges.size();
     }
 
+    /**
+     * @returns the amount of changes in this graph.
+     */
     @Override
     public int getMC() {
         return MC;

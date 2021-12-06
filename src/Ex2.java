@@ -94,16 +94,15 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G2.json");
+        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G3.json");
         //System.out.println(t.shortestPathDist(0,500));
         List<NodeData> tspStart=new ArrayList<>();
         for(int i=0;i<t.copy().nodeSize();i++){
             tspStart.add(t.copy().getNode(i));
         }
 
-
-        List <NodeData> tspFinal=t.tsp(tspStart);
-        for(int i = 0; i<tspFinal.size();i++){
+        List<NodeData> tspFinal=t.tsp(tspStart);
+        for(int i=0;i<tspFinal.size();i++){
             System.out.println(tspFinal.get(i).getKey());
         }
         runGUI(t);

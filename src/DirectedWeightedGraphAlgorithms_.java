@@ -13,21 +13,34 @@ import java.util.*;
 import static api.lib.parseJSONFile;
 
 public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAlgorithms  {
+    /**
+     * This class holds an originalGraph (DirectedWeightedGraph).
+     * The advanced functions in this class change and analyze the originalGraph.
+     *
+     * The class also holds an array double[][][] pathData the holds information (if calculated) about
+     * the different paths in the graph.
+     */
     private DirectedWeightedGraph originalGraph;
-    //private DirectedWeightedGraph copiedGraph;
     private DirectedWeightedGraph transposeGraph;
     private double[][][] pathData;
     private boolean isConnected = true;
-    boolean pathCalculated = false;
+    private boolean pathCalculated = false;
 
+    /** sets the pathCalculated boolean to the given boolean **/
     public void setPathCalculated(boolean pathCalculated) {
         this.pathCalculated = pathCalculated;
     }
 
+    /** This constructor gets a jsonfile and initiate the GraphAlgo **/
     public DirectedWeightedGraphAlgorithms_(String jsonFileName) {
         DirectedWeightedGraph g = new DirectedWeightedGraph_(jsonFileName);
         init(g);
     }
+
+    /**
+     * For a given directedWeightedGraph g, initiate the GraphAlgo.
+     * @param g
+     */
     @Override
     public void init(DirectedWeightedGraph g) {
         originalGraph = g; //not deep copy - changes in original graph will take place here and in GUI as well
@@ -42,6 +55,10 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return transposeGraph;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public DirectedWeightedGraph getGraph() {
         return originalGraph;
@@ -53,6 +70,11 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return copiedGraph;
     }
 
+    /**
+     * This function performs BFS on the transposed graph.
+     * @param key
+     * @param t boolean - this boolean commands the function to perform BFS on the transposed graph.
+     */
     public void BFS(int key, boolean t) {
 
         Iterator<NodeData> NodesI = transposeGraph.nodeIter();
