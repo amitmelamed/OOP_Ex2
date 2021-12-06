@@ -154,6 +154,13 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         transposeGraph = new DirectedWeightedGraph_(originalGraph,true);
     }
 
+    /**
+     * the function checking if the graph is connected
+     * connected graph means you have a way to travel from each node to every other node
+     *if we have done this calc before he we be remain and we dont have you do it again
+     * save is isConnected
+     * @return
+     */
     @Override
     public boolean isConnected() {
         if (originalGraph.nodeSize()==0||originalGraph.nodeSize()==1) return true;
@@ -168,6 +175,12 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         }
     }
 
+    /**
+     * return the shortest path you can travel in Distance between 2 nodes
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         //use pathData after we update it in calculatePathData
@@ -177,6 +190,13 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     }
 
 
+    /**
+     * return the shortest path from node A to node B
+     * this function return a list of Nodes
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
         //use pathData after we update it in calculatePathData
@@ -196,6 +216,12 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return List2;
     }
 
+    /**
+     * returns the center of the graph
+     * each node in the graph have maximum distance to other point in the graph
+     * the center is the node with the LOWEST maximum distance
+     * @return
+     */
     @Override
     public NodeData center() {
 
@@ -232,6 +258,12 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return originalGraph.getNode(center);
     }
 
+    /**
+     * * the Travel Sales Person function
+     * this function calculate the shortest way you can go to every Node in the copied graph
+     * @param cities
+     * @return
+     */
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
         double countDis=0;
@@ -244,8 +276,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         NodeData current=cities.get(0);
         visited[0]=true;
         boolean allVisited=false;
-
-
+        tsp.add(cities.get(0));
         while (!allVisited){
             int nearestIndex=-1;
             double nearestDist=Double.MAX_VALUE;
@@ -257,25 +288,38 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
                 }
             }
             if(nearestIndex!=-1){
+                if(copy().getEdge(current.getKey(),nearestIndex)!=null){
+                    tsp.add(copy().getNode(nearestIndex));
+                    visited[nearestIndex]=true;
+                    current=copy().getNode(nearestIndex);
+                }else {
+                    List<NodeData> pathList=shortestPath(current.getKey(), nearestIndex);
+                    for(int i=0;i<pathList.size();i++){
+                        tsp.add(pathList.get(i));
+                    }
 
-                tsp.add(copy().getNode(nearestIndex));
-                visited[nearestIndex]=true;
-                current=copy().getNode(nearestIndex);
+                    visited[nearestIndex]=true;
+                    current=copy().getNode(nearestIndex);
+                }
+
             }
-
-
-
             allVisited=true;
-            for(int i=0;i< visited.length;i++){
-                if(visited[i]==false)
-                    allVisited=false;
+            for (boolean b : visited) {
+                if (!b)
+                    allVisited = false;
             }
+        }
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),0);
 
+        for(int i=0;i<fromEndToZero.size();i++){
+            tsp.add(fromEndToZero.get(i));
         }
-        for(int i=0;i<tsp.size()-1;i++){
-            countDis=countDis+copy().getNode(i).getOutEdges().get(i+1).getWeight();
+
+        for (int i=0;i<tsp.size()-1;i++){
+            if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
+                tsp.remove(i);
+            }
         }
-        System.out.println(countDis);
         return tsp;
     }
 

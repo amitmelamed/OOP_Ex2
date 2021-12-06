@@ -120,7 +120,10 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public EdgeData getEdge(int src, int dest)
     {
-        return nodes.get(dest).getInEdges().get(src);
+        if(nodes.get(dest).getInEdges().containsKey(src)){
+            return nodes.get(dest).getInEdges().get(src);
+        }
+        return null;
     }
 
     public EdgeData getEdgeOut(int src, int dest)

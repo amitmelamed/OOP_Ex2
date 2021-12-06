@@ -186,7 +186,7 @@ public class GUI extends JPanel {
             double x = (Geox-minX)*tX+resize;
             double y = (Geoy-minY)*tY+resize;
             if (currNode.getKey()==center) g.setColor(Color.blue);
-            g.fillOval((int)x-5, (int)y-5, 10, 10);
+            g.fillOval((int)x-5, (int)y-5, 20, 20);
             g.setColor(Color.red);
             g.drawString(currNode.getKey()+"", (int)x-5, (int)y-5);
         }
@@ -211,8 +211,8 @@ public class GUI extends JPanel {
             double desty = (destGeoy-minY)*tY+resize;
 
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
-            //if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
-            //else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
+          //  if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
+           // else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
             paintArrows(destx, srcx, desty, srcy, g);
 
         }
@@ -291,7 +291,10 @@ public class GUI extends JPanel {
         g.drawImage(map,10,10,getWidth(), getHeight(), null); //loads ariel's map to the background, and sticks it to the size of the screen
     } //Called from paintComponent
 
-
+    /**
+     *
+     * @param g
+     */
     @Override
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
