@@ -2,8 +2,10 @@ import  api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.EdgeData;
 import api.NodeData;
+import org.w3c.dom.Node;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Ex2 {
      */
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         //DirectedWeightedGraph_ g = new DirectedWeightedGraph_(json_file);
-        DirectedWeightedGraphAlgorithms ans = new DirectedWeightedGraphAlgoritems_(json_file);
+        DirectedWeightedGraphAlgorithms ans = new DirectedWeightedGraphAlgorithms_(json_file);
         // ****** Add your code here ******
         //
         // ********************************
@@ -51,7 +53,7 @@ public class Ex2 {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file); //if we use the extends way it will work. (this is boaz's line)
 
         JFrame screen = new JFrame("ze waze");
-        screen.setSize(600,505);
+        screen.setSize(600,500);
 
         GUI graph = new GUI(alg);
         screen.add(graph);
@@ -61,19 +63,19 @@ public class Ex2 {
         screen.setVisible(true);
 
     }
-    public static void runGUI(DirectedWeightedGraph alg) {
-
-        JFrame screen = new JFrame("ze waze");
-        screen.setSize(600,505);
-
-        GUI graph = new GUI(alg);
-        screen.add(graph);
-
-        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        screen.setLocationRelativeTo(null);
-        screen.setVisible(true);
-
-    }
+//    public static void runGUI(DirectedWeightedGraph alg) {
+//
+//        JFrame screen = new JFrame("ze waze");
+//        screen.setSize(600,505);
+//
+//        GUI graph = new GUI(alg);
+//        screen.add(graph);
+//
+//        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        screen.setLocationRelativeTo(null);
+//        screen.setVisible(true);
+//
+//    }
 
     public static void runGUI(DirectedWeightedGraphAlgorithms alg) {
 
@@ -92,34 +94,35 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        String jsonfile = "data/G2.json";
-        DirectedWeightedGraphAlgoritems_ t = new DirectedWeightedGraphAlgoritems_(jsonfile);
-        List<NodeData> l = t.shortestPath(0, 3);
-       // t.printPathData(0);
-       // System.out.println(t.shortestPathDist(0,9));
-        System.out.println(l.toString());
-        runGUI(t.getGraph());
-
+        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G5.json");
+        t.center();
+        t.load("data/G1.json");
+        runGUI(t);
 
         /**DONT DELETE THE FOLLOWING CODE THIS IS A REAL GOOD TEST**/
-        int counte = 0;
-        for (int i = 0; i < t.getGraph().nodeSize(); i++) {
-            for (int k = 0; k < t.getGraph().nodeSize(); k++) {
-                l = t.shortestPath(i, k);
-                double sumw = 0;
-                    for (int j = 0; j < l.size()-1; j++) {
-                    //System.out.println(t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()));
-                    sumw += t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()).getWeight();
-                }
-                    if (sumw!=t.shortestPathDist(i,k)) {
-                        System.out.println(i+",  "+k+":");
-                        System.out.println("sumw is "+sumw);
-                        System.out.println("func is "+t.shortestPathDist(i,k));
-                        counte++;
-                    }
-            }
-        }
-        System.err.println(counte+" wrong calculations out of "+t.getGraph().nodeSize()*t.getGraph().nodeSize());
+//        List<NodeData> l = t.shortestPath(1,2);
+//        int counte = 0;
+//        for (int i = 0; i < t.getGraph().nodeSize(); i++) {
+//            for (int k = 0; k < t.getGraph().nodeSize(); k++) {
+//                l = t.shortestPath(i, k);
+//                double sumw = 0;
+//                if (l != null) {
+//                    for (int j = 0; j < l.size() - 1; j++) {
+//                        //System.out.println(t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()));
+//                        sumw += t.getGraph().getEdge(l.get(j).getKey(), l.get(j + 1).getKey()).getWeight();
+//                    }
+//                    if (sumw != t.shortestPathDist(i, k)) {
+//                        System.out.println(i + ",  " + k + ":");
+//                        System.out.println("sumw is " + sumw);
+//                        System.out.println("func is " + t.shortestPathDist(i, k));
+//                        System.out.println(l.toString());
+//                        System.out.println();
+//                        counte++;
+//                    }
+//                }
+//            }
+//        }
+//        System.err.println(counte+" wrong calculations out of "+t.getGraph().nodeSize()*t.getGraph().nodeSize());
 
 
 

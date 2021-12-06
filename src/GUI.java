@@ -17,7 +17,8 @@ import java.util.Iterator;
 
 public class GUI extends JPanel {
 
-    private DirectedWeightedGraph GUIgraph;
+    private DirectedWeightedGraphAlgorithms_ GUIgraph;
+    private DirectedWeightedGraph transposedGUIgraph;
     private int minXid, maxXid, minYid, maxYid;
     private double maxX = Integer.MIN_VALUE;
     private double minX = Integer.MAX_VALUE;
@@ -28,31 +29,35 @@ public class GUI extends JPanel {
     private int resize = 30;
     private boolean edgeToggle = true;
     private boolean algoFlag;
+    private int center = -1;
 
     private JButton removeButton = new JButton();
     private JButton showEdgesButton = new JButton();
+    private JButton centerButton = new JButton();
+    private JButton transposeButton = new JButton();
     private ArrayList<String> nodes = new ArrayList<>();;
     private SpinnerListModel nodesModel;
     private JSpinner removeSpinner;
 
 
-    public GUI(DirectedWeightedGraph graph) {
-        this.GUIgraph = graph;
-        updateMinMax();
-        nodesListModel();
-        algoFlag = false;
-    }
+//    public GUI(DirectedWeightedGraph graph) {
+//        this.GUIgraph = graph;
+//        updateMinMax();
+//        nodesListModel();
+//        algoFlag = false;
+//    }
 
     public GUI(DirectedWeightedGraphAlgorithms graph) {
-        this.GUIgraph = graph.getGraph();
+        this.GUIgraph = (DirectedWeightedGraphAlgorithms_) graph;
         updateMinMax();
         nodesListModel();
         algoFlag = true;
+        transposedGUIgraph = GUIgraph.getTransposeGraph();
     }
 
     /** FOLLOWING METHODS ARE CALLED FROM THE CONSTRUCTOR**/
     private void nodesListModel() {
-        Iterator<NodeData> NodeI = GUIgraph.nodeIter();
+        Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
             nodes.add(Integer.toString(currNode.getKey()));
@@ -63,7 +68,7 @@ public class GUI extends JPanel {
 
     public void updateMinMax() {
 
-        Iterator<NodeData> NodeI = GUIgraph.nodeIter();
+        Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
 
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
@@ -102,7 +107,8 @@ public class GUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int target = Integer.parseInt(removeSpinner.getValue().toString());
-                GUIgraph.removeNode(target);
+                GUIgraph.getGraph().removeNode(target);
+                GUIgraph.pathCalculated = false;
             }
         });
 
@@ -120,7 +126,33 @@ public class GUI extends JPanel {
         });
 
         if (algoFlag) {
-            //HERE WILL HAVE BUTTONS FOR THE ALGORITHMS
+
+            centerButton.setLocation(0,60);
+            centerButton.setSize(119,30);
+            centerButton.setText("Show Center");
+
+            this.add(centerButton);
+            centerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (GUIgraph.isConnected()) center = GUIgraph.center().getKey();
+                    else center = -1;
+                }
+            });
+
+            transposeButton.setLocation(119,0);
+            transposeButton.setSize(119,30);
+            transposeButton.setText("Transpose");
+
+            this.add(transposeButton);
+            transposeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GUIgraph.transpose();
+                    transposedGUIgraph = GUIgraph.getTransposeGraph();
+
+                }
+            });
         }
 
     } //Called from paintComponent
@@ -128,7 +160,7 @@ public class GUI extends JPanel {
     private void paintNodes(Graphics g) {
         double tX = getWidth()/absX*0.8;
         double tY = getHeight()/absY*0.8;
-        Iterator<NodeData> NodeI = GUIgraph.nodeIter();
+        Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
         g.setColor(Color.red);
         while(NodeI.hasNext()) {
             NodeData currNode = NodeI.next();
@@ -137,7 +169,9 @@ public class GUI extends JPanel {
 
             double x = (Geox-minX)*tX+resize;
             double y = (Geoy-minY)*tY+resize;
+            if (currNode.getKey()==center) g.setColor(Color.blue);
             g.fillOval((int)x-5, (int)y-5, 10, 10);
+            g.setColor(Color.red);
             g.drawString(currNode.getKey()+"", (int)x-5, (int)y-5);
         }
     } //Called from paintComponent
@@ -145,15 +179,15 @@ public class GUI extends JPanel {
     private void paintEdges(Graphics g) {
         double tX = getWidth()/absX*0.8;
         double tY = getHeight()/absY*0.8;
-        Iterator<EdgeData> EdgeI = GUIgraph.edgeIter();
+        Iterator<EdgeData> EdgeI = GUIgraph.getGraph().edgeIter();
         g.setColor(Color.black);
         while(EdgeI.hasNext()) {
             EdgeData currEdge = EdgeI.next();
 
-            double srcGeox = GUIgraph.getNode(currEdge.getSrc()).getLocation().x();
-            double srcGeoy = GUIgraph.getNode(currEdge.getSrc()).getLocation().y();
-            double destGeox = GUIgraph.getNode(currEdge.getDest()).getLocation().x();
-            double destGeoy = GUIgraph.getNode(currEdge.getDest()).getLocation().y();
+            double srcGeox = GUIgraph.getGraph().getNode(currEdge.getSrc()).getLocation().x();
+            double srcGeoy = GUIgraph.getGraph().getNode(currEdge.getSrc()).getLocation().y();
+            double destGeox = GUIgraph.getGraph().getNode(currEdge.getDest()).getLocation().x();
+            double destGeoy = GUIgraph.getGraph().getNode(currEdge.getDest()).getLocation().y();
 
             double srcx = (srcGeox-minX)*tX+resize;
             double srcy = (srcGeoy-minY)*tY+resize;
@@ -161,7 +195,8 @@ public class GUI extends JPanel {
             double desty = (destGeoy-minY)*tY+resize;
 
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
-            g.drawString(""+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
+            //if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
+            //else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
             paintArrows(destx, srcx, desty, srcy, g);
 
         }

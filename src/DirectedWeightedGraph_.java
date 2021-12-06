@@ -126,13 +126,13 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     public EdgeData getEdgeOut(int src, int dest)
     {
         return nodes.get(dest).getOutEdges().get(src);
-    }//??
+    }
 
 
     public EdgeData getEdge(int id)
     {
         return edges.get(id);
-    }//why cant reach?
+    }
 
     @Override
     public void addNode(NodeData n) {
@@ -179,6 +179,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             int[] outIds = new int[outedges.length];
 
             /**SIZE OF inIds+outIds is equal to v.degree**/
+            /** O(3*v.degree)=O(v.degree)**/
             for (int i = 0; i < inIds.length; i++) {
                 inIds[i] = getEdge((int) inedges[i], key).getId();
             }
@@ -192,7 +193,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             for (int i = 0; i < outIds.length; i++) {
                 removeEdge(outIds[i]);
             }
-            /** O(2*v.degree)=O(v.degree)**/
+
             nodes.get(key).getOutEdges().clear();       //Clear is O(n) where n is the number of out edges
             nodes.get(key).getInEdges().clear();        //Clear is O(n) where n is the number of in edges
 
