@@ -1,4 +1,3 @@
-import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.EdgeData;
 import api.NodeData;
@@ -14,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The GUI class builds The Graphical User Interface of the current Graph.
@@ -24,7 +24,6 @@ import java.util.Iterator;
 public class GUI extends JPanel {
 
     private DirectedWeightedGraphAlgorithms_ GUIgraph;
-    private DirectedWeightedGraph transposedGUIgraph;
     private int minXid, maxXid, minYid, maxYid;
     private double maxX = Integer.MIN_VALUE;
     private double minX = Integer.MAX_VALUE;
@@ -32,26 +31,21 @@ public class GUI extends JPanel {
     private double minY = Integer.MAX_VALUE;
     private double absX = 0;
     private double absY = 0;
-    private int resize = 30;
-    private boolean edgeToggle = true;
-    private boolean algoFlag;
+    private int resize = 50;
     private int center = -1;
+    private String msg = "";
 
+
+    private List<NodeData> currPath = new ArrayList<NodeData>();
+    private JButton tspButton = new JButton();
+    private JButton saveButton = new JButton();
     private JButton removeButton = new JButton();
-    private JButton showEdgesButton = new JButton();
+    private JButton pathDistButton = new JButton();
+    private JButton pathButton = new JButton();
     private JButton centerButton = new JButton();
     private JButton loadButton = new JButton();
     private ArrayList<String> nodes = new ArrayList<>();;
-    private SpinnerListModel nodesModel;
-    private JSpinner idSpinner;
-
-
-//    public GUI(DirectedWeightedGraph graph) {
-//        this.GUIgraph = graph;
-//        updateMinMax();
-//        nodesListModel();
-//        algoFlag = false;
-//    }
+    private SpinnerListModel idModel;
 
     /**
      * The constructor gets an input of a Graph Algorithm.
@@ -60,30 +54,10 @@ public class GUI extends JPanel {
     public GUI(DirectedWeightedGraphAlgorithms graph) {
         this.GUIgraph = (DirectedWeightedGraphAlgorithms_) graph;
         updateMinMax();
-        nodesListModel();
-        algoFlag = true;
-        transposedGUIgraph = GUIgraph.getTransposeGraph();
+
     }
 
     /** FOLLOWING METHODS ARE CALLED FROM THE CONSTRUCTOR**/
-    private void nodesListModel() {
-        if (GUIgraph.getGraph().nodeSize()>100) {
-            Iterator<NodeData> NodeI = GUIgraph.getGraph().nodeIter();
-            while (NodeI.hasNext()) {
-                NodeData currNode = NodeI.next();
-                nodes.add(Integer.toString(currNode.getKey()));
-            }
-            nodesModel = new SpinnerListModel(nodes);
-            idSpinner = new JSpinner(nodesModel);
-        }
-        else {
-            for (int i = 1; i < 101; i++) {
-                nodes.add(Integer.toString(i));
-            }
-            nodesModel = new SpinnerListModel(nodes);
-            idSpinner = new JSpinner(nodesModel);
-        }
-    } //Called from the constructor
 
     public void updateMinMax() {
 
@@ -113,79 +87,160 @@ public class GUI extends JPanel {
     } //Called from the constructor
 
 
-
     /** FOLLOWING METHODS ARE CALLED FROM PAINTCOMPONENT**/
     /**
      * this method creates buttons that we use in the GUI.
-     * the buttons that we create are: Remove, Edge Toggle, Show Center and load new Graph.
+     * the buttons that we create are: Remove, Path, Show Center and load new Graph.
      */
     private void createButtons() {
+
         removeButton.setLocation(0,0);
         removeButton.setSize(90,30);
         removeButton.setText("Remove");
         this.add(removeButton);
-        idSpinner.setLocation(90,5);
-        this.add(idSpinner);
+        if (removeButton.getActionListeners().length==0) {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int target = Integer.parseInt(idSpinner.getValue().toString());
-                GUIgraph.getGraph().removeNode(target);
-                GUIgraph.setPathCalculated(false);
+                System.out.println(pathDistButton.getActionListeners().length);
+                String targetString = JOptionPane.showInputDialog("Insert ID to remove");
+                int target = Integer.parseInt(targetString);
+                if (GUIgraph.getGraph().getNode(target)!=null) {
+                    GUIgraph.getGraph().removeNode(target);
+                    GUIgraph.setPathCalculated(false);
+                    JOptionPane.showMessageDialog(null, msg = "Node "+target+" removed");
+                } else JOptionPane.showMessageDialog(null, msg = "Failed to remove node "+target);
+
             }
-        });
+        });}
 
-        showEdgesButton.setLocation(0,30);
-        showEdgesButton.setSize(119,30);
-        showEdgesButton.setText("Edge Toggle");
 
-        this.add(showEdgesButton);
-        showEdgesButton.addActionListener(new ActionListener() {
+        pathDistButton.setLocation(350,0);
+        pathDistButton.setSize(90,30);
+        pathDistButton.setText("Path Dist");
+
+        this.add(pathDistButton);
+        if (pathDistButton.getActionListeners().length==0) {
+        pathDistButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (edgeToggle) edgeToggle = false;
-                else edgeToggle = true;
+                    String srcString = JOptionPane.showInputDialog("Insert source");
+                    int src = Integer.parseInt(srcString);
+                    String destString = JOptionPane.showInputDialog("Insert destination");
+                    int dest = Integer.parseInt(destString);
+                    JOptionPane.showMessageDialog(null, msg = "Cost: " + GUIgraph.shortestPathDist(src, dest));
             }
-        });
+            }
+        ); }
 
-        if (algoFlag) {
 
-            centerButton.setLocation(0,60);
-            centerButton.setSize(119,30);
-            centerButton.setText("Show Center");
+            centerButton.setLocation(260,0);
+            centerButton.setSize(90,30);
+            centerButton.setText("Center");
 
             this.add(centerButton);
+            if (centerButton.getActionListeners().length==0) {
             centerButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (GUIgraph.isConnected()) center = GUIgraph.center().getKey();
-                    else center = -1;
-                }
-            });
+                    if (GUIgraph.isConnected()) {
+                        center = GUIgraph.center().getKey();
+                        msg = "The graph's center is now blue";
+                    }
+                    else {
+                        center = -1;
+                        msg = "no center found";
+                    }
 
-            loadButton.setLocation(119,0);
+                }
+            }); }
+
+            loadButton.setLocation(90,0);
             loadButton.setSize(90,30);
             loadButton.setText("Load");
             this.add(loadButton);
+            if (loadButton.getActionListeners().length==0) {
             loadButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    int target = Integer.parseInt(idSpinner.getValue().toString());
-                    GUIgraph.load("data/G"+target+".json");
-                    maxX = Integer.MIN_VALUE;
-                    minX = Integer.MAX_VALUE;
-                    maxY = Integer.MIN_VALUE;
-                    minY = Integer.MAX_VALUE;
-                    absX = 0;
-                    absY = 0;
-                    updateMinMax();
-                    //nodesListModel();
+                    String NameOfGraph = JOptionPane.showInputDialog("Insert name of existing graph\nThe graph should be inside the data folder");
+                    if (GUIgraph.load("data/"+NameOfGraph+".json")) {
+                        msg = "Loaded!";
+                        maxX = Integer.MIN_VALUE;
+                        minX = Integer.MAX_VALUE;
+                        maxY = Integer.MIN_VALUE;
+                        minY = Integer.MAX_VALUE;
+                        absX = 0;
+                        absY = 0;
+                        updateMinMax();
+                        center = -1;
+                    } else msg = "Load failed";
+                }
+            }); }
+
+
+            saveButton.setLocation(180,0);
+            saveButton.setSize(90,30);
+            saveButton.setText("Save");
+            this.add(saveButton);
+            if (saveButton.getActionListeners().length==0) {
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String NameOfGraph = JOptionPane.showInputDialog("Insert name for the graph\nThe graph will be inside the data folder\nThe save will override existing graphs");
+                    if (GUIgraph.save("data/"+NameOfGraph+".json")) msg = "Saved!";
+                    else msg = "Save failed";
 
                 }
-            });
+            }); }
+
+        pathButton.setLocation(440,0);
+        pathButton.setSize(90,30);
+        pathButton.setText("Path");
+        this.add(pathButton);
+        if (pathButton.getActionListeners().length==0) {
+            pathButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String srcString = JOptionPane.showInputDialog("Insert source");
+                    int src = Integer.parseInt(srcString);
+                    String destString = JOptionPane.showInputDialog("Insert destination");
+                    int dest = Integer.parseInt(destString);
+                    currPath = GUIgraph.shortestPath(src ,dest);
+
+
+                }
+            }); }
+
+        tspButton.setLocation(530,0);
+        tspButton.setSize(70,30);
+        tspButton.setText("TSP");
+        this.add(tspButton);
+        if (tspButton.getActionListeners().length==0) {
+            tspButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String srcString = JOptionPane.showInputDialog("How many stops do you want to make?");
+                    int n = Integer.parseInt(srcString);
+                    List<NodeData> cities = new ArrayList<>();
+                    for (int i = 0; i < n; i++) {
+                        String stop = JOptionPane.showInputDialog("Insert a stop");
+                        cities.add(GUIgraph.getGraph().getNode(Integer.parseInt(stop)));
+
+                    }
+                    currPath = GUIgraph.tsp(cities);
+                    List<Integer> ids = new ArrayList();
+                    for (int i = 0; i < currPath.size(); i++) {
+                        ids.add(currPath.get(i).getKey());
+                    }
+                    JOptionPane.showMessageDialog(null, msg = "Order: " + ids);
+
+                }
+            }); }
+
         }
 
-    } //Called from paintComponent
+
 
     /**
      * The following function calculate where each node is located in the screen by
@@ -205,7 +260,8 @@ public class GUI extends JPanel {
             double x = (Geox-minX)*tX+resize;
             double y = (Geoy-minY)*tY+resize;
             if (currNode.getKey()==center) g.setColor(Color.blue);
-            g.fillOval((int)x-5, (int)y-5, 20, 20);
+            if (currPath.contains(currNode)) g.setColor(Color.magenta);
+            g.fillOval((int)x-5, (int)y-5, 11, 11);
             g.setColor(Color.red);
             g.drawString(currNode.getKey()+"", (int)x-5, (int)y-5);
         }
@@ -233,11 +289,10 @@ public class GUI extends JPanel {
             double srcy = (srcGeoy-minY)*tY+resize;
             double destx = (destGeox-minX)*tX+resize;
             double desty = (destGeoy-minY)*tY+resize;
-
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
-          //  if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
-           // else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
-            paintArrows(destx, srcx, desty, srcy, g);
+            //if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
+            // else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
+            if (GUIgraph.getGraph().edgeSize()<200) paintArrows(destx, srcx, desty, srcy, g);
 
         }
 
@@ -275,11 +330,11 @@ public class GUI extends JPanel {
         BufferedImage bufferedIcon=toBufferedImage(icon);
 
         bufferedIcon=rotate(bufferedIcon, Math.toDegrees(tanAngle));
-        g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,(int)(0.0159*getWidth()),(int)(0.0159*getHeight()),null);
+        g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,(int)(0.0158*getWidth()),(int)(0.0158*getHeight()),null);
     }
 
     /**
-     * the function calculate the angle beetween 2 lines.
+     * the function calculate the angle between 2 lines.
      * the calculate returns how much we need to rotate by tangents.
      * @param line1
      * @param line2
@@ -312,7 +367,7 @@ public class GUI extends JPanel {
 
         // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null); // the fuck is this doing
+        bGr.drawImage(img, 0, 0, null);
         bGr.dispose();
         // Return the buffered image
         return bimage;
@@ -360,14 +415,15 @@ public class GUI extends JPanel {
         super.paintComponent(g);
 
         this.setVisible(false);
-        g.drawString(GUIgraph+" | ", 200, 10);
-        //paintBackground(g);
 
+
+        g.drawString(msg, 200, 40);
+        //paintBackground(g);
         createButtons();
         paintNodes(g);
-        if (edgeToggle) paintEdges(g);
-
+        paintEdges(g);
         this.setVisible(true);
+
     }
 }
 

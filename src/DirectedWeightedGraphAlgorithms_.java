@@ -5,6 +5,7 @@ import api.NodeData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     /** sets the pathCalculated boolean to the given boolean **/
     public void setPathCalculated(boolean pathCalculated) {
         this.pathCalculated = pathCalculated;
+        if (!pathCalculated) isConnected = false;
     }
 
     /** This constructor gets a jsonfile and initiate the GraphAlgo **/
@@ -45,7 +47,12 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     public void init(DirectedWeightedGraph g) {
         originalGraph = g; //not deep copy - changes in original graph will take place here and in GUI as well
         //copiedGraph = new DirectedWeightedGraph_(g); //deep copy
-        pathData = new double[g.nodeSize()][g.nodeSize()][2];
+        int maxnodeid = 0;
+        Iterator<NodeData> I = g.nodeIter();
+        while (I.hasNext()) {
+           maxnodeid = I.next().getKey();
+        }
+        pathData = new double[maxnodeid+1][maxnodeid+1][2];
         isConnected = true;
         pathCalculated = false;
         transpose();
@@ -83,7 +90,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
      * @param key int - starting point for the BFS
      * @param t boolean - this boolean commands the function to perform BFS on the transposed graph.
      */
-    public void BFS(int key, boolean t) {
+    private void BFS(int key, boolean t) {
 
         Iterator<NodeData> NodesI = transposeGraph.nodeIter();
         NodeData currNode;
@@ -125,7 +132,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         }
     }
 
-    public void BFS(int key) {
+    private void BFS(int key) {
 
         Iterator<NodeData> NodesI = originalGraph.nodeIter();
         NodeData currNode;
@@ -172,7 +179,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
      * print path data for testing for each node.
      * @param key
      */
-    public void printtesting(int key) {
+    private void printtesting(int key) {
         //PRINTING//
         System.out.println("TABLE FOR "+key);
         for (int i = 0; i < pathData[key].length; i++) {
@@ -187,14 +194,14 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     /**
      * build the transpose of the original graph.
      */
-    public void transpose(){
+    private void transpose(){
         transposeGraph = new DirectedWeightedGraph_(originalGraph,true);
     }
 
     /**
      * the function checking if the graph is connected.
      * connected graph means you have a way to travel from each node to every other node.
-     *if we have done this calculation before the graph will be remained the same, and we don't have you do it again.
+     * if we have done this calculation before the graph will be remained the same, and we don't have you do it again.
      * save is isConnected.
      * @return
      */
@@ -409,38 +416,18 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     /**
      * Load function gets String with file name.
-     * if the file contains proper input the graph will be loaded to the graph algorithm.
+     * uses the copy constructor.
      * @param file - file name of JSON file
      * @return
      */
     @Override
-    public boolean load( String file ) {
-        try {
-            DirectedWeightedGraph_ weightedGraph = new DirectedWeightedGraph_(file);
-            JSONObject jsonObject = parseJSONFile(file);
-            JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
-            for (int i = 0; i < jsonNodes.length(); i++) {
-                int key = jsonNodes.getJSONObject(i).getInt("id");
-                String pos = jsonNodes.getJSONObject(i).getString("pos");
-                NodeData_ v = new NodeData_(key, pos);
-                weightedGraph.addNode(v);
-            }
-            int edgeID = 0;
-            JSONArray jsonEdges = jsonObject.getJSONArray("Edges");
-            for (int i = 0; i < jsonEdges.length(); i++) {
-                int src = jsonEdges.getJSONObject(i).getInt("src");
-                int dest = jsonEdges.getJSONObject(i).getInt("dest");
-                double w = jsonEdges.getJSONObject(i).getDouble("w");
-                weightedGraph.connect(src, dest, w);
-            }
-            init(weightedGraph);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
+    public boolean load(String file) {
+        if(!(new File(file).exists())) {
             return false;
         }
+        originalGraph = new DirectedWeightedGraph_(file);
+        init(originalGraph);
         return true;
+
     }
 }
