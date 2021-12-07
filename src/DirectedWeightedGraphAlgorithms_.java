@@ -17,7 +17,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
      * This class holds an originalGraph (DirectedWeightedGraph).
      * The advanced functions in this class change and analyze the originalGraph.
      *
-     * The class also holds an array double[][][] pathData the holds information (if calculated) about
+     * The class also holds an array double[][][] pathData that holds information (if calculated) about
      * the different paths in the graph.
      */
     private DirectedWeightedGraph originalGraph;
@@ -51,12 +51,16 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         transpose();
     }
 
+    /**
+     * returns the transpose graph
+     * @return
+     */
     public DirectedWeightedGraph getTransposeGraph() {
         return transposeGraph;
     }
 
     /**
-     *
+     *return the original graph
      * @return
      */
     @Override
@@ -64,6 +68,10 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return originalGraph;
     }
 
+    /**
+     * return the copied graph that may have changed and work on.
+     * @return
+     */
     @Override
     public DirectedWeightedGraph copy() {
         DirectedWeightedGraph copiedGraph = new DirectedWeightedGraph_(originalGraph);
@@ -72,7 +80,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     /**
      * This function performs BFS on the transposed graph.
-     * @param key
+     * @param key int - starting point for the BFS
      * @param t boolean - this boolean commands the function to perform BFS on the transposed graph.
      */
     public void BFS(int key, boolean t) {
@@ -160,6 +168,10 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         }
     }
 
+    /**
+     * print path data for testing for each node.
+     * @param key
+     */
     public void printtesting(int key) {
         //PRINTING//
         System.out.println("TABLE FOR "+key);
@@ -172,15 +184,18 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     }
 
+    /**
+     * build the transpose of the original graph.
+     */
     public void transpose(){
         transposeGraph = new DirectedWeightedGraph_(originalGraph,true);
     }
 
     /**
-     * the function checking if the graph is connected
-     * connected graph means you have a way to travel from each node to every other node
-     *if we have done this calc before he we be remain and we dont have you do it again
-     * save is isConnected
+     * the function checking if the graph is connected.
+     * connected graph means you have a way to travel from each node to every other node.
+     *if we have done this calculation before the graph will be remained the same, and we don't have you do it again.
+     * save is isConnected.
      * @return
      */
     @Override
@@ -198,7 +213,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     }
 
     /**
-     * return the shortest path you can travel in Distance between 2 nodes
+     * return the shortest path in Distance from node A to node B.
      * @param src - start node
      * @param dest - end (target) node
      * @return
@@ -213,7 +228,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
 
     /**
-     * return the shortest path from node A to node B
+     * return the shortest path from node A to node B.
      * this function return a list of Nodes
      * @param src - start node
      * @param dest - end (target) node
@@ -239,9 +254,9 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     }
 
     /**
-     * returns the center of the graph
-     * each node in the graph have maximum distance to other point in the graph
-     * the center is the node with the LOWEST maximum distance
+     * returns the center of the graph.
+     * each node in the graph have maximum distance to other point in the graph.
+     * the center is the node with the LOWEST maximum distance.
      * @return
      */
     @Override
@@ -281,8 +296,8 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     }
 
     /**
-     * * the Travel Sales Person function
-     * this function calculate the shortest way you can go to every Node in the copied graph
+     * * the Travel Sales Person function.
+     * this function calculate the shortest way you can go to every Node in the copied graph.
      * @param cities
      * @return
      */
@@ -345,6 +360,13 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         return tsp;
     }
 
+    /**
+     * Save function will make new json file with the current graph parameters.
+     * true will be returned if the file was saved properly.
+     * false will be returned other way.
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
     @Override
     public boolean save(String file) {
         JSONObject json = new JSONObject();
@@ -384,49 +406,41 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     }
 
-//    @Override
-//    public boolean load(String file) {
-//        try {
-//            DirectedWeightedGraph_ weightedGraph = new DirectedWeightedGraph_(file);
-//            JSONObject jsonObject = parseJSONFile(file);
-//            JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
-//            for(int i=0;i<jsonNodes.length();i++){
-//                int key=jsonNodes.getJSONObject(i).getInt("id");
-//                String pos=jsonNodes.getJSONObject(i).getString("pos");
-//                NodeData_ v = new NodeData_(key, pos);
-//                weightedGraph.addNode(v);
-//            }
-//
-//            int edgeID=0;
-//            JSONArray jsonEdges = jsonObject.getJSONArray("Edges");
-//            for (int i = 0; i < jsonEdges.length(); i++) {
-//                int src = jsonEdges.getJSONObject(i).getInt("src");
-//                int dest = jsonEdges.getJSONObject(i).getInt("dest");
-//                double w = jsonEdges.getJSONObject(i).getDouble("w");
-//                weightedGraph.connect(src,dest,w);
-//
-//            }
-//
-//
-//        }
-//        catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//
-//
-//    }
+
+    /**
+     * Load function gets String with file name.
+     * if the file contains proper input the graph will be loaded to the graph algorithm.
+     * @param file - file name of JSON file
+     * @return
+     */
     @Override
-    public boolean load(String file) {
-        originalGraph = new DirectedWeightedGraph_(file);
-        init(originalGraph);
+    public boolean load( String file ) {
+        try {
+            DirectedWeightedGraph_ weightedGraph = new DirectedWeightedGraph_(file);
+            JSONObject jsonObject = parseJSONFile(file);
+            JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
+            for (int i = 0; i < jsonNodes.length(); i++) {
+                int key = jsonNodes.getJSONObject(i).getInt("id");
+                String pos = jsonNodes.getJSONObject(i).getString("pos");
+                NodeData_ v = new NodeData_(key, pos);
+                weightedGraph.addNode(v);
+            }
+            int edgeID = 0;
+            JSONArray jsonEdges = jsonObject.getJSONArray("Edges");
+            for (int i = 0; i < jsonEdges.length(); i++) {
+                int src = jsonEdges.getJSONObject(i).getInt("src");
+                int dest = jsonEdges.getJSONObject(i).getInt("dest");
+                double w = jsonEdges.getJSONObject(i).getDouble("w");
+                weightedGraph.connect(src, dest, w);
+            }
+            init(weightedGraph);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
-
     }
-
 }

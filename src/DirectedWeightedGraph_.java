@@ -14,7 +14,15 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-
+/**
+ * Directed Weight Graph is a class representing graph.
+ * A Graph is basically a set of vertex and a set of edges.
+ * We used java maps to represent each Set and to access  their components easily.
+ * nodes Map key is the ID of each Node.
+ * edges Map key is the ID of each Edge (that we created).
+ * each Node also have 2 Maps that represents Edges that go to the graph,
+ * and OutEdges that go from the Node to other Nodes.
+ */
 public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
     /** This object holds 2 hashmap2, one for holding the nodes and one for edges
@@ -29,7 +37,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
 
     /**
-     * Copy constructor
+     * Deep Copy constructor
      * @param g - the graph to copy
      */
     public DirectedWeightedGraph_(DirectedWeightedGraph g) {

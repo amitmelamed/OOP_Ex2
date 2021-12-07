@@ -95,6 +95,7 @@ public class Ex2 {
 
     public static void main(String[] args) {
         DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G3.json");
+        t.load("data/G1.json");
         //System.out.println(t.shortestPathDist(0,500));
         List<NodeData> tspStart=new ArrayList<>();
         for(int i=0;i<t.copy().nodeSize();i++){

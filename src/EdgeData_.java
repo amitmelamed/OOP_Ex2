@@ -2,7 +2,7 @@ import api.EdgeData;
 
 /**
  * this class will represent an edge in a (directional or not) weighted graph.
- * each edge will have source,destination,weight, info and tag(for implement algorithms use
+ * each edge will have source,destination,weight, info and tag(for implement algorithms use).
  */
 public class EdgeData_ implements EdgeData {
     private int source;
@@ -13,6 +13,11 @@ public class EdgeData_ implements EdgeData {
 
     private int id;
 
+    /**
+     * Constractor for deep copy.
+     * will set tag to ZERO.
+     * @param E
+     */
     public EdgeData_(EdgeData E) {
         this.source = E.getSrc();
         this.destination = E.getDest();
@@ -23,6 +28,15 @@ public class EdgeData_ implements EdgeData {
     }
 
 
+    /**
+     * Constructor for edge.
+     * will get source, destination, weight and ID.
+     * the constractor will also set info to " ", and tag to default starting point.
+     * @param source
+     * @param destination
+     * @param weight
+     * @param ID
+     */
     public EdgeData_(int source, int destination, double weight, int ID) {
         this.source = source;
         this.destination = destination;
@@ -32,6 +46,10 @@ public class EdgeData_ implements EdgeData {
         this.tag = 0;
     }
 
+    /**
+     * getters and setters to the Edge class.
+     * @param weight
+     */
     public void setWeight(double weight) {
         this.weight = weight;
     }
@@ -73,6 +91,10 @@ public class EdgeData_ implements EdgeData {
         this.tag=t;
     }
 
+    /**
+     * return a String with the data info of the current Edge.
+     * @return
+     */
     @Override
     public String toString() {
         return "EdgeData_{" +

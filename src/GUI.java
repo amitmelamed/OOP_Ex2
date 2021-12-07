@@ -15,6 +15,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * The GUI class builds The Graphical User Interface of the current Graph.
+ * The class gets an input of a Directed Weighted Graph Algorithm and print
+ * the graph that is loaded on the algorithm the user interface.
+ * We used JPanel interface to display the current graph.
+ */
 public class GUI extends JPanel {
 
     private DirectedWeightedGraphAlgorithms_ GUIgraph;
@@ -47,6 +53,10 @@ public class GUI extends JPanel {
 //        algoFlag = false;
 //    }
 
+    /**
+     * The constructor gets an input of a Graph Algorithm.
+     * @param graph
+     */
     public GUI(DirectedWeightedGraphAlgorithms graph) {
         this.GUIgraph = (DirectedWeightedGraphAlgorithms_) graph;
         updateMinMax();
@@ -105,6 +115,10 @@ public class GUI extends JPanel {
 
 
     /** FOLLOWING METHODS ARE CALLED FROM PAINTCOMPONENT**/
+    /**
+     * this method creates buttons that we use in the GUI.
+     * the buttons that we create are: Remove, Edge Toggle, Show Center and load new Graph.
+     */
     private void createButtons() {
         removeButton.setLocation(0,0);
         removeButton.setSize(90,30);
@@ -173,6 +187,11 @@ public class GUI extends JPanel {
 
     } //Called from paintComponent
 
+    /**
+     * The following function calculate where each node is located in the screen by
+     * the X,Y coordinates of the Geographic location of the node.
+     * @param g
+     */
     private void paintNodes(Graphics g) {
         double tX = getWidth()/absX*0.8;
         double tY = getHeight()/absY*0.8;
@@ -192,6 +211,11 @@ public class GUI extends JPanel {
         }
     } //Called from paintComponent
 
+    /**
+     * The following function calculate where each Edge is located in the screen by
+     *      * the X,Y coordinates of the Geographic location of the source node and destination node.
+     * @param g
+     */
     private void paintEdges(Graphics g) {
         double tX = getWidth()/absX*0.8;
         double tY = getHeight()/absY*0.8;
@@ -220,6 +244,16 @@ public class GUI extends JPanel {
 
     } //Called from paintComponent
 
+    /**
+     * the following function draws an image of an arrow that represent the direction of an edge.
+     * the function gets X and Y of the destination and source nodes.
+     * then calculates the rotation angle that we need to rotate the arrow image.
+     * @param destx
+     * @param srcx
+     * @param desty
+     * @param srcy
+     * @param g
+     */
     public void paintArrows(double destx, double srcx, double desty, double srcy, Graphics g) {
         double arrowX=(destx-srcx)*0.8+srcx;
         double arrowY=(desty-srcy)*0.8+srcy;
@@ -239,10 +273,18 @@ public class GUI extends JPanel {
 
         double tanAngle=angleBetween2Lines(lineA,lineB);
         BufferedImage bufferedIcon=toBufferedImage(icon);
+
         bufferedIcon=rotate(bufferedIcon, Math.toDegrees(tanAngle));
         g.drawImage(bufferedIcon,(int)arrowX-5,(int)arrowY-5,(int)(0.0159*getWidth()),(int)(0.0159*getHeight()),null);
     }
 
+    /**
+     * the function calculate the angle beetween 2 lines.
+     * the calculate returns how much we need to rotate by tangents.
+     * @param line1
+     * @param line2
+     * @return
+     */
     public static double angleBetween2Lines(Line2D line1, Line2D line2)
     {
         double angle1 = Math.atan2(line1.getY1() - line1.getY2(),
@@ -251,6 +293,13 @@ public class GUI extends JPanel {
                 line2.getX1() - line2.getX2());
         return angle1-angle2;
     }
+
+    /**
+     * we need to convert the arrow Image to buffered image, to be able to use buffered Image rotation function.
+     * so we use this function to convert regular Image to Buffered Image
+     * @param img
+     * @return
+     */
     public static BufferedImage toBufferedImage(Image img)
     {
         if (img instanceof BufferedImage)
@@ -268,6 +317,13 @@ public class GUI extends JPanel {
         // Return the buffered image
         return bimage;
     }
+
+    /**
+     * this function is getting Buffered Image and rotate it with the angle needed.
+     * @param bimg
+     * @param angle
+     * @return
+     */
     public static BufferedImage rotate(BufferedImage bimg, Double angle) {
         double sin = Math.abs(Math.sin(Math.toRadians(angle))),
                 cos = Math.abs(Math.cos(Math.toRadians(angle)));
@@ -284,6 +340,11 @@ public class GUI extends JPanel {
         return rotated;
     }
 
+    /**
+     * function to create background.
+     * not used currently in the project.
+     * @param g
+     */
     private void paintBackground(Graphics g) {
         Toolkit t=Toolkit.getDefaultToolkit();
         Image map=t.getImage("data/map.png");
