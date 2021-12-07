@@ -102,14 +102,15 @@ public class GUI extends JPanel {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int target = -1;
                 System.out.println(pathDistButton.getActionListeners().length);
                 String targetString = JOptionPane.showInputDialog("Insert ID to remove");
-                int target = Integer.parseInt(targetString);
-                if (GUIgraph.getGraph().getNode(target)!=null) {
+                if (targetString!=null) target = Integer.parseInt(targetString);
+                if (GUIgraph.getGraph().getNode(target)!=null&&target!=-1) {
                     GUIgraph.getGraph().removeNode(target);
                     GUIgraph.setPathCalculated(false);
                     JOptionPane.showMessageDialog(null, msg = "Node "+target+" removed");
-                } else JOptionPane.showMessageDialog(null, msg = "Failed to remove node "+target);
+                } else if (target!=-1) JOptionPane.showMessageDialog(null, msg = "Failed to remove node "+target);
 
             }
         });}
