@@ -1,6 +1,7 @@
 # OOP Ariel University - Directed Weighted Graph
 ### Authors: Raz Gavrieli, Eran David, Amit Melamed
 
+![GraphPic](https://user-images.githubusercontent.com/90526270/145119716-f29c0fd1-a498-4608-8eae-905ced4917ce.png)
 ### HOW TO USE 
 Clone the project into your computer,
 
