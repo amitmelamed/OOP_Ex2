@@ -31,18 +31,22 @@ public class GUI extends JPanel {
     private double minY = Integer.MAX_VALUE;
     private double absX = 0;
     private double absY = 0;
-    private int resizey = 55;
+    private int resizey = 70;
     private int resizex = 70;
     private int center = -1;
     private String msg = "";
-    private List<NodeData> currPath = new ArrayList<NodeData>();
+    private List<NodeData> currPath = new ArrayList<>();
+    private List<Integer> ids = new ArrayList();
 
+    private final JButton connectButton = new JButton();
+    private final JButton disconnectButton = new JButton();
     private final JCheckBox nodesToggle = new JCheckBox("Nodes");
     private final JCheckBox arrowsToggle = new JCheckBox("Arrows");
     private final JCheckBox edgesToggle = new JCheckBox("Edges");
     private final JButton tspButton = new JButton();
     private final JButton saveButton = new JButton();
     private final JButton removeButton = new JButton();
+    private final JButton addButton = new JButton();
     private final JButton pathDistButton = new JButton();
     private final JButton pathButton = new JButton();
     private final JButton centerButton = new JButton();
@@ -110,8 +114,75 @@ public class GUI extends JPanel {
         arrowsToggle.setLocation(0, 80);
         this.add(arrowsToggle);
 
+        connectButton.setLocation(400,0);
+        connectButton.setSize(100,20);
+        connectButton.setText("Connect");
+        this.add(connectButton);
+        if (connectButton.getActionListeners().length==0) {
+            connectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int src = -1;
+                    int dest = -1;
+                    double w = -1;
+                    String srcString = JOptionPane.showInputDialog("Insert source ID");
+                    if (srcString!=null) src = Integer.parseInt(srcString);
+                    if (GUIgraph.getGraph().getNode(src)!=null&&src!=-1) {
+                        String destString = JOptionPane.showInputDialog("Insert destination ID");
+                        if (destString!=null) dest = Integer.parseInt(destString);
+                        if (dest!=-1&&GUIgraph.getGraph().getNode(dest)!=null) {
+                            String wString = JOptionPane.showInputDialog("Insert weight");
+                            if (wString!=null) w = Double.parseDouble(wString);
+                            if (w!=-1) {
+                                GUIgraph.getGraph().connect(src,dest,w);
+                                JOptionPane.showMessageDialog(null, msg = "Edge added");
+                                GUIgraph.setPathCalculated(false);
+                                GUIgraph.isConnected = true;
+                                return;
+                            }
+                        }
+
+
+
+                    } JOptionPane.showMessageDialog(null, msg = "Connection aborted");
+
+                }
+            });}
+
+        disconnectButton.setLocation(400,20);
+        disconnectButton.setSize(100,20);
+        disconnectButton.setText("Disconnect");
+        this.add(disconnectButton);
+        if (disconnectButton.getActionListeners().length==0) {
+            disconnectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int src = -1;
+                    int dest = -1;
+                    String srcString = JOptionPane.showInputDialog("Insert source ID of the edge you want to remove");
+                    if (srcString!=null) src = Integer.parseInt(srcString);
+                    if (GUIgraph.getGraph().getNode(src)!=null&&src!=-1) {
+                        String destString = JOptionPane.showInputDialog("Insert destination ID of the edge you want to remove");
+                        if (destString!=null) dest = Integer.parseInt(destString);
+                        if (dest!=-1&&GUIgraph.getGraph().getNode(dest)!=null) {
+                                if (GUIgraph.getGraph().removeEdge(src,dest)!=null) {
+                                    JOptionPane.showMessageDialog(null, msg = "Edge removed");
+                                    GUIgraph.setPathCalculated(false);
+                                    GUIgraph.isConnected = true;
+                                    return;
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, msg = "Edge could not be removed");
+                                    return;
+                                }
+                            }
+                        } JOptionPane.showMessageDialog(null, msg = "Disconnection aborted");
+                }
+            });
+        }
+
         removeButton.setLocation(0,0);
-        removeButton.setSize(90,30);
+        removeButton.setSize(100,20);
         removeButton.setText("Remove");
         this.add(removeButton);
         if (removeButton.getActionListeners().length==0) {
@@ -132,9 +203,40 @@ public class GUI extends JPanel {
             }
         });}
 
+        addButton.setLocation(0,20);
+        addButton.setSize(100,20);
+        addButton.setText("Add");
+        this.add(addButton);
+        if (addButton.getActionListeners().length==0) {
+            addButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int id = -1;
+                    String idString = JOptionPane.showInputDialog("Insert ID to add\nMake sure you don't override any existing nodes");
+                    if (idString!=null) id = Integer.parseInt(idString);
+                    if (id!=-1) {
+                        String posString = JOptionPane.showInputDialog("Insert Location\nMake sure you write it as 'x,y,z'");
+                        if (posString!=null) {
+                        GUIgraph.getGraph().addNode(new NodeData_(id, posString));
+                        maxX = Integer.MIN_VALUE;
+                        minX = Integer.MAX_VALUE;
+                        maxY = Integer.MIN_VALUE;
+                        minY = Integer.MAX_VALUE;
+                        absX = 0;
+                        absY = 0;
+                        updateMinMax();
+                        center = -1;
+                        GUIgraph.setPathCalculated(false);
+                        GUIgraph.isConnected = true;
+                        JOptionPane.showMessageDialog(null, msg = "Node "+id+" added"); }
+                    } else if (id!=-1) JOptionPane.showMessageDialog(null, msg = "Failed to add node "+id);
 
-        pathDistButton.setLocation(350,0);
-        pathDistButton.setSize(90,30);
+                }
+            });}
+
+
+        pathDistButton.setLocation(300,20);
+        pathDistButton.setSize(100,20);
         pathDistButton.setText("Path Dist");
 
         this.add(pathDistButton);
@@ -153,8 +255,8 @@ public class GUI extends JPanel {
         ); }
 
 
-            centerButton.setLocation(260,0);
-            centerButton.setSize(90,30);
+            centerButton.setLocation(200,0);
+            centerButton.setSize(100,20);
             centerButton.setText("Center");
 
             this.add(centerButton);
@@ -174,8 +276,8 @@ public class GUI extends JPanel {
                 }
             }); }
 
-            loadButton.setLocation(90,0);
-            loadButton.setSize(90,30);
+            loadButton.setLocation(100,0);
+            loadButton.setSize(100,20);
             loadButton.setText("Load");
             this.add(loadButton);
             if (loadButton.getActionListeners().length==0) {
@@ -204,8 +306,8 @@ public class GUI extends JPanel {
             }); }
 
 
-            saveButton.setLocation(180,0);
-            saveButton.setSize(90,30);
+            saveButton.setLocation(100,20);
+            saveButton.setSize(100,20);
             saveButton.setText("Save");
             this.add(saveButton);
             if (saveButton.getActionListeners().length==0) {
@@ -219,8 +321,8 @@ public class GUI extends JPanel {
                 }
             }); }
 
-        pathButton.setLocation(440,0);
-        pathButton.setSize(90,30);
+        pathButton.setLocation(300,0);
+        pathButton.setSize(100,20);
         pathButton.setText("Path");
         this.add(pathButton);
         if (pathButton.getActionListeners().length==0) {
@@ -232,21 +334,29 @@ public class GUI extends JPanel {
                     if (srcString!=null) src = Integer.parseInt(srcString);
                     if (src!=-1 ) {String destString = JOptionPane.showInputDialog("Insert destination");
                     if (destString!=null) dest = Integer.parseInt(destString); }
-                    if (src!=-1&&dest!=-1) currPath = GUIgraph.shortestPath(src ,dest);
+                    if (src!=-1&&dest!=-1) {
+                        currPath.clear();
+                        ids.clear();
+                        currPath = GUIgraph.shortestPath(src ,dest);
+
+                        for (int i = 0; i < currPath.size(); i++) {
+                            ids.add(currPath.get(i).getKey());
+                        }
+                    }
 
 
                 }
             }); }
 
-        tspButton.setLocation(530,0);
-        tspButton.setSize(70,30);
+        tspButton.setLocation(200,20);
+        tspButton.setSize(100,20);
         tspButton.setText("TSP");
         this.add(tspButton);
         if (tspButton.getActionListeners().length==0) {
             tspButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String srcString = JOptionPane.showInputDialog("How many stops do you want to make?");
+                    String srcString = JOptionPane.showInputDialog("How many nodes do you want to visit?");
                     int n = Integer.parseInt(srcString);
                     List<NodeData> cities = new ArrayList<>();
                     for (int i = 0; i < n; i++) {
@@ -254,13 +364,14 @@ public class GUI extends JPanel {
                         cities.add(GUIgraph.getGraph().getNode(Integer.parseInt(stop)));
 
                     }
+                    currPath.clear();
                     currPath = GUIgraph.tsp(cities);
-                    List<Integer> ids = new ArrayList();
+
+                    ids.clear();
                     for (int i = 0; i < currPath.size(); i++) {
                         ids.add(currPath.get(i).getKey());
                     }
                     JOptionPane.showMessageDialog(null, msg = "Order: " + ids);
-
                 }
             }); }
 
@@ -286,11 +397,13 @@ public class GUI extends JPanel {
             double x = (Geox-minX)*tX+resizex;
             double y = (Geoy-minY)*tY+resizey;
             if (currNode.getKey()==center) g.setColor(Color.blue);
-            if (currPath.contains(currNode)) g.setColor(Color.magenta);
+            if (ids.contains(currNode.getKey())) g.setColor(Color.magenta);
+
             g.fillOval((int)x-5, (int)y-5, 11, 11);
             g.setColor(Color.red);
             g.drawString(currNode.getKey()+"", (int)x-5, (int)y-5);
         }
+
     } //Called from paintComponent
 
     /**
@@ -442,7 +555,9 @@ public class GUI extends JPanel {
         this.setVisible(false);
 
 
-        g.drawString(msg, 200, 40);
+
+
+        g.drawString(msg, 80, 53);
         //paintBackground(g);
         createButtons();
         if (nodesToggle.isSelected()) paintNodes(g);

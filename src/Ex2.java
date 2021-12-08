@@ -99,9 +99,9 @@ public class Ex2 {
 
 
         List <NodeData> tspStart=new ArrayList<>();
-        tspStart.add(t.copy().getNode(0));
-        tspStart.add(t.copy().getNode(3));
-        tspStart.add(t.copy().getNode(5));
+        tspStart.add(t.getGraph().getNode(0));
+        tspStart.add(t.getGraph().getNode(3));
+        tspStart.add(t.getGraph().getNode(5));
 
         List<NodeData> tspFinal=t.tsp(tspStart);
         for(NodeData n:tspFinal){
