@@ -321,8 +321,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
      * @param cities
      * @return
      */
-    @Override
-    public List<NodeData> tsp(List<NodeData> cities) {
+    public List<NodeData> tsp2(List<NodeData> cities) {
         double countDis=0;
 
         List<NodeData> tsp=new ArrayList<>();
@@ -378,6 +377,80 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
             }
         }
         return tsp;
+    }
+    @Override
+    public List<NodeData> tsp(List<NodeData> cities){
+        if(cities.size()==copy().nodeSize())
+        {
+            return tsp2(cities);
+        }
+        List<NodeData> tsp=new ArrayList<>();
+        Map <Integer, Boolean>visited=new HashMap();
+        Iterator<NodeData> NodeIterator=copy().nodeIter();
+        while (NodeIterator.hasNext()){
+            NodeData node=NodeIterator.next();
+            visited.put(node.getKey(),false);
+        }
+
+        NodeData current=cities.get(0);
+        visited.put(cities.get(0).getKey(),true);
+        boolean allVisited=false;
+        tsp.add(cities.get(0));
+        while (!allVisited){
+            int nearestIndex=-1;
+            double nearestDist=Double.MAX_VALUE;
+            Iterator<EdgeData> iterator=current.getOutEdges().values().iterator();
+            while (iterator.hasNext()){
+                EdgeData e=iterator.next();
+                if(e.getWeight()<nearestDist && visited.get(e.getDest())==false){
+                    nearestDist=e.getWeight();
+                    nearestIndex=e.getDest();
+                }
+            }
+
+
+            if(nearestIndex!=-1){
+                tsp.add(copy().getNode(nearestIndex));
+                visited.put(nearestIndex,true);
+                current=copy().getNode(nearestIndex);
+            }
+            else {
+                for(int i=0;i<cities.size();i++){
+
+
+                    if(visited.get(cities.get(i).getKey())==false){
+                        nearestIndex=cities.get(i).getKey();
+                    }
+                }
+                List<NodeData> fromCurrentToNext=shortestPath(current.getKey(),nearestIndex);
+                for(int i=0;i< fromCurrentToNext.size();i++){
+                    tsp.add(fromCurrentToNext.get(i));
+                }
+                tsp.add(copy().getNode(nearestIndex));
+                visited.put(nearestIndex,true);
+                current=copy().getNode(nearestIndex);
+            }
+
+            allVisited=true;
+            for(int i=0;i<cities.size();i++){
+                if(visited.get(cities.get(i).getKey())==false)
+                    allVisited=false;
+            }
+
+        }
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),0);
+
+        for(int i=0;i<fromEndToZero.size();i++){
+            tsp.add(fromEndToZero.get(i));
+        }
+
+        for (int i=0;i<tsp.size()-1;i++){
+            if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
+                tsp.remove(i);
+            }
+        }
+        return tsp;
+
     }
 
     /**
