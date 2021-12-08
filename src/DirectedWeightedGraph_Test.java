@@ -2,6 +2,8 @@ import api.EdgeData;
 import api.NodeData;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,20 +63,79 @@ class DirectedWeightedGraph_Test {
 
     @Test
     void nodeIter() {
-
+        Iterator<NodeData> NodesI = g.nodeIter();
+        int i = 0;
+        while (g.nodeIter().hasNext()&&i!= g.nodeSize()){
+            NodeData n = NodesI.next();
+            NodeData n1 = g.nodeIter().next();
+//            System.out.println(n);
+//            System.out.println(g.getNode(i));
+//            System.out.println(g.nodeIter().next());
+            assertEquals(n,g.getNode(i));
+            assertEquals(n1,g.getNode(i));
+            assertEquals(n,n1);
+            i++;
+        }
+        /**
+         * i!= g.nodeSize() problem whit hasnext!!
+         * problem whit NodeI.NEXT we never visit the first node in g.nodeIter()
+         * maybe not the actiol problem cus System.out.println(n);
+         *                                  System.out.println(g.getNode(i));
+         * problem g.nodeIter().next() dont continue to the next node
+         */
     }
+
 
     @Test
     void edgeIter() {
+        Iterator<NodeData> NodesI = g.nodeIter();
+        NodeData n;
+        int i = 0;
+        while (NodesI.hasNext()) {
+            n = NodesI.next();
+            Iterator<EdgeData> Edges = g.edgeIter();
+            while (Edges.hasNext()) {
+                EdgeData e = Edges.next();
+                assertEquals(e,g.getEdge(i));
+                i++;
+            }
+            i = 0;
+        }
     }
 
     @Test
     void testEdgeIter() {
+        Iterator<NodeData> NodesI = g.nodeIter();
+        NodeData n;
+        int i = 0;
+        int j = 0;
+        while (NodesI.hasNext()) {
+            n = NodesI.next();
+            Iterator<EdgeData> OutEdges = g.edgeIter(n.getKey());
+            while (OutEdges.hasNext()) {
+                EdgeData e = OutEdges.next();
+                if (g.getNode(i).getOutEdges().get(j) != null) {
+                    assertEquals(e,g.getNode(i).getOutEdges().get(j));
+                    j++;
+                }
+            }
+            i = 0;
+            i++;
+        }
     }
 
     @Test
     void removeNode() {
+        Iterator<NodeData> NodesI = g.nodeIter();
+        while (g.nodeIter().hasNext()){
+            NodeData n = NodesI.next();
+            assertEquals(n,g.nodeIter().next());
+        }
+        /**
+         * * problem g.nodeIter().next() dont continue to the next node
+         */
     }
+
 
     @Test
     void removeEdge() {
