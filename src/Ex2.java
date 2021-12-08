@@ -97,11 +97,17 @@ public class Ex2 {
         DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G1.json");
         //t.load("data/G1.json");
 
-        Iterator<NodeData> I = t.getGraph().nodeIter();
-        I.next();
-        I.remove();
-        I.remove();
-        I.remove();
+
+        List <NodeData> tspStart=new ArrayList<>();
+        tspStart.add(t.copy().getNode(0));
+        tspStart.add(t.copy().getNode(3));
+        tspStart.add(t.copy().getNode(5));
+
+        List<NodeData> tspFinal=t.tsp(tspStart);
+        for(NodeData n:tspFinal){
+            System.out.println(n.getKey());
+        }
+
         runGUI(t);
 
 
