@@ -67,13 +67,7 @@ class DirectedWeightedGraph_Test {
         int i = 0;
         while (g.nodeIter().hasNext()&&i!= g.nodeSize()){
             NodeData n = NodesI.next();
-            NodeData n1 = g.nodeIter().next();
-//            System.out.println(n);
-//            System.out.println(g.getNode(i));
-//            System.out.println(g.nodeIter().next());
             assertEquals(n,g.getNode(i));
-            assertEquals(n1,g.getNode(i));
-            assertEquals(n,n1);
             i++;
         }
         /**
@@ -81,7 +75,7 @@ class DirectedWeightedGraph_Test {
          * problem whit NodeI.NEXT we never visit the first node in g.nodeIter()
          * maybe not the actiol problem cus System.out.println(n);
          *                                  System.out.println(g.getNode(i));
-         * problem g.nodeIter().next() dont continue to the next node
+         *
          */
     }
 
@@ -127,14 +121,23 @@ class DirectedWeightedGraph_Test {
     @Test
     void removeNode() {
         Iterator<NodeData> NodesI = g.nodeIter();
-        while (g.nodeIter().hasNext()){
-            NodeData n = NodesI.next();
-            assertEquals(n,g.nodeIter().next());
+        int i = 0;
+        int r = 7;
+        int r1 = 2;
+        assertNull(g.removeNode(r));
+        g.removeNode(r1);
+        assertNull(g.removeNode(r1));
+        Iterator<NodeData> NodesI1 = g.nodeIter();
+
+//        while (g.nodeIter().hasNext()){
+//            if (i == 2) {
+//                i++;
+//            }
+//            NodeData n = NodesI1.next();
+//            assertEquals(n,g.getNode(i));
+//            i++;
+//            }
         }
-        /**
-         * * problem g.nodeIter().next() dont continue to the next node
-         */
-    }
 
 
     @Test
