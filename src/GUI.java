@@ -31,21 +31,22 @@ public class GUI extends JPanel {
     private double minY = Integer.MAX_VALUE;
     private double absX = 0;
     private double absY = 0;
-    private int resize = 50;
+    private int resizey = 55;
+    private int resizex = 70;
     private int center = -1;
     private String msg = "";
-
-
     private List<NodeData> currPath = new ArrayList<NodeData>();
-    private JButton tspButton = new JButton();
-    private JButton saveButton = new JButton();
-    private JButton removeButton = new JButton();
-    private JButton pathDistButton = new JButton();
-    private JButton pathButton = new JButton();
-    private JButton centerButton = new JButton();
-    private JButton loadButton = new JButton();
-    private ArrayList<String> nodes = new ArrayList<>();;
-    private SpinnerListModel idModel;
+
+    private final JCheckBox nodesToggle = new JCheckBox("Nodes");
+    private final JCheckBox arrowsToggle = new JCheckBox("Arrows");
+    private final JCheckBox edgesToggle = new JCheckBox("Edges");
+    private final JButton tspButton = new JButton();
+    private final JButton saveButton = new JButton();
+    private final JButton removeButton = new JButton();
+    private final JButton pathDistButton = new JButton();
+    private final JButton pathButton = new JButton();
+    private final JButton centerButton = new JButton();
+    private final JButton loadButton = new JButton();
 
     /**
      * The constructor gets an input of a Graph Algorithm.
@@ -54,6 +55,11 @@ public class GUI extends JPanel {
     public GUI(DirectedWeightedGraphAlgorithms graph) {
         this.GUIgraph = (DirectedWeightedGraphAlgorithms_) graph;
         updateMinMax();
+        nodesToggle.setSelected(true);
+        if (GUIgraph.getGraph().edgeSize()>100) arrowsToggle.setSelected(false);
+        else arrowsToggle.setSelected(true);
+        if (GUIgraph.getGraph().edgeSize()>200) edgesToggle.setSelected(false);
+        else edgesToggle.setSelected(true);
 
     }
 
@@ -94,6 +100,16 @@ public class GUI extends JPanel {
      */
     private void createButtons() {
 
+
+        edgesToggle.setLocation(0, 40);
+        this.add(edgesToggle);
+
+        nodesToggle.setLocation(0, 60);
+        this.add(nodesToggle);
+
+        arrowsToggle.setLocation(0, 80);
+        this.add(arrowsToggle);
+
         removeButton.setLocation(0,0);
         removeButton.setSize(90,30);
         removeButton.setText("Remove");
@@ -102,14 +118,16 @@ public class GUI extends JPanel {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(pathDistButton.getActionListeners().length);
+                int target = -1;
                 String targetString = JOptionPane.showInputDialog("Insert ID to remove");
-                int target = Integer.parseInt(targetString);
-                if (GUIgraph.getGraph().getNode(target)!=null) {
+                if (targetString!=null) target = Integer.parseInt(targetString);
+                if (GUIgraph.getGraph().getNode(target)!=null&&target!=-1) {
                     GUIgraph.getGraph().removeNode(target);
+                    center = -1;
                     GUIgraph.setPathCalculated(false);
+                    GUIgraph.isConnected = true;
                     JOptionPane.showMessageDialog(null, msg = "Node "+target+" removed");
-                } else JOptionPane.showMessageDialog(null, msg = "Failed to remove node "+target);
+                } else if (target!=-1) JOptionPane.showMessageDialog(null, msg = "Failed to remove node "+target);
 
             }
         });}
@@ -124,11 +142,12 @@ public class GUI extends JPanel {
         pathDistButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                    int src = -1; int dest = -1;
                     String srcString = JOptionPane.showInputDialog("Insert source");
-                    int src = Integer.parseInt(srcString);
-                    String destString = JOptionPane.showInputDialog("Insert destination");
-                    int dest = Integer.parseInt(destString);
-                    JOptionPane.showMessageDialog(null, msg = "Cost: " + GUIgraph.shortestPathDist(src, dest));
+                    if (srcString!=null) src = Integer.parseInt(srcString);
+                    if (src!=-1) {String destString = JOptionPane.showInputDialog("Insert destination");
+                    if (destString!=null) dest = Integer.parseInt(destString); }
+                    if (src!=-1&&dest!=-1) JOptionPane.showMessageDialog(null, msg = "Cost: " + GUIgraph.shortestPathDist(src, dest));
             }
             }
         ); }
@@ -164,7 +183,7 @@ public class GUI extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String NameOfGraph = JOptionPane.showInputDialog("Insert name of existing graph\nThe graph should be inside the data folder");
-                    if (GUIgraph.load("data/"+NameOfGraph+".json")) {
+                    if (NameOfGraph!=null&&GUIgraph.load("data/"+NameOfGraph+".json")) {
                         msg = "Loaded!";
                         maxX = Integer.MIN_VALUE;
                         minX = Integer.MAX_VALUE;
@@ -174,6 +193,12 @@ public class GUI extends JPanel {
                         absY = 0;
                         updateMinMax();
                         center = -1;
+                        GUIgraph.setPathCalculated(false);
+                        nodesToggle.setSelected(true);
+                        if (GUIgraph.getGraph().edgeSize()>100) arrowsToggle.setSelected(false);
+                        else arrowsToggle.setSelected(true);
+                        if (GUIgraph.getGraph().edgeSize()>200) edgesToggle.setSelected(false);
+                        else edgesToggle.setSelected(true);
                     } else msg = "Load failed";
                 }
             }); }
@@ -188,7 +213,7 @@ public class GUI extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String NameOfGraph = JOptionPane.showInputDialog("Insert name for the graph\nThe graph will be inside the data folder\nThe save will override existing graphs");
-                    if (GUIgraph.save("data/"+NameOfGraph+".json")) msg = "Saved!";
+                    if (NameOfGraph!=null&&GUIgraph.save("data/"+NameOfGraph+".json")) msg = "Saved!";
                     else msg = "Save failed";
 
                 }
@@ -202,11 +227,12 @@ public class GUI extends JPanel {
             pathButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    int src = -1; int dest = -1;
                     String srcString = JOptionPane.showInputDialog("Insert source");
-                    int src = Integer.parseInt(srcString);
-                    String destString = JOptionPane.showInputDialog("Insert destination");
-                    int dest = Integer.parseInt(destString);
-                    currPath = GUIgraph.shortestPath(src ,dest);
+                    if (srcString!=null) src = Integer.parseInt(srcString);
+                    if (src!=-1 ) {String destString = JOptionPane.showInputDialog("Insert destination");
+                    if (destString!=null) dest = Integer.parseInt(destString); }
+                    if (src!=-1&&dest!=-1) currPath = GUIgraph.shortestPath(src ,dest);
 
 
                 }
@@ -257,8 +283,8 @@ public class GUI extends JPanel {
             double Geox = currNode.getLocation().x();
             double Geoy = currNode.getLocation().y();
 
-            double x = (Geox-minX)*tX+resize;
-            double y = (Geoy-minY)*tY+resize;
+            double x = (Geox-minX)*tX+resizex;
+            double y = (Geoy-minY)*tY+resizey;
             if (currNode.getKey()==center) g.setColor(Color.blue);
             if (currPath.contains(currNode)) g.setColor(Color.magenta);
             g.fillOval((int)x-5, (int)y-5, 11, 11);
@@ -285,15 +311,14 @@ public class GUI extends JPanel {
             double destGeox = GUIgraph.getGraph().getNode(currEdge.getDest()).getLocation().x();
             double destGeoy = GUIgraph.getGraph().getNode(currEdge.getDest()).getLocation().y();
 
-            double srcx = (srcGeox-minX)*tX+resize;
-            double srcy = (srcGeoy-minY)*tY+resize;
-            double destx = (destGeox-minX)*tX+resize;
-            double desty = (destGeoy-minY)*tY+resize;
+            double srcx = (srcGeox-minX)*tX+resizex;
+            double srcy = (srcGeoy-minY)*tY+resizey;
+            double destx = (destGeox-minX)*tX+resizex;
+            double desty = (destGeoy-minY)*tY+resizey;
             g.drawLine((int)srcx,(int)srcy,(int)destx,(int)desty);
             //if (srcx>destx) g.drawString("R:"+currEdge.getWeight(), (int)((destx+srcx)/2),(int)((desty+srcy)/2));
             // else g.drawString("L:"+currEdge.getWeight(), (int)(((destx+srcx)/2)),(int)((desty+srcy)/2)-25);
-            if (GUIgraph.getGraph().edgeSize()<200) paintArrows(destx, srcx, desty, srcy, g);
-
+            if (arrowsToggle.isSelected()) paintArrows(destx, srcx, desty, srcy, g);
         }
 
 
@@ -420,8 +445,8 @@ public class GUI extends JPanel {
         g.drawString(msg, 200, 40);
         //paintBackground(g);
         createButtons();
-        paintNodes(g);
-        paintEdges(g);
+        if (nodesToggle.isSelected()) paintNodes(g);
+        if (edgesToggle.isSelected()) paintEdges(g);
         this.setVisible(true);
 
     }

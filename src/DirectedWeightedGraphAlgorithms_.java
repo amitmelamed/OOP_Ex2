@@ -4,6 +4,7 @@ import api.EdgeData;
 import api.NodeData;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     private DirectedWeightedGraph originalGraph;
     private DirectedWeightedGraph transposeGraph;
     private double[][][] pathData;
-    private boolean isConnected = true;
+    boolean isConnected = true;
     private boolean pathCalculated = false;
 
     /** sets the pathCalculated boolean to the given boolean **/
@@ -211,8 +212,13 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         if (pathCalculated)
             return isConnected;
         else {
-            BFS(1);
-            BFS(1, true);
+            Iterator<NodeData> I = getGraph().nodeIter();
+            NodeData currNode = I.next();
+            while (currNode==null) {
+                currNode = I.next();
+            }
+            BFS(currNode.getKey());
+            BFS(currNode.getKey(), true);
 
             return isConnected;
 
@@ -271,7 +277,14 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
             if (!isConnected) return null;
             if (!pathCalculated) {
+                int maxnodeid = 0;
                 Iterator<NodeData> I = getGraph().nodeIter();
+                while (I.hasNext()) {
+                    maxnodeid = I.next().getKey();
+                }
+                pathData = new double[maxnodeid+1][maxnodeid+1][2];
+
+                I = getGraph().nodeIter();
                 I.forEachRemaining(nodeData -> BFS(nodeData.getKey()));
                 pathCalculated = true;
             }
