@@ -31,7 +31,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     /** sets the pathCalculated boolean to the given boolean **/
     public void setPathCalculated(boolean pathCalculated) {
         this.pathCalculated = pathCalculated;
-        if (!pathCalculated) isConnected = false;
+        if (!pathCalculated) isConnected = true;
     }
 
     /** This constructor gets a jsonfile and initiate the GraphAlgo **/

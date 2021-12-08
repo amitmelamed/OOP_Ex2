@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 
 /**
@@ -210,7 +211,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
      */
     @Override
     public Iterator<NodeData> nodeIter() {
-        return nodes.values().iterator(); //probably not the solution but maybe it is
+        return new NodeIter();
 
     }
 
@@ -220,7 +221,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
      */
     @Override
     public Iterator<EdgeData> edgeIter() {
-        return edges.values().iterator(); //probably not the solution but maybe it is
+        return new EdgeIter();
     }
 
     /**
@@ -231,7 +232,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
      */
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
-        return nodes.get(node_id).getOutEdges().values().iterator(); //probably not the solution but maybe it is
+        return new outEdgesIter(node_id); //probably not the solution but maybe it is
     }
 
     /**
@@ -338,4 +339,126 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     public int getMC() {
         return MC;
     }
+
+    private class NodeIter implements Iterator<NodeData> {
+
+        private NodeData currNode;
+        private Iterator<NodeData> Iter;
+        public NodeIter() {
+            Iter = nodes.values().iterator();
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return Iter.hasNext();
+        }
+
+        @Override
+        public NodeData next() {
+            currNode=Iter.next();
+            return currNode;
+        }
+
+        @Override
+        public void remove() {
+           NodeData tempNode = Iter.next();
+           NodeData nextNode;
+           removeNode(currNode.getKey());
+           Iter = nodes.values().iterator();
+           nextNode = tempNode;
+           while (nextNode!=tempNode) {
+               nextNode=Iter.next();
+           }
+           currNode = tempNode;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super NodeData> action) {
+            Iterator.super.forEachRemaining(action);
+        }
+    }
+
+    private class EdgeIter implements Iterator<EdgeData> {
+
+        private EdgeData currEdge;
+        private Iterator<EdgeData> Iter;
+        public EdgeIter() {
+            Iter = edges.values().iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return Iter.hasNext();
+        }
+
+        @Override
+        public EdgeData next() {
+            currEdge = Iter.next();
+            return currEdge;
+        }
+
+        @Override
+        public void remove() {
+            EdgeData tempEdge = Iter.next();
+            EdgeData nextEdge;
+            removeEdge(currEdge.getId());
+            Iter = edges.values().iterator();
+            nextEdge = tempEdge;
+            while (nextEdge!=tempEdge) {
+                nextEdge=Iter.next();
+            }
+            currEdge = tempEdge;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super EdgeData> action) {
+            Iterator.super.forEachRemaining(action);
+        }
+    }
+
+    private class outEdgesIter implements Iterator<EdgeData> {
+
+        private Iterator<EdgeData> Iter;
+        private EdgeData currEdge;
+        int key;
+        public outEdgesIter(int NodeKey) {
+            Iter = nodes.get(NodeKey).getOutEdges().values().iterator();
+            key = NodeKey;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return Iter.hasNext();
+        }
+
+        @Override
+        public EdgeData next() {
+            currEdge = Iter.next();
+            return currEdge;
+        }
+
+        @Override
+        public void remove() {
+            if (!Iter.hasNext()) return;
+            EdgeData tempEdge = Iter.next();
+            EdgeData nextEdge;
+            removeEdge(currEdge.getId());
+            Iter = nodes.get(key).getOutEdges().values().iterator();
+            nextEdge = tempEdge;
+            while (nextEdge!=tempEdge) {
+                nextEdge=Iter.next();
+            }
+            currEdge = tempEdge;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super EdgeData> action) {
+            Iterator.super.forEachRemaining(action);
+        }
+    }
+
+
 }
+
+
