@@ -94,9 +94,28 @@ public class Ex2 {
 
 
     public static void main(String[] args) {
-        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G11.json");
-        runGUI(t);
+        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G0.json");
+        System.out.println(t.center());
+        t.getGraph().removeNode(4);
+        System.out.println(t.isConnected());
+        System.out.println(t.center());
+        t.load("data/G0.json");
+        /**
+         *we have a problem with the canter in the GUI class.
+         * when we remove the original center and the graph is still connected it doesn't find ander center.
+         * need to be fixed.
+         **/
+        //System.out.println(t.shortestPathDist(0,500));
+        List<NodeData> tspStart=new ArrayList<>();
+        for(int i=0;i<t.copy().nodeSize();i++){
+            tspStart.add(t.copy().getNode(i));
+        }
 
+        List<NodeData> tspFinal=t.tsp(tspStart);
+        for(int i=0;i<tspFinal.size();i++){
+            System.out.println(tspFinal.get(i).getKey());
+        }
+        runGUI(t);
         //t.load("data/G11.json");
         //runGUI(t);
         //Iterator<NodeData> N = t.getGraph().nodeIter();

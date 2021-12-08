@@ -195,14 +195,13 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public void connect(int src, int dest, double w) {
         if(nodes.containsKey(src)&&nodes.containsKey(dest)){
-            EdgeData_ edgeData=new EdgeData_(src,dest,w, edgeID);
+            EdgeData_ edgeData = new EdgeData_(src,dest,w, edgeID);
             edgeID++;
             MC++;
             nodes.get(src).getOutEdges().put(dest,edgeData);
             nodes.get(dest).getInEdges().put(src,edgeData);
             edges.put(edgeData.getId(),edgeData);
-        } //MAYBE ADD SOMETHING THAT CHECKS IF THE EDGE ALREADY EXISTS WITH THE SAME WEIGHT
-          //OR MAYBE ITS OKAY TO HAVE DUPLICATES AND WE NEED TO ADD THE EDGE ANYWAY
+        }
     }
 
     /**
