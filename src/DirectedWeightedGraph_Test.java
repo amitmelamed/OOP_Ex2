@@ -142,18 +142,21 @@ class DirectedWeightedGraph_Test {
 
     @Test
     void removeEdge() {
+        DirectedWeightedGraph_ copied=new DirectedWeightedGraph_(g);
+        copied.removeEdge(0,1);
+        assertEquals(14,copied.edgeSize());
+
     }
 
-    @Test
-    void testRemoveEdge() {
-    }
 
     @Test
     void nodeSize() {
+        assertEquals(5,g.nodeSize());
     }
 
     @Test
     void edgeSize() {
+        assertEquals(15,g.edgeSize());
     }
 
     @Test
