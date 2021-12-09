@@ -68,7 +68,7 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-        //runGUI(args[0]);
+        runGUI(args[1]);
         //runGUI("data/G1.json");
     }
 }

@@ -1,6 +1,9 @@
 import api.EdgeData;
 import api.NodeData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import api.DirectedWeightedGraph;
+
 
 import java.util.Iterator;
 
@@ -64,18 +67,11 @@ class DirectedWeightedGraph_Test {
     void nodeIter() {
         Iterator<NodeData> NodesI = g.nodeIter();
         int i = 0;
-        while (g.nodeIter().hasNext()&&i!= g.nodeSize()){
+        while (NodesI.hasNext()){
             NodeData n = NodesI.next();
             assertEquals(n,g.getNode(i));
             i++;
         }
-        /**
-         * i!= g.nodeSize() problem whit hasnext!!
-         * problem whit NodeI.NEXT we never visit the first node in g.nodeIter()
-         * maybe not the actiol problem cus System.out.println(n);
-         *                                  System.out.println(g.getNode(i));
-         *
-         */
     }
 
 
@@ -127,7 +123,6 @@ class DirectedWeightedGraph_Test {
         assertNull(g.removeNode(r1));
         Iterator<NodeData> NodesI1 = g.nodeIter();
         assertNotEquals(NodesI,NodesI1);
-//        assertEquals(NodesI1,g.nodeIter()); PROBLEM ?
         assertNotEquals(NodesI,g.nodeIter());
         NodesI = g.nodeIter();
         while (NodesI.hasNext()){
@@ -135,9 +130,6 @@ class DirectedWeightedGraph_Test {
             NodeData n1 = NodesI1.next();
             assertEquals(n,n1);
             }
-        /** PROBLEM WITH g.nodeIter().hasNext() AFTER REMOVE FIXED BY NodeI.hesNext IN THE WHILE
-         *
-         */
         }
 
 
@@ -163,5 +155,6 @@ class DirectedWeightedGraph_Test {
 
     @Test
     void getMC() {
+        assertEquals(0,g.getMC());
     }
 }

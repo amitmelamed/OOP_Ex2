@@ -45,6 +45,7 @@ class DirectedWeightedGraphAlgorithms_Test {
     @Test
     void getGraph() {
     }
+
     @Test
     void isConnected() {
         assertEquals(true,graphAlgorithmsG1.isConnected());
