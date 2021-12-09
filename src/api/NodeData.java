@@ -9,12 +9,6 @@ import java.util.Map;
  */
 public interface NodeData {
 
-	public Map<Integer, EdgeData> getOutEdges(); //Integer is the destination of each edge in the map
-
-	public Map<Integer, EdgeData> getInEdges(); // Integer is the source of each edge in the map
-
-
-
 	/**
 	 * Returns the key (id) associated with this node.
 	 * @return
@@ -60,4 +54,8 @@ public interface NodeData {
 	 * @param t - the new value of the tag
 	 */
 	public void setTag(int t);
+
+	public Map<Integer, EdgeData> getOutEdges(); //Integer is the destination of each edge in the map
+
+	public Map<Integer, EdgeData> getInEdges(); // Integer is the source of each edge in the map
 }

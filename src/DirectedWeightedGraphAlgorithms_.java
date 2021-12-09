@@ -4,15 +4,11 @@ import api.EdgeData;
 import api.NodeData;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Node;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-
-import static api.lib.parseJSONFile;
 
 public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAlgorithms  {
     /**
@@ -87,13 +83,13 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     }
 
     /**
-     * This function performs BFS on the transposed graph.
-     * @param key int - starting point for the BFS
-     * @param t boolean - this boolean commands the function to perform BFS on the transposed graph.
+     * This function is based on dijkstra’s algorithm, for calculating path data on the transposed graph.
+     * @param key int - starting point.
+     * @param t boolean - this boolean commands the function to perform on the transposed graph.
      */
-    private void BFS(int key, boolean t) {
-
+    private void calculatePath(int key, boolean t) {
         Iterator<NodeData> NodesI = transposeGraph.nodeIter();
+
         NodeData currNode;
         while (NodesI.hasNext()) {
             currNode = NodesI.next();
@@ -133,8 +129,12 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         }
     }
 
-    private void BFS(int key) {
 
+    /**
+     * This function is based on dijkstra’s algorithm, for calculating path data on the graph.
+     * @param key int - starting point.
+     */
+    private void calculatePath(int key) {
         Iterator<NodeData> NodesI = originalGraph.nodeIter();
         NodeData currNode;
         while (NodesI.hasNext()) {
@@ -217,8 +217,8 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
             while (currNode==null) {
                 currNode = I.next();
             }
-            BFS(currNode.getKey());
-            BFS(currNode.getKey(), true);
+            calculatePath(currNode.getKey());
+            calculatePath(currNode.getKey(), true);
 
             return isConnected;
 
@@ -234,7 +234,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     @Override
     public double shortestPathDist(int src, int dest) {
         //use pathData after we update it in calculatePathData
-        if (!pathCalculated) BFS(src);
+        if (!pathCalculated) calculatePath(src);
         if (pathData[src][dest][0]>=Integer.MAX_VALUE) return -1;
         else return pathData[src][dest][0];
     }
@@ -250,7 +250,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
         //use pathData after we update it in calculatePathData
-        if (!pathCalculated) BFS(src);
+        if (!pathCalculated) calculatePath(src);
         if (shortestPathDist(src, dest)==-1) return null;
         List<NodeData> List= new ArrayList<>();
         List.add(originalGraph.getNode(dest));
@@ -268,14 +268,14 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
 
     /**
      * returns the center of the graph.
-     * each node in the graph have maximum distance to other point in the graph.
+     * each node in the graph have maximum cost to other point in the graph.
      * the center is the node with the LOWEST maximum distance.
      * @return
      */
     @Override
     public NodeData center() {
 
-            if (!isConnected) return null;
+            //if (!isConnected) return null;
             if (!pathCalculated) {
                 int maxnodeid = 0;
                 Iterator<NodeData> I = getGraph().nodeIter();
@@ -285,9 +285,10 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
                 pathData = new double[maxnodeid+1][maxnodeid+1][2];
 
                 I = getGraph().nodeIter();
-                I.forEachRemaining(nodeData -> BFS(nodeData.getKey()));
+                I.forEachRemaining(nodeData -> calculatePath(nodeData.getKey()));
                 pathCalculated = true;
             }
+            if (!isConnected) return null;
 
             int center = -1;
             double minHigh=Double.MAX_VALUE;
