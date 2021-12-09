@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DirectedWeightedGraph_Test {
     DirectedWeightedGraph_ g = new DirectedWeightedGraph_("data/G0.json");
@@ -121,22 +120,24 @@ class DirectedWeightedGraph_Test {
     @Test
     void removeNode() {
         Iterator<NodeData> NodesI = g.nodeIter();
-        int i = 0;
         int r = 7;
         int r1 = 2;
         assertNull(g.removeNode(r));
         g.removeNode(r1);
         assertNull(g.removeNode(r1));
         Iterator<NodeData> NodesI1 = g.nodeIter();
-
-//        while (g.nodeIter().hasNext()){
-//            if (i == 2) {
-//                i++;
-//            }
-//            NodeData n = NodesI1.next();
-//            assertEquals(n,g.getNode(i));
-//            i++;
-//            }
+        assertNotEquals(NodesI,NodesI1);
+//        assertEquals(NodesI1,g.nodeIter()); PROBLEM ?
+        assertNotEquals(NodesI,g.nodeIter());
+        NodesI = g.nodeIter();
+        while (NodesI.hasNext()){
+            NodeData n =  NodesI.next();
+            NodeData n1 = NodesI1.next();
+            assertEquals(n,n1);
+            }
+        /** PROBLEM WITH g.nodeIter().hasNext() AFTER REMOVE FIXED BY NodeI.hesNext IN THE WHILE
+         *
+         */
         }
 
 
