@@ -116,7 +116,7 @@ class DirectedWeightedGraph_Test {
             i++;
         }
     }
-
+    
     @Test
     void removeNode() {
         Iterator<NodeData> NodesI = g.nodeIter();
