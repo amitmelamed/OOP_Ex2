@@ -45,6 +45,9 @@ This button will remove a node. </br>
  After that you will be asked to enter the IDs of nodes he wants to visit. </br>
  You will receive and ordered list of the nodes he has to go through. </br>
  Also, that path will be colored purple.
+
+![TSPexample](https://user-images.githubusercontent.com/90526270/145382286-96cf14c6-6d60-4b65-9b31-414aff1dfb55.png)
+
  
  ### Path Dist - 
  You will be asked to enter a source and destination IDs. </br>
