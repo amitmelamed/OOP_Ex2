@@ -306,6 +306,7 @@ public class GUI extends JPanel {
             }); }
 
 
+
             saveButton.setLocation(100,20);
             saveButton.setSize(100,20);
             saveButton.setText("Save");

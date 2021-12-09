@@ -366,7 +366,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
                     allVisited = false;
             }
         }
-        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),0);
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),tsp.get(0).getKey());
 
         for(int i=0;i<fromEndToZero.size();i++){
             tsp.add(fromEndToZero.get(i));
@@ -384,6 +384,15 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         if(cities.size()==copy().nodeSize())
         {
             return tsp2(cities);
+        }
+        if(cities.size()==2){
+            return tspForTwoNodes(cities);
+        }
+        if(cities.size()==3){
+            return tspForThreeNodes(cities);
+        }
+        if(cities.size()==4){
+            return tspForFourNodes(cities);
         }
         List<NodeData> tsp=new ArrayList<>();
         Map <Integer, Boolean>visited=new HashMap();
@@ -439,12 +448,216 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
             }
 
         }
-        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),0);
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),tsp.get(0).getKey());
 
         for(int i=0;i<fromEndToZero.size();i++){
             tsp.add(fromEndToZero.get(i));
         }
 
+        for (int i=0;i<tsp.size()-1;i++){
+            if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
+                tsp.remove(i);
+            }
+        }
+        return tsp;
+
+    }
+
+    public List<NodeData> tspForFourNodes(List<NodeData> cities){
+        List<NodeData> tsp =new ArrayList<>();
+        NodeData nodeA=cities.get(0);
+        NodeData nodeB=cities.get(1);
+        NodeData nodeC=cities.get(2);
+        NodeData nodeD=cities.get(3);
+        double abcd=shortestPathDist(nodeA.getKey(), nodeB.getKey())+shortestPathDist(nodeB.getKey(),nodeC.getKey())+shortestPathDist(nodeC.getKey(),nodeD.getKey());
+        double abdc=shortestPathDist(nodeA.getKey(), nodeB.getKey())+shortestPathDist(nodeB.getKey(),nodeD.getKey())+shortestPathDist(nodeD.getKey(),nodeC.getKey());
+        double acbd=shortestPathDist(nodeA.getKey(), nodeC.getKey())+shortestPathDist(nodeC.getKey(),nodeB.getKey())+shortestPathDist(nodeB.getKey(),nodeD.getKey());
+        double acdb=shortestPathDist(nodeA.getKey(), nodeC.getKey())+shortestPathDist(nodeC.getKey(),nodeD.getKey())+shortestPathDist(nodeD.getKey(),nodeB.getKey());
+        double adbc=shortestPathDist(nodeA.getKey(), nodeD.getKey())+shortestPathDist(nodeD.getKey(),nodeB.getKey())+shortestPathDist(nodeB.getKey(),nodeC.getKey());
+        double adcb=shortestPathDist(nodeA.getKey(), nodeD.getKey())+shortestPathDist(nodeD.getKey(),nodeC.getKey())+shortestPathDist(nodeC.getKey(),nodeB.getKey());
+        double path=Double.POSITIVE_INFINITY;
+        int bestIndex=-1;
+        ArrayList<Double> arrayList=new ArrayList();
+        arrayList.add(abcd);
+        arrayList.add(abdc);
+        arrayList.add(acbd);
+        arrayList.add(acdb);
+        arrayList.add(adbc);
+        arrayList.add(adcb);
+        for(int i=0;i<arrayList.size();i++){
+            if(arrayList.get(i)<path){
+                path=arrayList.get(i);
+                bestIndex=i;
+            }
+        }
+        //abcd
+        if(bestIndex==0){
+            List <NodeData>fromAtoB=shortestPath(nodeA.getKey(),nodeB.getKey());
+            for(int i=0;i< fromAtoB.size();i++){
+                tsp.add(fromAtoB.get(i));
+            }
+            List <NodeData>fromBtoC=shortestPath(nodeB.getKey(),nodeC.getKey());
+            for(int i=0;i< fromBtoC.size();i++){
+                tsp.add(fromBtoC.get(i));
+            }
+            List <NodeData> fromCtoD=shortestPath(nodeC.getKey(),nodeD.getKey());
+
+            for(int i=0;i< fromCtoD.size();i++){
+                tsp.add(fromCtoD.get(i));
+            }
+        }
+        //abdc
+        else if(bestIndex==1){
+            List <NodeData>fromAtoB=shortestPath(nodeA.getKey(),nodeB.getKey());
+            for(int i=0;i< fromAtoB.size();i++){
+                tsp.add(fromAtoB.get(i));
+            }
+            List <NodeData>fromBtoD=shortestPath(nodeB.getKey(),nodeD.getKey());
+            for(int i=0;i< fromBtoD.size();i++){
+                tsp.add(fromBtoD.get(i));
+            }
+            List <NodeData> fromDtoC=shortestPath(nodeD.getKey(),nodeC.getKey());
+
+            for(int i=0;i< fromDtoC.size();i++){
+                tsp.add(fromDtoC.get(i));
+            }
+        }
+        //acbd
+        else if(bestIndex==2){
+            List <NodeData>fromAtoC=shortestPath(nodeA.getKey(),nodeC.getKey());
+            for(int i=0;i< fromAtoC.size();i++){
+                tsp.add(fromAtoC.get(i));
+            }
+            List <NodeData>fromCtoB=shortestPath(nodeC.getKey(),nodeB.getKey());
+            for(int i=0;i< fromCtoB.size();i++){
+                tsp.add(fromCtoB.get(i));
+            }
+            List <NodeData> fromBtoD=shortestPath(nodeB.getKey(),nodeD.getKey());
+
+            for(int i=0;i< fromBtoD.size();i++){
+                tsp.add(fromBtoD.get(i));
+            }
+        }
+        //acdb
+        else if(bestIndex==3){
+            List <NodeData>fromAtoC=shortestPath(nodeA.getKey(),nodeC.getKey());
+            for(int i=0;i< fromAtoC.size();i++){
+                tsp.add(fromAtoC.get(i));
+            }
+            List <NodeData>fromCtoD=shortestPath(nodeC.getKey(),nodeD.getKey());
+            for(int i=0;i< fromCtoD.size();i++){
+                tsp.add(fromCtoD.get(i));
+            }
+            List <NodeData> fromDtoB=shortestPath(nodeD.getKey(),nodeB.getKey());
+
+            for(int i=0;i< fromDtoB.size();i++){
+                tsp.add(fromDtoB.get(i));
+            }
+
+        }
+        //adbc
+        else if(bestIndex==4){
+
+            List <NodeData>fromAtoD=shortestPath(nodeA.getKey(),nodeD.getKey());
+            for(int i=0;i< fromAtoD.size();i++){
+                tsp.add(fromAtoD.get(i));
+            }
+            List <NodeData> fromDtoB=shortestPath(nodeD.getKey(),nodeB.getKey());
+
+            for(int i=0;i< fromDtoB.size();i++){
+                tsp.add(fromDtoB.get(i));
+            }
+            List <NodeData>fromBtoC=shortestPath(nodeB.getKey(),nodeC.getKey());
+            for(int i=0;i< fromBtoC.size();i++){
+                tsp.add(fromBtoC.get(i));
+            }
+        }
+        //adcb
+        else{
+            List <NodeData>fromAtoD=shortestPath(nodeA.getKey(),nodeD.getKey());
+            for(int i=0;i< fromAtoD.size();i++){
+                tsp.add(fromAtoD.get(i));
+            }
+            List <NodeData> fromDtoC=shortestPath(nodeD.getKey(),nodeC.getKey());
+
+            for(int i=0;i< fromDtoC.size();i++){
+                tsp.add(fromDtoC.get(i));
+            }
+            List <NodeData>fromCtoB=shortestPath(nodeC.getKey(),nodeB.getKey());
+            for(int i=0;i< fromCtoB.size();i++){
+                tsp.add(fromCtoB.get(i));
+            }
+
+
+        }
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),tsp.get(0).getKey());
+
+        for(int i=0;i<fromEndToZero.size();i++){
+            tsp.add(fromEndToZero.get(i));
+        }
+
+        for (int i=0;i<tsp.size()-1;i++){
+            if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
+                tsp.remove(i);
+            }
+        }
+
+        return tsp;
+    }
+    public List<NodeData> tspForThreeNodes(List<NodeData> cities){
+        List<NodeData> tsp =new ArrayList<>();
+        NodeData nodeA=cities.get(0);
+        NodeData nodeB=cities.get(1);
+        NodeData nodeC=cities.get(2);
+        double abc=shortestPathDist(nodeA.getKey(), nodeB.getKey())+shortestPathDist(nodeB.getKey(),nodeC.getKey());
+        double acb=shortestPathDist(nodeA.getKey(), nodeC.getKey())+shortestPathDist(nodeC.getKey(),nodeB.getKey());
+        if(abc<abc){
+            List <NodeData>fromAtoB=shortestPath(nodeA.getKey(),nodeB.getKey());
+            for(int i=0;i< fromAtoB.size();i++){
+                tsp.add(fromAtoB.get(i));
+            }
+            List <NodeData>fromBtoC=shortestPath(nodeB.getKey(),nodeC.getKey());
+            for(int i=0;i< fromBtoC.size();i++){
+                tsp.add(fromBtoC.get(i));
+            }
+        }else {
+            List <NodeData>fromAtoC=shortestPath(nodeA.getKey(),nodeC.getKey());
+            for(int i=0;i< fromAtoC.size();i++){
+                tsp.add(fromAtoC.get(i));
+            }
+            List <NodeData>fromCtoB=shortestPath(nodeC.getKey(),nodeB.getKey());
+            for(int i=0;i< fromCtoB.size();i++){
+                tsp.add(fromCtoB.get(i));
+            }
+
+        }
+        List <NodeData> fromEndToZero=shortestPath (tsp.get(tsp.size()-1).getKey(),tsp.get(0).getKey());
+
+        for(int i=0;i<fromEndToZero.size();i++){
+            tsp.add(fromEndToZero.get(i));
+        }
+
+        for (int i=0;i<tsp.size()-1;i++){
+            if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
+                tsp.remove(i);
+            }
+        }
+        return tsp;
+
+
+    }
+    public List<NodeData> tspForTwoNodes(List<NodeData> cities){
+        List<NodeData> tsp =new ArrayList<>();
+        NodeData nodeA=cities.get(0);
+        NodeData nodeB=cities.get(1);
+        List <NodeData>fromAtoB=shortestPath(nodeA.getKey(),nodeB.getKey());
+        for(int i=0;i< fromAtoB.size();i++){
+            tsp.add(fromAtoB.get(i));
+        }
+        List <NodeData>fromBtoA=shortestPath(nodeB.getKey(),nodeA.getKey());
+        for(int i=0;i< fromBtoA.size();i++){
+            tsp.add(fromBtoA.get(i));
+        }
         for (int i=0;i<tsp.size()-1;i++){
             if(tsp.get(i).getKey()==tsp.get(i+1).getKey()){
                 tsp.remove(i);
