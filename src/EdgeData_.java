@@ -5,16 +5,16 @@ import api.EdgeData;
  * each edge will have source,destination,weight, info and tag(for implement algorithms use).
  */
 public class EdgeData_ implements EdgeData {
+
     private int source;
     private int destination;
     private double weight;
     private String info;
     private int tag;
-
     private int id;
 
     /**
-     * Constractor for deep copy.
+     * Constructor for deep copy.
      * will set tag to ZERO.
      * @param E
      */

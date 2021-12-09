@@ -2,14 +2,10 @@ import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import static api.lib.parseJSONFile;
+
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -26,7 +22,7 @@ import java.util.function.Consumer;
  */
 public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
-    /** This object holds 2 hashmap2, one for holding the nodes and one for edges
+    /** This object holds 2 hashmaps, one for holding the nodes and one for edges
      * edgeID is for listing the amount of edges and mainly for giving a unique
      * ID for each edge.
      */
@@ -36,6 +32,11 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     private int edgeID = 0;
     private int MC = 0;
 
+
+    public DirectedWeightedGraph_() {
+        nodes = new HashMap<>();
+        edges = new HashMap<>();
+    }
 
     /**
      * Deep Copy constructor
@@ -108,7 +109,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
         JSONObject jsonObject = null;
         try {
-            jsonObject = parseJSONFile(jsonFileName);
+            jsonObject = lib.parseJSONFile(jsonFileName);
         } catch (IOException e) {
             e.printStackTrace();
         }

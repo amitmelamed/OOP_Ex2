@@ -63,24 +63,11 @@ public class Ex2 {
         screen.setVisible(true);
 
     }
-//    public static void runGUI(DirectedWeightedGraph alg) {
-//
-//        JFrame screen = new JFrame("ze waze");
-//        screen.setSize(600,505);
-//
-//        GUI graph = new GUI(alg);
-//        screen.add(graph);
-//
-//        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        screen.setLocationRelativeTo(null);
-//        screen.setVisible(true);
-//
-//    }
 
     public static void runGUI(DirectedWeightedGraphAlgorithms alg) {
 
-        JFrame screen = new JFrame("ze waze");
-        screen.setSize(600,500);
+        JFrame screen = new JFrame("Directed Weighted Graph");
+        screen.setSize(515,500);
 
         GUI graph = new GUI(alg);
         screen.add(graph);
@@ -95,18 +82,9 @@ public class Ex2 {
 
     public static void main(String[] args) {
         DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G1.json");
-        //t.load("data/G1.json");
+        //t.init(lib.create1M());
+        //t.save("data/G1M.json");
 
-
-        List <NodeData> tspStart=new ArrayList<>();
-        tspStart.add(t.getGraph().getNode(0));
-        tspStart.add(t.getGraph().getNode(3));
-        tspStart.add(t.getGraph().getNode(5));
-
-        List<NodeData> tspFinal=t.tsp(tspStart);
-        for(NodeData n:tspFinal){
-            System.out.println(n.getKey());
-        }
 
         runGUI(t);
 
