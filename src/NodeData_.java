@@ -65,6 +65,7 @@ public class NodeData_ implements NodeData {
         inEdges = new HashMap<>();
     }
 
+
     /**
      * getters setters and toString methods.
      * @return

@@ -14,6 +14,7 @@ class NodeData_Test {
     public EdgeData_ newEdge5 = new EdgeData_(5,0,5,5);
 
 
+
     @Test
     void getOutEdges() {
         n.getOutEdges().put(0,newEdge);

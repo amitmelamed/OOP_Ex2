@@ -73,6 +73,7 @@ public class GeoLocation_ implements api.GeoLocation{
         return calc;
     }
 
+
     /**
      * prints the GeoLocation data. X,Y,Z.
      * @return

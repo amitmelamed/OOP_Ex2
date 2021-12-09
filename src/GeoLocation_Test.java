@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GeoLocation_Test {
 
+    // Preparation
     @Test
     void distance() {
         GeoLocation_ g1=new GeoLocation_(10,10,0);

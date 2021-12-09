@@ -28,6 +28,7 @@ public class EdgeData_ implements EdgeData {
     }
 
 
+
     /**
      * Constructor for edge.
      * will get source, destination, weight and ID.

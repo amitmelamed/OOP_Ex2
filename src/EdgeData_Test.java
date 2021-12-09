@@ -13,6 +13,7 @@ class EdgeData_Test {
     public double weight2 = 2.02;
     public double weight3 = 1.43;
 
+
     @Test
     void setWeight() {
         double s = newEdge.getWeight();

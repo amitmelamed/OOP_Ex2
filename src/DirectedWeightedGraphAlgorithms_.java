@@ -102,6 +102,7 @@ public class DirectedWeightedGraphAlgorithms_ implements DirectedWeightedGraphAl
         Q.add(currNode);
 
 
+
         while(!Q.isEmpty()) {
             currNode = Q.poll();
             currNode.setTag(2);

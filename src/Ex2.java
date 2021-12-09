@@ -1,14 +1,9 @@
 import  api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
-import api.EdgeData;
-import api.NodeData;
-import org.w3c.dom.Node;
+
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -33,11 +28,7 @@ public class Ex2 {
      * @return
      */
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
-        //DirectedWeightedGraph_ g = new DirectedWeightedGraph_(json_file);
         DirectedWeightedGraphAlgorithms ans = new DirectedWeightedGraphAlgorithms_(json_file);
-        // ****** Add your code here ******
-        //
-        // ********************************
         return ans;
     }
 
@@ -48,12 +39,10 @@ public class Ex2 {
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      */
     public static void runGUI(String json_file) {
-        //DirectedWeightedGraph_ alg = new DirectedWeightedGraph_(json_file);
-        //DirectedWeightedGraph alg = getGrapg(json_file);
-        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file); //if we use the extends way it will work. (this is boaz's line)
+        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
 
-        JFrame screen = new JFrame("ze waze");
-        screen.setSize(600,500);
+        JFrame screen = new JFrame("Directed Weighted Graph");
+        screen.setSize(515,500);
 
         GUI graph = new GUI(alg);
         screen.add(graph);
@@ -78,46 +67,9 @@ public class Ex2 {
 
     }
 
-
-
     public static void main(String[] args) {
-        DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G1.json");
-        //t.init(lib.create1M());
-        //t.save("data/G1M.json");
-
-
-        runGUI(t);
-
-
-
-
-        /**DONT DELETE THE FOLLOWING CODE THIS IS A REAL GOOD TEST**/
-//        List<NodeData> l = t.shortestPath(1,2);
-//        int counte = 0;
-//        for (int i = 0; i < t.getGraph().nodeSize(); i++) {
-//            for (int k = 0; k < t.getGraph().nodeSize(); k++) {
-//                l = t.shortestPath(i, k);
-//                double sumw = 0;
-//                if (l != null) {
-//                    for (int j = 0; j < l.size() - 1; j++) {
-//                        //System.out.println(t.getGraph().getEdge(l.get(j).getKey(), l.get(j+1).getKey()));
-//                        sumw += t.getGraph().getEdge(l.get(j).getKey(), l.get(j + 1).getKey()).getWeight();
-//                    }
-//                    if (sumw != t.shortestPathDist(i, k)) {
-//                        System.out.println(i + ",  " + k + ":");
-//                        System.out.println("sumw is " + sumw);
-//                        System.out.println("func is " + t.shortestPathDist(i, k));
-//                        System.out.println(l.toString());
-//                        System.out.println();
-//                        counte++;
-//                    }
-//                }
-//            }
-//        }
-//        System.err.println(counte+" wrong calculations out of "+t.getGraph().nodeSize()*t.getGraph().nodeSize());
-
-
-
+        //runGUI(args[0]);
+        //runGUI("data/G1.json");
     }
 }
 

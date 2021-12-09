@@ -105,6 +105,7 @@ public class GUI extends JPanel {
     private void createButtons() {
 
 
+
         edgesToggle.setLocation(0, 40);
         this.add(edgesToggle);
 

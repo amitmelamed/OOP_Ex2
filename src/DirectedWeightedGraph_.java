@@ -11,6 +11,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 
+
+
 /**
  * Directed Weight Graph is a class representing graph.
  * A Graph is basically a set of vertex and a set of edges.
@@ -113,6 +115,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         JSONArray jsonNodes = jsonObject.getJSONArray("Nodes");
         for(int i=0;i<jsonNodes.length();i++){
             int key=jsonNodes.getJSONObject(i).getInt("id");
