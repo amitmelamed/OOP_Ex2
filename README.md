@@ -181,3 +181,32 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
 | N. of nodes | 1000 | 10000 | 100000 | 1000000 |
 | ----------- | ---- | ----- | ------ |-------- |
 | Seconds     |  sdf  1 |  sdf   2 |  fsf    3 |    sf   4 |
+
+
+
+
+
+
+### UML - 
+
+Ex2 - the mine class of the program that run the GUI of the graph.
+
+GUI - Creates the window where the graph is displayed.
+
+<img width="160" alt="UML EX2GUI" src="https://user-images.githubusercontent.com/93621085/145468509-40348379-f667-40dc-bf43-ccf56433ad4b.png">
+
+DirectedWeightedGraphAlgorithms - creating an DirectedWeightedGraphAlgorithms by DirectedWeightedGraph object and all the functions algorithms that we can run on him.
+
+DirectedWeightedGraph - creating the DirectedWeightedGraph by using NodeData EdgeData and GeoLocation.
+
+
+<img width="560" alt="UML DIRECTEDALGO" src="https://user-images.githubusercontent.com/93621085/145468115-3953f7e6-c759-4d5b-8968-9c9f9151d500.png">
+
+
+NodeData ,EdgeData and GeoLocation
+
+
+<img width="425" alt="UML NODEDGEOLO" src="https://user-images.githubusercontent.com/93621085/145468527-d5f5cd98-edfc-473f-b3fd-a77573cd1abb.png">
+
+
+
