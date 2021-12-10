@@ -72,7 +72,21 @@ This button will remove a node. </br>
   
   
 ## Analyzing and Explaining The Code
-  //////////// INSERT UML HERE ////////////////
+
+<img width="160" alt="UML EX2GUI" src="https://user-images.githubusercontent.com/93621085/145468509-40348379-f667-40dc-bf43-ccf56433ad4b.png">
+
+DirectedWeightedGraphAlgorithms - creating an DirectedWeightedGraphAlgorithms by DirectedWeightedGraph object and all the functions algorithms that we can run on him.
+
+DirectedWeightedGraph - creating the DirectedWeightedGraph by using NodeData EdgeData and GeoLocation.
+
+
+<img width="560" alt="UML DIRECTEDALGO" src="https://user-images.githubusercontent.com/93621085/145468115-3953f7e6-c759-4d5b-8968-9c9f9151d500.png">
+
+
+NodeData ,EdgeData and GeoLocation - Aggregation between NodeData ,EdgeData and GeoLocation and DirectedWeightedGraph
+
+
+<img width="425" alt="UML NODEDGEOLO" src="https://user-images.githubusercontent.com/93621085/145468527-d5f5cd98-edfc-473f-b3fd-a77573cd1abb.png">
   
   ### CLASS NodeData_ -
   This class implements the interface of a node.
@@ -175,38 +189,29 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
 
 ### Loading times of large graphs
 - Loaded on a pc with 16GB of ram and an I7-7700HQ (mobile chip).
-- Each node has <b> about </b> 20 edges on avarage. 
+- Each node has <b> exactly </b> 10 out edges. 
 </br>
 
-| N. of nodes | 1000 | 10000 | 100000 | 1000000 |
+![loadproof](https://user-images.githubusercontent.com/90526270/145411886-6e996704-bff1-494b-897e-d947aafae4e8.png)
+
+LOADING TIMES
+| N. of nodes | 1k | 10k | 100k | 1000k |
 | ----------- | ---- | ----- | ------ |-------- |
-| Seconds     |  sdf  1 |  sdf   2 |  fsf    3 |    sf   4 |
+| MS    |  110 |  4467 |  heap |    heap |
+
+ISCONNECTED TIMES
+| N. of nodes | 1k | 10k | 100k | 1000k |
+| ----------- | ---- | ----- | ------ |-------- |
+| MS    | 0 |  88 |  heap |    heap |
+
+
+CENTER TIMES
+| N. of nodes | 1k | 10k | 100k | 1000k |
+| ----------- | ---- | ----- | ------ |-------- |
+| MS    |  969 |  heap |  heap |    heap |
 
 
 
-
-
-
-### UML - 
-
-Ex2 - the mine class of the program that run the GUI of the graph.
-
-GUI - Creates the window where the graph is displayed.
-
-<img width="160" alt="UML EX2GUI" src="https://user-images.githubusercontent.com/93621085/145468509-40348379-f667-40dc-bf43-ccf56433ad4b.png">
-
-DirectedWeightedGraphAlgorithms - creating an DirectedWeightedGraphAlgorithms by DirectedWeightedGraph object and all the functions algorithms that we can run on him.
-
-DirectedWeightedGraph - creating the DirectedWeightedGraph by using NodeData EdgeData and GeoLocation.
-
-
-<img width="560" alt="UML DIRECTEDALGO" src="https://user-images.githubusercontent.com/93621085/145468115-3953f7e6-c759-4d5b-8968-9c9f9151d500.png">
-
-
-NodeData ,EdgeData and GeoLocation
-
-
-<img width="425" alt="UML NODEDGEOLO" src="https://user-images.githubusercontent.com/93621085/145468527-d5f5cd98-edfc-473f-b3fd-a77573cd1abb.png">
 
 
 
