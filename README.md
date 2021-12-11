@@ -5,13 +5,9 @@
 
 
 ## HOW TO USE 
-Clone the project into your computer, 
+Clone the project into your computer, head to `Ex2\OOP_Ex2\out\artifacts\OOP_Ex2_jar` in cmd, and run the command `java -jar Ex2.jar G1.json`
+![howtorun](https://user-images.githubusercontent.com/90526270/145682574-53fd1a07-a77b-4821-9f21-87cd99405d64.png)
 
-/////////////////////////////////////////////////////////////////
-
-////////////RUN THE JAR FILE EXPLINATION////////////////
-
-/////////////////////////////////////////////////////////////////
 
 
 The GUI will pop up to your screen, with the desired graph loaded. </br>
