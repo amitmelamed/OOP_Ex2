@@ -160,8 +160,17 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
   If the graph is not connected, we return null. (There is no center node).
 
  #### TSP:
- //explination about the permutations if the size of the given list is small, explanation about the יורוסיקות .... // 
- //////////// INSERT TSP EXPLINATION HERE /////////////
+ The travelling salesman problem (also called the travelling salesperson problem or TSP) asks the following question: "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?" It is an NP-hard problem in combinatorial optimization, important in theoretical computer science and operations research.
+ We chose a gready alghorithm to solve the problem.
+ Step 1: Pick an arbitrary city and call it city 1.
+ Step 2: Find a city with the smallest distance from city 1, and call it city 2.
+ Step 3: Find a city in the rest of the n - 2 unvisited cities with the smallest distance from city 2.
+ Step 4: Output the tour: City 1 City 2  ...  City n  City 1.
+ if the number of cities if less then 4: we will calculate all of the permotation and give the optimal solution.
+ adventages:
+ 1.faster running time (faster than O(n!)).
+ disadventages:
+ 1.will now give the optimal solution (somtimes will) if n>4.
  
  #### Load and Save: 
  <b>Load</b> We use this function the load another graph to the same DirectedWeightedGraphAlgorithms_, then we init the graph again. </br>
