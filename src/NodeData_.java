@@ -22,7 +22,7 @@ public class NodeData_ implements NodeData {
     private int tag;
 
     private Map<Integer, EdgeData> outEdges; // Integer is the edge's destination
-    private Map<Integer, EdgeData> inEdges;  // Integer is the edge's source
+    //private Map<Integer, EdgeData> inEdges;  // Integer is the edge's source
 
 
     /**
@@ -37,7 +37,7 @@ public class NodeData_ implements NodeData {
         tag = 0;
 
         outEdges = new HashMap<>();
-        inEdges = new HashMap<>();
+        //inEdges = new HashMap<>();
     }
 
 
@@ -62,7 +62,7 @@ public class NodeData_ implements NodeData {
         tag = 0;
 
         outEdges = new HashMap<>();
-        inEdges = new HashMap<>();
+        //inEdges = new HashMap<>();
     }
 
 
@@ -76,7 +76,7 @@ public class NodeData_ implements NodeData {
     }
     @Override
     public Map<Integer, EdgeData> getInEdges() {
-        return inEdges;
+        return null;
     }
 
     @Override

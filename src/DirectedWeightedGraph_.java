@@ -62,7 +62,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
             /**Three hashmaps that hold edges**/
             nodes.get(newEdge.getSrc()).getOutEdges().put(newEdge.getDest(), newEdge);
-            nodes.get(newEdge.getDest()).getInEdges().put(newEdge.getSrc(), newEdge);
+            //nodes.get(newEdge.getDest()).getInEdges().put(newEdge.getSrc(), newEdge);
             edges.put(newEdge.getId(), newEdge);
 
         }
@@ -95,7 +95,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
             /**Three hashmaps that hold edges**/
             nodes.get(T.getSrc()).getOutEdges().put(T.getDest(), T);
-            nodes.get(T.getDest()).getInEdges().put(T.getSrc(), T);
+            //nodes.get(T.getDest()).getInEdges().put(T.getSrc(), T);
             edges.put(T.getId(), T);
 
         }
@@ -135,7 +135,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
 
             /**Three hashmaps that hold edges**/
             nodes.get(e.getSrc()).getOutEdges().put(e.getDest(), e);
-            nodes.get(e.getDest()).getInEdges().put(e.getSrc(), e);
+            //nodes.get(e.getDest()).getInEdges().put(e.getSrc(), e);
             edges.put(e.getId(), e);
         }
     }
@@ -160,8 +160,8 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     @Override
     public EdgeData getEdge(int src, int dest)
     {
-        if(nodes.get(dest).getInEdges().containsKey(src)){
-            return nodes.get(dest).getInEdges().get(src);
+        if(nodes.get(src).getOutEdges().containsKey(dest)){
+            return nodes.get(src).getOutEdges().get(dest);
         }
         return null;
     }
@@ -204,7 +204,7 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
             edgeID++;
             MC++;
             nodes.get(src).getOutEdges().put(dest,edgeData);
-            nodes.get(dest).getInEdges().put(src,edgeData);
+            //nodes.get(dest).getInEdges().put(src,edgeData);
             edges.put(edgeData.getId(),edgeData);
         }
     }
@@ -257,29 +257,29 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     public NodeData removeNode(int key) {
 
         if (nodes.containsKey(key)) {
-            Object[] inedges = nodes.get(key).getInEdges().keySet().toArray();      //keyset is O(1)
+            //Object[] inedges = nodes.get(key).getInEdges().keySet().toArray();      //keyset is O(1)
             Object[] outedges = nodes.get(key).getOutEdges().keySet().toArray();    //keyset is O(1)
-            int[] inIds = new int[inedges.length];
+            //int[] inIds = new int[inedges.length];
             int[] outIds = new int[outedges.length];
 
             /**SIZE OF inIds+outIds is equal to v.degree**/
             /** O(3*v.degree)=O(v.degree)**/
-            for (int i = 0; i < inIds.length; i++) {
-                inIds[i] = getEdge((int) inedges[i], key).getId();
-            }
+            //for (int i = 0; i < inIds.length; i++) {
+            //    inIds[i] = getEdge((int) inedges[i], key).getId();
+            //}
             for (int i = 0; i < outIds.length; i++) {
                 outIds[i] = getEdge(key, (int) outedges[i]).getId();
             }
 
-            for (int i = 0; i < inIds.length; i++) {
-                removeEdge(inIds[i]);
-            }
+            //for (int i = 0; i < inIds.length; i++) {
+            //    removeEdge(inIds[i]);
+            //}
             for (int i = 0; i < outIds.length; i++) {
                 removeEdge(outIds[i]);
             }
 
             nodes.get(key).getOutEdges().clear();       //Clear is O(n) where n is the number of out edges
-            nodes.get(key).getInEdges().clear();        //Clear is O(n) where n is the number of in edges
+            //nodes.get(key).getInEdges().clear();        //Clear is O(n) where n is the number of in edges
 
             MC++;
             return nodes.remove(key);
@@ -296,10 +296,10 @@ public class DirectedWeightedGraph_ implements DirectedWeightedGraph {
     public EdgeData removeEdge(int src, int dest) {
         if (nodes.containsKey(src)&&nodes.containsKey(dest)&&nodes.get(src).getOutEdges().containsKey(dest)) {
 
-        int id = nodes.get(dest).getInEdges().get(src).getId();
+        int id = nodes.get(src).getOutEdges().get(dest).getId();
         // could also be nodes.get(src).getOutEdges().get(dest).getId();
         edges.remove(id);
-        nodes.get(dest).getInEdges().remove(src);
+        //nodes.get(dest).getInEdges().remove(src);
         MC++;
         return nodes.get(src).getOutEdges().remove(dest);
         } else return null;

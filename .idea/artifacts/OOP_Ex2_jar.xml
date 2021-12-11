@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/OOP_Ex2_jar</output-path>
     <root id="archive" name="OOP_Ex2.jar">
       <element id="module-output" name="OOP_Ex2" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/json-20131018.jar" path-in-jar="/" />
+      <element id="file-copy" path="$USER_HOME$/Desktop/json-20131018.jar" />
     </root>
   </artifact>
 </component>

@@ -70,6 +70,7 @@ public class Ex2 {
     public static void main(String[] args) {
         //runGUI(args[0]);
         //runGUI("data/G1.json");
+        lib.isConnectedPerformence();
     }
 }
 

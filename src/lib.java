@@ -46,7 +46,7 @@ public class lib {
     public static void centerPerformence() {
         DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G1.json");
         //ArrayList<Integer> Ks = new ArrayList<>();
-        t.init(lib.createK(10));
+        t.init(lib.createK(1));
 
         double start = System.currentTimeMillis();
 
@@ -59,7 +59,7 @@ public class lib {
     public static void isConnectedPerformence() {
         DirectedWeightedGraphAlgorithms t = new DirectedWeightedGraphAlgorithms_("data/G1.json");
         //ArrayList<Integer> Ks = new ArrayList<>();
-        t.init(lib.createK(100));
+        t.init(lib.createK(10));
 
         double start = System.currentTimeMillis();
 
