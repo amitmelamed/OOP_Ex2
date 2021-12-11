@@ -73,13 +73,8 @@ public class Ex2 {
          * this is how to run the jar:
          * out\artifacts\OOP_Ex2_jar\OOP_Ex2.jar
          */
-        //System.out.printf(args[0]);
-        //System.out.printf(args[1]);
-        System.out.println("");
-        System.out.println("hello");
-        //System.out.printf(args[0]);
-        //runGUI(args[0]);
-        runGUI("data/G1.json");
+
+        runGUI(args[0]);
     }
 }
 
