@@ -190,6 +190,7 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
 ### Loading times of large graphs
 - Loaded on a pc with 16GB of ram and an I7-7700HQ (mobile chip).
 - Each node has <b> exactly </b> 10 out edges. 
+- All the functions used to test <b>performence</b> are in class 'lib'. 
 </br>
 
 <b> In this assignment we for the first time ever encountered a problem with memory space, </br>
