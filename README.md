@@ -192,6 +192,10 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
 - Each node has <b> exactly </b> 10 out edges. 
 </br>
 
+<b> In this assignment we for the first time ever encountered a problem with memory space, </br>
+ We tried using less objects to present a graph in the branch "spacecomplexity".
+ But unfortunately all of our attempts have failed as we did not plan out our code to save space, only time.
+
 ![loadproof](https://user-images.githubusercontent.com/90526270/145411886-6e996704-bff1-494b-897e-d947aafae4e8.png)
 
 LOADING TIMES
