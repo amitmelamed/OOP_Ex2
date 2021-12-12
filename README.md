@@ -165,7 +165,7 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
  Step 1: Pick an arbitrary city and call it city 1.
  Step 2: Find a city with the smallest distance from city 1, and call it city 2.
  Step 3: Find a city in the rest of the n - 2 unvisited cities with the smallest distance from city 2.
- Step 4: Output the tour: City 1 City 2  ...  City n  City 1.
+ Step 4: Output the tour: City 1 > City 2 > ... > City n > City 1.
  if the number of cities if less then 4: we will calculate all of the permotation and give the optimal solution.
  adventages:
  1.faster running time (faster than O(n!)).
@@ -176,6 +176,20 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
  <b>Load</b> We use this function the load another graph to the same DirectedWeightedGraphAlgorithms_, then we init the graph again. </br>
  <b>Save</b> This function read the information about the graph from the originalGraph, and write it into a new json file. 
 ## Analyzing Performence
+### Time Complexity of Algorithms
+
+
+| FUNC  | TIME COMPLEXITY |
+| ----- | ---------------|
+|   removeNode()   |   O(v.degree)  |
+|   isConnected()   |     O(2elogv)    |
+|   shortestPathDist()   |    O(elogv)      |
+|    shortestPath()  |   O(elogv)      |
+| center() | O(velogv+v^2 |
+|   tsp() for v<=4   |     O(v!)      |
+|   tsp() for v>4   |      O(v^2)      |
+|   calcPath()  |    O(elogv)     |
+
 
 ### Loading times of large graphs
 - Loaded on a pc with 16GB of ram and an I7-7700HQ (mobile chip).
