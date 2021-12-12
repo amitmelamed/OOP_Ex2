@@ -176,21 +176,6 @@ We go through the outEdges and inEdges HashMaps that are explained above, and lo
  <b>Load</b> We use this function the load another graph to the same DirectedWeightedGraphAlgorithms_, then we init the graph again. </br>
  <b>Save</b> This function read the information about the graph from the originalGraph, and write it into a new json file. 
 ## Analyzing Performence
-### Time Complexity of Algorithms
-
-
-| FUNC  | TIME COMPLEXITY |
-| ----- | ---------------|
-|      |   ביונסה של אחד  |
-| ----- | ---------------|
-|      |                |
-| ----- | ---------------|
-|      |                |
-| ----- | ---------------|
-|      |                |
-| ----- | ---------------|
-|      |                |
-
 
 ### Loading times of large graphs
 - Loaded on a pc with 16GB of ram and an I7-7700HQ (mobile chip).
